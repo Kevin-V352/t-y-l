@@ -30,6 +30,37 @@
         "import"
     ],
     "rules": {
+        "@typescript-eslint/restrict-template-expressions": "off",
+        "no-multi-spaces": [
+            "error",
+            {
+                "exceptions": {
+                    "TSTypeAnnotation": true
+                }
+            }
+        ],
+        "key-spacing": [
+            "error",
+            {
+                "align": "value"
+            }
+        ],
+        "padded-blocks": [
+            "error",
+            "always"
+        ],
+        "react/prop-types": "off",
+        "@typescript-eslint/consistent-type-assertions": "off",
+        "@typescript-eslint/strict-boolean-expressions": "off",
+        "@typescript-eslint/member-delimiter-style": [
+            "error",
+            {
+                "multiline": {
+                    "delimiter": "semi",
+                    "requireLast": true
+                }
+            }
+        ],
         "react/react-in-jsx-scope": "off",
         "semi": [
             "error",
