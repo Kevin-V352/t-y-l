@@ -1,9 +1,13 @@
 import type { NextPage } from 'next';
 
-const Home: NextPage = () => {
+import { Home } from '@/pages';
+
+const HomePage: NextPage = () => {
+
   return (
-    <h1>NEXT TEMPLATE</h1>
+    <Home />
   );
+
 };
 
-export default Home;
+export default HomePage;
