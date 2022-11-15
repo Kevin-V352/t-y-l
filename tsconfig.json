@@ -16,8 +16,10 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
+      "@/layouts": ["components/layouts/index"],
       "@/pages": ["components/pages/index"],
       "@/ui": ["components/ui/index"],
+      "@/themes": ["themes/index"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

@@ -1,9 +1,16 @@
 import { FC } from 'react';
 
+import { MainLayout } from '@/layouts';
+
 const Home: FC = () => {
 
   return (
-    <div>Home</div>
+    <MainLayout
+      title='TYL'
+      desc='Venta de bebidas'
+    >
+      <div>Home</div>
+    </MainLayout>
   );
 
 };
