@@ -5,8 +5,14 @@ export const Container = styled.div`
   width: 100%;
   background: url('/assets/backgrounds/home.webp') no-repeat fixed;
   background-size: cover;
-`;
-
-export const MainContainer = styled.main`
   padding: 10px;
+  box-sizing: border-box;
+
+  @media screen and (min-width: 768px) {
+    padding: 10px 20px;
+  };
+
+  @media screen and (min-width: 1024px) {
+    padding: 20px 40px;
+  };
 `;
