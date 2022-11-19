@@ -8,8 +8,18 @@ export const Container = styled.nav`
   display: grid;
   grid-template-columns: 40px 1fr 40px;
   grid-template-areas: 'brand searchBar menu';
-  padding: 10px;
+  padding: 10px 0;
+  margin-bottom: 20px;
   grid-column-gap: 10px;
+  justify-items: center;
+
+  @media screen and (min-width: 768px) {
+    grid-column-gap: 80px;
+  };
+
+  @media screen and (min-width: 1024px) {
+    grid-column-gap: 0;
+  };
 `;
 
 export const Icon = styled.img`

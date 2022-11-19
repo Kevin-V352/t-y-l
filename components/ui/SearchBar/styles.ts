@@ -14,6 +14,8 @@ export const Container = styled.div`
   align-items: center;
   grid-area: searchBar;
   height: 40px;
+  width: 100%;
+  max-width: 600px;
 `;
 
 export const Input = styled.input`
@@ -23,6 +25,11 @@ export const Input = styled.input`
   color: white;
   :focus {
     outline: none;
+  };
+
+  //TODO: REVISAR BARRA EN 1080p
+  @media screen and (min-width: 1920px) {
+    font-size: var(--secondary-font-size);
   };
 `;
 

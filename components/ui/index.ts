@@ -1,2 +1,9 @@
-export { default as SearchBar } from './SearchBar';
+export { default as AdvertisingBox } from './AdvertisingBox';
+export { default as CategoryTag } from './CategoryTag';
+export { default as Chip } from './Chip';
+export { default as CustomSlider } from './CustomSlider';
 export { default as Navbar } from './NavBar';
+export { default as ProductCard } from './ProductCard';
+export { default as ProductSlider } from './ProductSlider';
+export { default as SearchBar } from './SearchBar';
+export { default as Slider } from './Slider';
