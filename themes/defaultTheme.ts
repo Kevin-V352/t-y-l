@@ -2,30 +2,35 @@ import { DefaultTheme } from 'styled-components';
 
 const defaultTheme: DefaultTheme = {
   background: {
-    color_1: '#FFFFFF',
-    color_2: '#D9D9D9',
-    color_3: 'rgba(255, 255, 255, 0.4)',
-    color_4: '#2094E6',
-    color_5: '#0E3D75'
+    black_cat:     'rgba(70, 57, 63, 0.98)',
+    dark_grey:     'rgba(48, 46, 57, 0.98)',
+    indian_yellow: 'rgba(215, 165, 66, 0.98)',
+    outer_space:   'rgba(48,46,57,1)',
+    saffron_mango: '#F9B745',
+    sand:          'rgba(245, 196, 107, 0.98)'
   },
   text: {
-    color_1: '#FFFFFF',
-    color_2: '#4483D6',
-    color_3: '#0E3D75',
-    color_4: 'rgba(0, 0, 0, 0.5)',
-    color_5: '#333333',
-    color_6: '#000000'
+    harvest_gold: '#DDBC54',
+    light_grey:   '#E4D9D5',
+    oslo_grey:    '#8B898A',
+    white:        '#FFF'
   },
   button: {
-    color_1: '#FFFFFF',
-    color_2: '#2094E6',
-    color_3: 'rgba(255, 255, 255, 0.4)'
+
   },
   border: {
-    color_1: '#E3DEC1'
+    light_grey:        '#E4D9D5',
+    light_orange:      '#FCBA43',
+    pastel_orange:     '#FB9F40',
+    transparent_black: 'rgba(0, 0, 0, 0.2)',
+    transparent_white: 'rgba(255, 255, 255, 0.1)',
+    white:             '#FFF'
   },
   icon: {
-    white: '#FFF'
+    black_cat:    'rgba(70, 57, 63, 0.98)',
+    light_grey:   '#E4D9D5',
+    light_orange: '#FCBA43',
+    white:        '#FFF'
   }
 };
 
