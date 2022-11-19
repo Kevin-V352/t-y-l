@@ -6,6 +6,20 @@ html {
   font-size: 10px;
 }
 
+:root {
+  --primary-font-size: 3rem;
+  --secondary-font-size: 1.6rem;
+  --tertiary-font-size: 1.2rem;
+}
+
+@media screen and (min-width: 1920px) {
+  :root {
+    --primary-font-size: 3.5rem;
+    --secondary-font-size: 2rem;
+    --tertiary-font-size: 1.2rem;
+  }
+}
+
 body {
   margin: 0;
   padding: 0;
