@@ -20,6 +20,10 @@
       "@/pages": ["components/pages/index"],
       "@/ui": ["components/ui/index"],
       "@/themes": ["themes/index"],
+      "@/types": ["types/index"],
+      "@/interfaces": ["interfaces/index"],
+      "@/hooks": ["hooks/index"],
+      "@/styles": ["styles/index"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
