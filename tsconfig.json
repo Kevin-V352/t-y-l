@@ -24,6 +24,8 @@
       "@/interfaces": ["interfaces/index"],
       "@/hooks": ["hooks/index"],
       "@/styles": ["styles/index"],
+      "@/api": ["api/index"],
+      "@/data": ["data/index"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
