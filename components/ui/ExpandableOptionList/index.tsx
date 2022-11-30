@@ -7,7 +7,7 @@ import { OptionList } from '@/ui';
 import * as S from './styles';
 import { IExpandableOptionListProps } from './types';
 
-const ExpandableOptionList: FC<IExpandableOptionListProps> = ({ text, options }) => {
+const ExpandableOptionList: FC<IExpandableOptionListProps> = ({ text, options, onClick }) => {
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -17,6 +17,7 @@ const ExpandableOptionList: FC<IExpandableOptionListProps> = ({ text, options })
         <OptionList
           text={text}
           paddingLeft={2}
+          onClick={onClick}
         />
         <S.IconWrapper
           onClick={() => setOpen((prevState) => !prevState)}
