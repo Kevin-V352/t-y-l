@@ -7,6 +7,7 @@ export const CustomListItemText = muiStyled(ListItemText)`
   .MuiListItemText-primary {
     font-size: var(--secondary-font-size);
     font-family: 'Dosis', sans-serif;
+    font-weight: 500;
     color: #FFF;
   };
 `;

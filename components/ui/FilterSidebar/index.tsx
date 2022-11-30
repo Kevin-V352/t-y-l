@@ -6,7 +6,7 @@ import { OptionList, ExpandableOptionList, Sidebar } from '@/ui';
 
 import { IFilterSidebarProps } from './types';
 
-const FilterSideBar: FC<IFilterSidebarProps> = ({ open, onClose }) => {
+const FilterSideBar: FC<IFilterSidebarProps> = ({ open, onClose, changeCategory }) => {
 
   interface Category {
     text: string;
@@ -17,61 +17,61 @@ const FilterSideBar: FC<IFilterSidebarProps> = ({ open, onClose }) => {
   const categories: Category[] = [
     {
       text:          'drinks_without_alcohol',
-      cb:            () => console.log('drinks_without_alcohol'),
+      cb:            () => changeCategory('drinks_without_alcohol', () => onClose()),
       subCategories: [
         {
           text: 'soft_driks',
-          cb:   () => console.log('soft_driks')
+          cb:   () => changeCategory('soft_driks', () => onClose())
         },
         {
-          text: 'non-carbonated_drinks',
-          cb:   () => console.log('non-carbonated_drinks')
+          text: 'non_carbonated_drinks',
+          cb:   () => changeCategory('non_carbonated_drinks', () => onClose())
         },
         {
           text: 'energizers',
-          cb:   () => console.log('energizers')
+          cb:   () => changeCategory('energizers', () => onClose())
         }
       ]
     },
     {
       text:          'alcoholic_drinks',
-      cb:            () => console.log('alcoholic_drinks'),
+      cb:            () => changeCategory('alcoholic_drinks', () => onClose()),
       subCategories: [
         {
           text: 'wines',
-          cb:   () => console.log('wines')
+          cb:   () => changeCategory('wines', () => onClose())
         },
         {
           text: 'beers',
-          cb:   () => console.log('beers')
+          cb:   () => changeCategory('beers', () => onClose())
         },
         {
           text: 'distillates',
-          cb:   () => console.log('distillates')
+          cb:   () => changeCategory('distillates', () => onClose())
         },
         {
           text: 'appetizers',
-          cb:   () => console.log('appetizers')
+          cb:   () => changeCategory('appetizers', () => onClose())
         }
       ]
     },
     {
       text:          'snacks',
-      cb:            () => console.log('snacks'),
+      cb:            () => changeCategory('snacks', () => onClose()),
       subCategories: [
         {
           text: 'sweet',
-          cb:   () => console.log('sweet')
+          cb:   () => changeCategory('sweet', () => onClose())
         },
         {
           text: 'salty',
-          cb:   () => console.log('salty')
+          cb:   () => changeCategory('salty', () => onClose())
         }
       ]
     },
     {
       text: 'others',
-      cb:   () => console.log('others')
+      cb:   () => changeCategory('others', () => onClose())
     }
   ];
 
@@ -82,21 +82,23 @@ const FilterSideBar: FC<IFilterSidebarProps> = ({ open, onClose }) => {
     >
       <List>
         {
-          categories.map(({ text, cb, subCategories }) => (
+          categories.map(({ text, cb, subCategories }, i) => (
             subCategories
               ? (
-                <ExpandableOptionList
-                  text={text}
-                  options={subCategories}
-                />
+                  <ExpandableOptionList
+                    key={text}
+                    text={text}
+                    options={subCategories}
+                    onClick={cb}
+                  />
                 )
               : (
-                <OptionList
-                  key={text}
-                  text={text}
-                  onClick={cb}
-                  paddingLeft={2}
-                />
+                  <OptionList
+                    key={text}
+                    text={text}
+                    onClick={cb}
+                    paddingLeft={2}
+                  />
                 )
           ))
         }
