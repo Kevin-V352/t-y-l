@@ -4,6 +4,7 @@ export { default as Chip } from './Chip';
 export { default as CustomSlider } from './CustomSlider';
 export { default as ExpandableOptionList } from './ExpandableOptionList';
 export { default as FilterSidebar } from './FilterSidebar';
+export { default as Menu } from './Menu';
 export { default as Navbar } from './NavBar';
 export { default as OptionList } from './OptionList';
 export { default as ProductCard } from './ProductCard';
