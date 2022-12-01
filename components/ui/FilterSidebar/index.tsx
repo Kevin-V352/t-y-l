@@ -1,76 +1,79 @@
 import { FC } from 'react';
 
 import { List } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 import { OptionList, ExpandableOptionList, Sidebar } from '@/ui';
 
 import { IFilterSidebarProps } from './types';
 
+interface Category {
+  text: string;
+  cb: () => void;
+  subCategories?: Category[];
+};
+
 const FilterSideBar: FC<IFilterSidebarProps> = ({ open, onClose, changeCategory }) => {
 
-  interface Category {
-    text: string;
-    cb: () => void;
-    subCategories?: Category[];
-  };
+  const { t } = useTranslation('search');
 
   const categories: Category[] = [
     {
-      text:          'drinks_without_alcohol',
+      text:          t('filters.categories.drinks_without_alcohol'),
       cb:            () => changeCategory('drinks_without_alcohol', () => onClose()),
       subCategories: [
         {
-          text: 'soft_driks',
+          text: t('filters.categories.soft_driks'),
           cb:   () => changeCategory('soft_driks', () => onClose())
         },
         {
-          text: 'non_carbonated_drinks',
+          text: t('filters.categories.non_carbonated_drinks'),
           cb:   () => changeCategory('non_carbonated_drinks', () => onClose())
         },
         {
-          text: 'energizers',
+          text: t('filters.categories.energizers'),
           cb:   () => changeCategory('energizers', () => onClose())
         }
       ]
     },
     {
-      text:          'alcoholic_drinks',
+      text:          t('filters.categories.alcoholic_drinks'),
       cb:            () => changeCategory('alcoholic_drinks', () => onClose()),
       subCategories: [
         {
-          text: 'wines',
+          text: t('filters.categories.wines'),
           cb:   () => changeCategory('wines', () => onClose())
         },
         {
-          text: 'beers',
+          text: t('filters.categories.beers'),
           cb:   () => changeCategory('beers', () => onClose())
         },
         {
-          text: 'distillates',
+          text: t('filters.categories.distillates'),
           cb:   () => changeCategory('distillates', () => onClose())
         },
         {
-          text: 'appetizers',
+          text: t('filters.categories.appetizers'),
           cb:   () => changeCategory('appetizers', () => onClose())
         }
       ]
     },
     {
-      text:          'snacks',
+      text:          t('filters.categories.snacks'),
       cb:            () => changeCategory('snacks', () => onClose()),
       subCategories: [
         {
-          text: 'sweet',
+          text: t('filters.categories.sweet'),
           cb:   () => changeCategory('sweet', () => onClose())
         },
         {
-          text: 'salty',
+          text: t('filters.categories.salty'),
           cb:   () => changeCategory('salty', () => onClose())
         }
       ]
     },
     {
-      text: 'others',
+      text: t('filters.categories.others'),
       cb:   () => changeCategory('others', () => onClose())
     }
   ];
