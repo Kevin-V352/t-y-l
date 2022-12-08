@@ -7,6 +7,7 @@ const Menu: FC<IMenuProps> = ({ buttonId, open, anchorElement, options, onClose 
 
   return (
     <S.CustomMenu
+      autoFocus={false}
       id={buttonId}
       anchorEl={anchorElement}
       open={open}
