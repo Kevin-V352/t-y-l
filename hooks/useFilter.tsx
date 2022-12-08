@@ -2,7 +2,7 @@
 import { useRouter } from 'next/router';
 
 interface HookResponse {
-  changeCategory: (category: string, cb: () => void) => void;
+  changeCategory: (category: string, cb?: () => void) => void;
   sortItems: (sort: TSortOptions) => void;
   changePage: (page: number) => void;
 };
@@ -16,10 +16,10 @@ const useFilter = (): HookResponse => {
 
   const sortItems = (sort: TSortOptions): void => loadQueries('sort', sort, false);
   const changePage = (page: number): void => loadQueries('page', page, false);
-  const changeCategory = (category: string, cb: () => void): void => {
+  const changeCategory = (category: string, cb?: () => void): void => {
 
     loadQueries('category', category, true);
-    cb();
+    if (cb) cb();
 
   };
   const loadQueries = (queryType: TQueryTypes, queryValue: string | number, removeSearch: boolean): void => {
