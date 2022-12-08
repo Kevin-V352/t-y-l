@@ -18,9 +18,9 @@ const MainLayout: FC<Props> = ({ title, desc, children }) => {
         <meta name="og:description" content={desc} />
       </Head>
       <Navbar />
-      <main>
+      <S.MainContent>
         {children}
-      </main>
+      </S.MainContent>
     </S.Container>
   );
 

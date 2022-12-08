@@ -22,7 +22,7 @@ const defaultTheme: DefaultTheme = {
     light_grey:        '#E4D9D5',
     light_orange:      '#FCBA43',
     pastel_orange:     '#FB9F40',
-    transparent_black: 'rgba(0, 0, 0, 0.2)',
+    transparent_black: 'rgba(0, 0, 0, 0.3)',
     transparent_white: 'rgba(255, 255, 255, 0.1)',
     white:             '#FFF'
   },

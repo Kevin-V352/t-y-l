@@ -2,8 +2,7 @@
 import styled, { css } from 'styled-components';
 
 const boxShadow = css`
-  /* box-shadow: ${({ theme }) => `${theme.border.transparent_black} 0px 2px 15px 2px`}; */
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 15px 2px;
+  box-shadow: ${({ theme }) => `${theme.border.transparent_black} 0px 2px 15px 2px`};
 `;
 
 export const Container = styled.div`
