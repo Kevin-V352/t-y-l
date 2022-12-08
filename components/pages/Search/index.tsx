@@ -1,12 +1,13 @@
 import { FC, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
+import { FaSort } from 'react-icons/fa';
+import { IoFilter } from 'react-icons/io5';
 
-import { useFilter } from '@/hooks';
+import { useFilter, useResponsive } from '@/hooks';
 import { ISearchPageProps } from '@/interfaces';
 import { MainLayout } from '@/layouts';
-import { FilterSidebar, Menu, ProductCard } from '@/ui';
-import { OutlineButton } from 'styles/stylizedComponents';
+import { Button, FilterDesktop, FilterSidebar, Menu, ProductCard } from '@/ui';
 
 import * as S from './styles';
 
@@ -19,12 +20,14 @@ const Search: FC<ISearchPageProps> = ({ products }) => {
   const { t } = useTranslation('search');
 
   const { changeCategory, sortItems } = useFilter();
+  const currentResolution = useResponsive();
 
+  const isDesktop = currentResolution ? (currentResolution >= 1024) : false;
   const open = !!anchorEl;
   const sortOptions = ['price_DESC', 'price_ASC', 'publishedAt_DESC'];
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => setAnchorEl(event.currentTarget);
   const handleClose = (): void => setAnchorEl(null);
-
   const createSortOptions = (options: string[]): Array<{ text: string; cb: () => void }> => (
     options.map((option) => ({
       text: t(`filters.sort.${option}`),
@@ -43,26 +46,42 @@ const Search: FC<ISearchPageProps> = ({ products }) => {
       desc="Busqueda de producto X"
     >
       <S.Container>
+        {
+          isDesktop && (
+            <FilterDesktop
+              changeCategory={changeCategory}
+              customStyles={S.customStylesFilterDesktop}
+            />
+          )
+        }
         <S.OptionsWrapper>
-          <OutlineButton onClick={() => setOpenFilter(true)}>
-            Categorias
-          </OutlineButton>
-          <OutlineButton
+          {
+            !isDesktop && (
+              <Button
+                text='Categorias'
+                variant='outlined'
+                icon={<IoFilter />}
+                onClick={() => setOpenFilter(true)}
+              />
+            )
+          }
+          <Button
+            text="Orden"
+            variant='outlined'
+            icon={<FaSort />}
             id="basic-button"
             aria-controls={open ? 'basic-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
-          >
-            Orden
-          </OutlineButton>
+          />
         </S.OptionsWrapper>
         {
           (products.length === 0)
             ? (
-              <S.NotResultsText>
-                Sin resultados...
-              </S.NotResultsText>
+                <S.NotResultsText>
+                  Sin resultados...
+                </S.NotResultsText>
               )
             : (
                 <S.ProductList>
