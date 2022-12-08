@@ -3,21 +3,16 @@ import { FC } from 'react';
 import { List } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
+import { ICategoryForSearch } from '@/interfaces';
 import { OptionList, ExpandableOptionList, Sidebar } from '@/ui';
 
 import { IFilterSidebarProps } from './types';
-
-interface Category {
-  text: string;
-  cb: () => void;
-  subCategories?: Category[];
-};
 
 const FilterSideBar: FC<IFilterSidebarProps> = ({ open, onClose, changeCategory }) => {
 
   const { t } = useTranslation('search');
 
-  const categories: Category[] = [
+  const categories: ICategoryForSearch[] = [
     {
       text:          t('filters.categories.drinks_without_alcohol'),
       cb:            () => changeCategory('drinks_without_alcohol', () => onClose()),
@@ -85,7 +80,7 @@ const FilterSideBar: FC<IFilterSidebarProps> = ({ open, onClose, changeCategory 
     >
       <List>
         {
-          categories.map(({ text, cb, subCategories }, i) => (
+          categories.map(({ text, cb, subCategories }) => (
             subCategories
               ? (
                   <ExpandableOptionList
