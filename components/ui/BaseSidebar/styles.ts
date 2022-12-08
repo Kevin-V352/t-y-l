@@ -16,8 +16,12 @@ export const BaseSidebar = styled.div<SideBarContainerProps>`
   padding: 20px 20px 0 20px;
   display: flex;
   flex-direction: column;
-  right: ${({ open }) => open ? '0' : '-100vw'};
   overflow-y: scroll;
+  right: ${({ open }) => open ? '0' : '-100vw'};
+
+  @media screen and (min-width: 1024px) {
+    display: none;
+  };
 `;
 
 export const CloseIcon = styled(TfiClose)`
