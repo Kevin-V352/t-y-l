@@ -8,3 +8,9 @@ export interface ICardProduct {
 export interface IProductImage {
   url: string;
 };
+
+export interface IProductDetails extends ICardProduct {
+  description: string;
+  discount_rate: number;
+  stock: number;
+};
