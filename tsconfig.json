@@ -26,6 +26,7 @@
       "@/styles": ["styles/index"],
       "@/api": ["api/index"],
       "@/database": ["database/index"],
+      "@/utils": ["utils/index"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
