@@ -42,9 +42,12 @@ const ProductSlider: FC<Props> = ({ title, generalId, customStyles }) => {
             [1, 2, 3, 4, 5].map((el, i) => (
               <SwiperSlide key={i}>
                 <ProductCard
-                  img={'/assets/seed/product_1_example.jpg'}
-                  title="Jack Daniels"
-                  price={15}
+                  product={{
+                    img:   [{ url: '/assets/seed/product_1_example.jpg' }],
+                    title: 'Jack Daniels',
+                    price: 15,
+                    slug:  'whisky-jack-daniels-honey'
+                  }}
                 />
               </SwiperSlide>
             ))
