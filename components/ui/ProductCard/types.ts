@@ -1,5 +1,5 @@
+import { ICardProduct } from '@/interfaces';
+
 export interface Props {
-  img: string;
-  title: string;
-  price: number;
+  product: ICardProduct;
 };
