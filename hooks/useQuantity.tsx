@@ -1,42 +1,68 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-interface HookResponse {
+interface IHookState {
   quantity: number;
+  disableAdd: boolean;
+  disableRemove: boolean;
+};
+
+interface IHookResponse extends IHookState {
   addItem: () => void;
   removeItem: () => void;
 };
 
-const useQuantity = (maxQuantity: number, initialValue: number = 1): HookResponse => {
+const useQuantity = (maxQuantity: number, initialValue: number = 1): IHookResponse => {
 
-  const [quantity, setQuantity] = useState<number>(initialValue);
+  const [state, setState] = useState<IHookState>({
+    quantity:      initialValue,
+    disableAdd:    (initialValue >= maxQuantity),
+    disableRemove: (initialValue <= 1)
+  });
+
+  useEffect(() => {
+
+    validateButtons();
+
+  }, [state.quantity]);
+
+  const validateButtons = (): void => {
+
+    setState((prevState) => ({
+      ...prevState,
+      disableAdd:    (prevState.quantity >= maxQuantity),
+      disableRemove: (prevState.quantity <= 1)
+    }));
+
+  };
 
   const addItem = (): void => {
 
-    if ((quantity + 1) > maxQuantity) {
+    if ((state.quantity + 1) > maxQuantity) {
 
-      alert('No se pueden agregar mas productos');
+      setState((prevState) => ({ ...prevState, disableAdd: true }));
       return;
 
     };
-    setQuantity((prevState) => (prevState + 1));
+
+    setState((prevState) => ({ ...prevState, quantity: (prevState.quantity + 1) }));
 
   };
 
   const removeItem = (): void => {
 
-    if ((quantity - 1) < 1) {
+    if ((state.quantity - 1) < 1) {
 
-      alert('No se pueden remover mas productos');
+      setState((prevState) => ({ ...prevState, disableRemove: true }));
       return;
 
     };
 
-    setQuantity((prevState) => (prevState - 1));
+    setState((prevState) => ({ ...prevState, quantity: (prevState.quantity - 1) }));
 
   };
 
   return {
-    quantity,
+    ...state,
     addItem,
     removeItem
   };

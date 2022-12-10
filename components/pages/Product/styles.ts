@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { commonBackground } from '@/styles';
+import { commonBackground, commonBullets } from '@/styles';
 
 export const addToCartButtonStyles = css`
 `;
@@ -22,9 +22,21 @@ export const Content = styled.div`
   gap: 15px;
 `;
 
+export const SwiperWrapper = styled.div`
+  aspect-ratio: 1/1;
+
+  ${commonBullets}
+
+  .swiper {
+    height: 100%;
+  };
+
+`;
+
 export const ImgWrapper = styled.div`
   position: relative;
-  aspect-ratio: 1/1;
+  width: 100%;
+  height: 100%;
 `;
 
 export const Title = styled.h1`

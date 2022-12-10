@@ -1,6 +1,12 @@
+/* eslint-disable import/no-unresolved */
 import { FC, useContext } from 'react';
 
+import 'swiper/css';
+import 'swiper/css/pagination';
+
 import Image from 'next/image';
+import { Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { CartContext } from '@/contexts';
 import { IProductDetailsPageProps } from '@/interfaces';
@@ -24,7 +30,13 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
 
   const { addToCart, getCurrentQuantity } = useContext(CartContext);
 
-  const { quantity, addItem, removeItem } = useQuantity(stock, (getCurrentQuantity(id) || undefined));
+  const {
+    quantity,
+    disableAdd,
+    disableRemove,
+    addItem,
+    removeItem
+  } = useQuantity(stock, (getCurrentQuantity(id) ?? undefined));
 
   return (
     <MainLayout
@@ -32,12 +44,26 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
       desc=''
     >
       <S.Container>
-        <S.ImgWrapper>
-          <Image
-            src={img[0].url}
-            layout="fill"
-          />
-        </S.ImgWrapper>
+        <S.SwiperWrapper>
+          <Swiper
+            modules={[Pagination]}
+            slidesPerView={1}
+            pagination
+          >
+            {
+              img.map(({ url }) => (
+                <SwiperSlide key={url}>
+                  <S.ImgWrapper>
+                    <Image
+                      src={url}
+                      layout="fill"
+                    />
+                  </S.ImgWrapper>
+                </SwiperSlide>
+              ))
+            }
+          </Swiper>
+        </S.SwiperWrapper>
         <S.Content>
           <S.Title>{title}</S.Title>
           <S.Price>{formatters.currencyFormat(price)}</S.Price>
@@ -46,6 +72,8 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
             maxQuantity={stock}
             add={addItem}
             remove={removeItem}
+            disableAdd={disableAdd}
+            disableRemove={disableRemove}
           />
           <Button
             text='Agregar al carrito'

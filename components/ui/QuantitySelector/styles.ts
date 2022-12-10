@@ -1,9 +1,11 @@
 import { CgAdd, CgRemove } from 'react-icons/cg';
 import styled, { css } from 'styled-components';
 
-const commonButtonStyles = css`
+import { IButtonProps } from './types';
+
+const commonButtonStyles = css<IButtonProps>`
   font-size: var(--primary-font-size);
-  color: ${({ theme }) => theme.text.white};
+  color: ${({ theme, disabled }) => disabled ? theme.text.oslo_grey : theme.text.white};
 `;
 
 export const Container = styled.div`
@@ -37,7 +39,7 @@ export const RemoveButton = styled(CgRemove)`
   grid-area: removeButton;
 `;
 
-export const AddButton = styled(CgAdd)`
+export const AddButton = styled(CgAdd)<IButtonProps>`
   ${commonButtonStyles}
   grid-area: addButton;
 `;
