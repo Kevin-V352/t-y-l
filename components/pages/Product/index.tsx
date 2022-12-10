@@ -1,7 +1,8 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 
 import Image from 'next/image';
 
+import { CartContext } from '@/contexts';
 import { IProductDetailsPageProps } from '@/interfaces';
 import { MainLayout } from '@/layouts';
 import { Button, QuantitySelector } from '@/ui';
@@ -13,6 +14,7 @@ import * as S from './styles';
 const Product: FC<IProductDetailsPageProps> = ({ product }) => {
 
   const {
+    id,
     img,
     title,
     price,
@@ -20,7 +22,9 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
     stock
   } = product;
 
-  const { quantity, addItem, removeItem } = useQuantity(stock);
+  const { addToCart, getCurrentQuantity } = useContext(CartContext);
+
+  const { quantity, addItem, removeItem } = useQuantity(stock, (getCurrentQuantity(id) || undefined));
 
   return (
     <MainLayout
@@ -47,6 +51,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
             text='Agregar al carrito'
             variant='primary'
             fluid
+            onClick={() => addToCart(id, quantity)}
           />
           <S.Description>{description}</S.Description>
         </S.Content>

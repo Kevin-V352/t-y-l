@@ -14,8 +14,6 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  ${commonBackground}
-  border: red solid 1px;
   flex: 1;
   padding: 10px;
   display: flex;

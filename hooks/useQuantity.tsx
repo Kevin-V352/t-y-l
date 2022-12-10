@@ -6,9 +6,9 @@ interface HookResponse {
   removeItem: () => void;
 };
 
-const useQuantity = (maxQuantity: number): HookResponse => {
+const useQuantity = (maxQuantity: number, initialValue: number = 1): HookResponse => {
 
-  const [quantity, setQuantity] = useState<number>(1);
+  const [quantity, setQuantity] = useState<number>(initialValue);
 
   const addItem = (): void => {
 
