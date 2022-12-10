@@ -1,17 +1,29 @@
 import { css } from 'styled-components';
 
+const bulletBaseStyles = css`
+  .swiper-pagination-bullet {
+    opacity: 1;
+    background-color: ${({ theme }) => theme.icon.white};
+  };
+`;
+
 export const commonBorder = css`
   border-top: #FCBA43 solid 3px;  
 `;
 
 export const commonBullets = css`
-  .swiper-pagination-bullet {
-    opacity: 1;
-    background-color: ${({ theme }) => theme.icon.white};
-  };
+  ${bulletBaseStyles}
 
   .swiper-pagination-bullet-active {
     background-color: ${({ theme }) => theme.icon.light_orange};
+  };
+`;
+
+export const commonBullets2 = css`
+  ${bulletBaseStyles}
+
+  .swiper-pagination-bullet-active {
+    background-color: ${({ theme }) => theme.icon.black_cat};
   };
 `;
 
