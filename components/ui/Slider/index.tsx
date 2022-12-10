@@ -1,12 +1,12 @@
 /* eslint-disable import/no-unresolved */
 import { FC } from 'react';
 
+import 'swiper/css';
+import 'swiper/css/pagination';
+
 import Image from 'next/image';
 import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-import 'swiper/css';
-import 'swiper/css/pagination';
 
 import { Chip } from '@/ui';
 
