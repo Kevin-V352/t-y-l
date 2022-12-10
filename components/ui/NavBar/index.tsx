@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/promise-function-async */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { ChangeEvent, FC, useState } from 'react';
 
 import { useRouter } from 'next/router';
@@ -28,7 +31,7 @@ const NavBar: FC = () => {
 
     };
     setQuery('');
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+
     router.push(`/search/${query}`);
 
   };
@@ -40,7 +43,7 @@ const NavBar: FC = () => {
         onChange={handlerChange}
         onSubmit={handlerSubmit}
       />
-      <S.MenuIcon />
+      <S.MenuIcon onClick={() => router.push('/')}/>
     </S.Container>
   );
 
