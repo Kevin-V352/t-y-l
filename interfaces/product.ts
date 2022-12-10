@@ -10,6 +10,7 @@ export interface IProductImage {
 };
 
 export interface IProductDetails extends ICardProduct {
+  id: string;
   description: string;
   discount_rate: number;
   stock: number;

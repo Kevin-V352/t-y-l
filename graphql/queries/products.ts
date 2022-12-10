@@ -30,6 +30,7 @@ export const GET_ALL_SLUGS = gql`
 export const GET_PRODUCT_BY_SLUG = gql`
   query getProductBySlug($slug: String) {
     product(where: { slug: $slug }) {
+      id
       title
       price
       description
