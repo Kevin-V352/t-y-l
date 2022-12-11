@@ -9,11 +9,11 @@ import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { CartContext } from '@/contexts';
+import { useQuantity, useResponsive } from '@/hooks';
 import { IProductDetailsPageProps } from '@/interfaces';
 import { MainLayout } from '@/layouts';
 import { Button, QuantitySelector } from '@/ui';
 import { formatters } from '@/utils';
-import useQuantity from 'hooks/useQuantity';
 
 import * as S from './styles';
 
@@ -37,6 +37,10 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
     addItem,
     removeItem
   } = useQuantity(stock, (getCurrentQuantity(id) ?? undefined));
+
+  const currentResolution = useResponsive();
+
+  const isDesktop = currentResolution ? (currentResolution >= 1024) : false;
 
   return (
     <MainLayout
@@ -81,8 +85,13 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
             fluid
             onClick={() => addToCart(id, quantity)}
           />
-          <S.Description>{description}</S.Description>
+          {
+            isDesktop && <S.Description>{description}</S.Description>
+          }
         </S.Content>
+        {
+          !isDesktop && <S.Description>{description}</S.Description>
+        }
       </S.Container>
     </MainLayout>
   );
