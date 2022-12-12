@@ -12,8 +12,10 @@ const OptionList: FC<IOptionListProps> = ({ text, onClick, icon, paddingLeft = 0
       sx={{ pl: paddingLeft }}
       onClick={onClick}
     >
-      <S.CustomListItemText primary={text} />
-      {icon}
+      <S.Content>
+        {icon}
+        <S.CustomListItemText primary={text} />
+      </S.Content>
     </ListItemButton>
   );
 

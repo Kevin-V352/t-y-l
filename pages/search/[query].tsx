@@ -1,5 +1,5 @@
 import type { NextPage, GetServerSideProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+/* import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; */
 
 import { dbProducts } from '@/database';
 import { ISearchPageProps } from '@/interfaces';
@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, locale = '
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['search'])),
+      /* ...(await serverSideTranslations(locale, ['search'])), */
       products
     }
   };

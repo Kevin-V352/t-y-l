@@ -3,13 +3,16 @@ import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 
+import { CartProvider } from '@/contexts';
 import { defaultTheme } from '@/themes';
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Component {...pageProps} />
+      <CartProvider>
+        <Component {...pageProps} />
+      </CartProvider>
     </ThemeProvider>
   );
 

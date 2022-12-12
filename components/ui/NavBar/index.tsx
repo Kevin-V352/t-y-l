@@ -1,14 +1,18 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/promise-function-async */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { ChangeEvent, FC, useState } from 'react';
 
 import { useRouter } from 'next/router';
 
-import { SearchBar } from '@/ui';
+import { MainSidebar, SearchBar } from '@/ui';
 
 import * as S from './styles';
 
 const NavBar: FC = () => {
 
   const [query, setQuery] = useState<string>('');
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -28,7 +32,7 @@ const NavBar: FC = () => {
 
     };
     setQuery('');
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+
     router.push(`/search/${query}`);
 
   };
@@ -40,7 +44,11 @@ const NavBar: FC = () => {
         onChange={handlerChange}
         onSubmit={handlerSubmit}
       />
-      <S.MenuIcon />
+      <S.MenuIcon onClick={() => setOpenMenu(true)}/>
+      <MainSidebar
+        open={openMenu}
+        onClose={() => setOpenMenu(false)}
+      />
     </S.Container>
   );
 

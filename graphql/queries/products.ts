@@ -18,3 +18,27 @@ export const GET_FILTERED_PRODUCTS = gql`
     }
   }
 `;
+
+export const GET_ALL_SLUGS = gql`
+  query getAllSlugs {
+    products {
+      slug
+    }
+  }
+`;
+
+export const GET_PRODUCT_BY_SLUG = gql`
+  query getProductBySlug($slug: String) {
+    product(where: { slug: $slug }) {
+      id
+      title
+      price
+      description
+      discountRate
+      stock
+      img {
+        url
+      }
+    } 
+  }
+`;

@@ -86,12 +86,10 @@ const Search: FC<ISearchPageProps> = ({ products }) => {
             : (
                 <S.ProductList>
                   {
-                    products.map(({ img, title, price, slug }) => (
+                    products.map((product) => (
                       <ProductCard
-                        key={slug}
-                        img={img[0].url}
-                        title={title}
-                        price={price}
+                        key={product.slug}
+                        product={product}
                       />
                     ))
                   }
