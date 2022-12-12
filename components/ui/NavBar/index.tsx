@@ -5,13 +5,14 @@ import { ChangeEvent, FC, useState } from 'react';
 
 import { useRouter } from 'next/router';
 
-import { SearchBar } from '@/ui';
+import { MainSidebar, SearchBar } from '@/ui';
 
 import * as S from './styles';
 
 const NavBar: FC = () => {
 
   const [query, setQuery] = useState<string>('');
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -43,7 +44,11 @@ const NavBar: FC = () => {
         onChange={handlerChange}
         onSubmit={handlerSubmit}
       />
-      <S.MenuIcon onClick={() => router.push('/')}/>
+      <S.MenuIcon onClick={() => setOpenMenu(true)}/>
+      <MainSidebar
+        open={openMenu}
+        onClose={() => setOpenMenu(false)}
+      />
     </S.Container>
   );
 

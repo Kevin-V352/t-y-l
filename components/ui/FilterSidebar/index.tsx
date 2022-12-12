@@ -4,7 +4,7 @@ import { List } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import { ICategoryForSearch } from '@/interfaces';
-import { OptionList, ExpandableOptionList, Sidebar } from '@/ui';
+import { OptionList, ExpandableOptionList, BaseSidebar } from '@/ui';
 
 import { IFilterSidebarProps } from './types';
 
@@ -74,7 +74,7 @@ const FilterSideBar: FC<IFilterSidebarProps> = ({ open, onClose, changeCategory 
   ];
 
   return (
-    <Sidebar
+    <BaseSidebar
       open={open}
       onClose={onClose}
     >
@@ -101,7 +101,7 @@ const FilterSideBar: FC<IFilterSidebarProps> = ({ open, onClose, changeCategory 
           ))
         }
       </List>
-    </Sidebar>
+    </BaseSidebar>
   );
 
 };
