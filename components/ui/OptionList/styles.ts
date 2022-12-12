@@ -1,5 +1,6 @@
 import { ListItemText } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
+import styled from 'styled-components';
 
 export const CustomListItemText = muiStyled(ListItemText)`
   font-size: 20px;
@@ -10,4 +11,11 @@ export const CustomListItemText = muiStyled(ListItemText)`
     font-weight: 500;
     color: #FFF;
   };
+`;
+
+export const Content = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 `;
