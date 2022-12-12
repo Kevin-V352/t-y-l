@@ -17,6 +17,7 @@ export const BaseSidebar = styled.div<SideBarContainerProps>`
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+  z-index: 10;
   right: ${({ open }) => open ? '0' : '-100vw'};
 
   @media screen and (min-width: 1024px) {
