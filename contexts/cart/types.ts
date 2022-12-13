@@ -1,9 +1,6 @@
 import { ReactNode } from 'react';
 
-export interface ICartProduct {
-  id: string;
-  quantity: number;
-};
+import { ICartProduct } from '@/interfaces';
 
 export interface CartState {
   cart: ICartProduct[];

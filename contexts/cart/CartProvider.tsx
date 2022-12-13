@@ -1,4 +1,6 @@
-import { FC, useReducer } from 'react';
+import { FC, useEffect, useReducer } from 'react';
+
+import Cookies from 'js-cookie';
 
 import { CartContext, CartProviderProps, CartReducer, CartState } from './';
 
@@ -9,6 +11,34 @@ const CART_INITIAL_STATE: CartState = {
 export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element => {
 
   const [state, dispatch] = useReducer(CartReducer, CART_INITIAL_STATE);
+
+  useEffect(() => {
+
+    loadCartWithCookies();
+
+  }, []);
+
+  useEffect(() => {
+
+    saveCartInCookies();
+
+  }, [state.cart]);
+
+  const loadCartWithCookies = (): void => {
+
+    if (!Cookies.get('cart')) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const prevCart = JSON.parse(Cookies.get('cart')!);
+    dispatch({ type: 'LOAD_CART_BY_COOKIES', payload: prevCart });
+
+  };
+
+  const saveCartInCookies = (): void => {
+
+    Cookies.set('cart', JSON.stringify(state.cart));
+
+  };
 
   const addToCart = (id: string, quantity: number): void => {
 
