@@ -15,3 +15,12 @@ export interface IProductDetails extends ICardProduct {
   discount_rate: number;
   stock: number;
 };
+
+export interface ICartProduct {
+  id: string;
+  quantity: number;
+};
+
+export interface ICartProductResponse extends ICardProduct, ICartProduct {
+  stock: number;
+};
