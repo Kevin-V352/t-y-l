@@ -5,7 +5,8 @@ import Cookies from 'js-cookie';
 import { CartContext, CartProviderProps, CartReducer, CartState } from './';
 
 const CART_INITIAL_STATE: CartState = {
-  cart: []
+  cart:     [],
+  isLoaded: false
 };
 
 export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element => {
@@ -26,10 +27,8 @@ export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element =
 
   const loadCartWithCookies = (): void => {
 
-    if (!Cookies.get('cart')) return;
-
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const prevCart = JSON.parse(Cookies.get('cart')!);
+    const prevCart = Cookies.get('cart') ? JSON.parse(Cookies.get('cart')!) : [];
     dispatch({ type: 'LOAD_CART_BY_COOKIES', payload: prevCart });
 
   };
@@ -52,6 +51,13 @@ export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element =
 
   };
 
+  const deleteToCart = (id: string): void => {
+
+    const newCart = state.cart.filter(({ id: cartItemId }) => (cartItemId !== id));
+    dispatch({ type: 'DELETE_PRODUCT', payload: newCart });
+
+  };
+
   const getCurrentQuantity = (id: string): number | null => {
 
     const newCart = [...state.cart];
@@ -67,6 +73,7 @@ export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element =
     <CartContext.Provider value={{
       ...state,
       addToCart,
+      deleteToCart,
       getCurrentQuantity
     }}>
       {children}
