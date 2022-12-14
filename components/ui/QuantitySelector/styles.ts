@@ -1,14 +1,14 @@
 import { CgAdd, CgRemove } from 'react-icons/cg';
 import styled, { css } from 'styled-components';
 
-import { IButtonProps } from './types';
+import { IButtonProps, IQuantitySelectorContainer } from './types';
 
 const commonButtonStyles = css<IButtonProps>`
   font-size: var(--primary-font-size);
   color: ${({ theme, disabled }) => disabled ? theme.text.oslo_grey : theme.text.white};
 `;
 
-export const Container = styled.div`
+export const Container = styled.div<IQuantitySelectorContainer>`
   display: grid;
   grid-template-columns: min-content 1fr min-content;
   gap: 20px;
@@ -18,6 +18,7 @@ export const Container = styled.div`
     'quantityAvailable quantityAvailable quantityAvailable'
     'removeButton      quantity          addButton'
   ;
+  ${({ customStyles }) => customStyles};
 `;
 
 export const TotalQuantity = styled.span`

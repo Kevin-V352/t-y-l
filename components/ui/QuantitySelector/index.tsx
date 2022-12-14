@@ -11,12 +11,13 @@ const QuantitySelector: FC<IQuantitySelectorProps> = (props) => {
     add,
     remove,
     disableAdd = false,
-    disableRemove = false
+    disableRemove = false,
+    customStyles
   } = props;
 
   return (
-    <S.Container>
-      <S.TotalQuantity>{`${maxQuantity} disponibles`}</S.TotalQuantity>
+    <S.Container customStyles={customStyles}>
+      <S.TotalQuantity>{(maxQuantity > 1) ? `${maxQuantity} disponibles` : '¡Último disponible!'}</S.TotalQuantity>
       <S.AddButton
         onClick={add}
         disabled={disableAdd}
