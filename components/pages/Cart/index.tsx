@@ -1,13 +1,18 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 
+import { CartContext } from '@/contexts';
+import { useCart } from '@/hooks';
 import { MainLayout } from '@/layouts';
-import { ICartPageProps } from 'interfaces/pagesProps';
+import { CartItem } from '@/ui';
 
 import * as S from './styles';
 
-const Cart: FC<ICartPageProps> = ({ products }) => {
+const Cart: FC = () => {
 
-  console.log(products);
+  const { cart, isLoaded: contextLoaded } = useContext(CartContext);
+  const { products, isLoading: productsLoading } = useCart(cart, contextLoaded);
+
+  if (!contextLoaded || productsLoading) return <h1>CARGANDO</h1>;
 
   return (
     <MainLayout
@@ -15,11 +20,15 @@ const Cart: FC<ICartPageProps> = ({ products }) => {
       desc="This is the cart"
     >
       <S.Container>
-        {/* {
-          cart.map(() => (
-            <CartItem />
+        <S.Title>Carrito</S.Title>
+        {
+          products.map((product) => (
+            <CartItem
+              key={product.id}
+              product={product}
+            />
           ))
-        } */}
+        }
       </S.Container>
     </MainLayout>
   );

@@ -1,16 +1,66 @@
-import { FC } from 'react';
+import { FC, memo, useContext, useEffect } from 'react';
+
+import Image from 'next/image';
+
+import { CartContext } from '@/contexts';
+import { useQuantity } from '@/hooks';
+import { QuantitySelector } from '@/ui';
+import { formatters } from '@/utils';
 
 import * as S from './styles';
 import { ICartItemProps } from './types';
 
-const CartItem: FC<ICartItemProps> = ({ id, quantity }) => {
+const propAreEqual = (prevProps: ICartItemProps, nextProps: ICartItemProps): boolean => prevProps.product.id === nextProps.product.id;
+
+const CartItem: FC<ICartItemProps> = ({ product }) => {
+
+  const {
+    id,
+    title,
+    img,
+    stock,
+    price
+  } = product;
+
+  const { addToCart, deleteToCart, getCurrentQuantity } = useContext(CartContext);
+
+  const {
+    quantity,
+    disableAdd,
+    disableRemove,
+    addItem,
+    removeItem
+  } = useQuantity(stock, (getCurrentQuantity(id) ?? undefined));
+
+  useEffect(() => {
+
+    addToCart(id, quantity);
+
+  }, [quantity]);
 
   return (
     <S.Container>
-
+      <S.Title>{title}</S.Title>
+      <S.ImageWrapper>
+        <Image
+          src={img[0].url}
+          layout="fill"
+        />
+      </S.ImageWrapper>
+      <S.Price>{formatters.currencyFormat(price * quantity)}</S.Price>
+      <QuantitySelector
+        quantity={quantity}
+        maxQuantity={stock}
+        add={addItem}
+        remove={removeItem}
+        disableAdd={disableAdd}
+        disableRemove={disableRemove}
+        customStyles={S.quantitySelectorCustomStyles}
+      />
+      <S.DeleteButton onClick={() => deleteToCart(id)} />
     </S.Container>
   );
 
 };
 
-export default CartItem;
+export default memo(CartItem, propAreEqual);

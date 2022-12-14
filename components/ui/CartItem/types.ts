@@ -1,4 +1,5 @@
+import { ICartProductResponse } from '@/interfaces';
+
 export interface ICartItemProps {
-  id: string;
-  quantity: string;
+  product: ICartProductResponse;
 };
