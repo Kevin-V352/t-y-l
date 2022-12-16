@@ -10,17 +10,18 @@ export interface IProductImage {
 };
 
 export interface IProductDetails extends ICardProduct {
-  id: string;
-  description: string;
-  discount_rate: number;
-  stock: number;
+  id:             string;
+  description:    string;
+  discount_rate:  number;
+  stock:          number;
 };
 
 export interface ICartProduct {
-  id: string;
+  id:       string;
+  img:      IProductImage[];
+  title:    string;
   quantity: number;
-};
-
-export interface ICartProductResponse extends ICardProduct, ICartProduct {
-  stock: number;
+  price:    number;
+  slug:     string;
+  stock:    number;
 };
