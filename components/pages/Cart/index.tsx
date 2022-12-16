@@ -1,7 +1,6 @@
-import { FC, useContext } from 'react';
+import { FC, useContext, useEffect } from 'react';
 
 import { CartContext } from '@/contexts';
-import { useCart } from '@/hooks';
 import { MainLayout } from '@/layouts';
 import { Button, CartItem } from '@/ui';
 
@@ -9,12 +8,11 @@ import * as S from './styles';
 
 const Cart: FC = () => {
 
-  const { cart, isLoaded: contextLoaded } = useContext(CartContext);
-  const { products, isLoading: productsLoading } = useCart(cart, contextLoaded);
+  const { cart, cookiesLoaded, updatedProducts, updateCart, unsubscribeCart } = useContext(CartContext);
 
-  const contentType = (!contextLoaded || productsLoading) ? 'load' : (products.length >= 1) ? 'products' : 'empty';
+  const contentType = (!cookiesLoaded || !updatedProducts) ? 'load' : (cart.length >= 1) ? 'products' : 'empty';
 
-  const conditionalRender = (type: 'load' | 'products' | 'empty'): any => {
+  const conditionalRender = (type: 'load' | 'products' | 'empty'): JSX.Element | JSX.Element[] => {
 
     switch (type) {
 
@@ -27,7 +25,7 @@ const Cart: FC = () => {
 
       case 'products':
         return (
-          products.map((product) => (
+          cart.map((product) => (
             <CartItem
               key={product.id}
               product={product}
@@ -50,6 +48,15 @@ const Cart: FC = () => {
     };
 
   };
+
+  useEffect(() => {
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    if (cookiesLoaded) updateCart();
+
+    return () => unsubscribeCart();
+
+  }, [cookiesLoaded]);
 
   return (
     <MainLayout

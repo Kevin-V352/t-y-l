@@ -36,6 +36,7 @@ export const GET_PRODUCT_BY_SLUG = gql`
       description
       discountRate
       stock
+      slug
       img {
         url
       }

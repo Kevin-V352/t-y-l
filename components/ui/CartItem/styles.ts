@@ -6,6 +6,10 @@ import { commonBackground } from 'styles/commonStyles';
 export const quantitySelectorCustomStyles = css`
   grid-area: cs;
   margin: 0 auto;
+
+  @media screen and (min-width: 768px) {
+    margin: 0 auto 0 0;
+  };
 `;
 
 export const Container = styled.div`
@@ -21,6 +25,21 @@ export const Container = styled.div`
     'img totalPrice totalPrice'
     'cs  cs         cs'
   ;
+
+  @media screen and (min-width: 768px) {
+    padding: 20px;
+    grid-column-gap: 20px;
+    grid-auto-rows: auto;
+    grid-template-areas: 
+      'img title      deleteButton'
+      'img totalPrice totalPrice'
+      'img  cs         cs'
+    ;
+  };
+
+  @media screen and (min-width: 1024px) {
+    grid-template-columns: 15% 1fr min-content;
+  };
 `;
 
 export const Title = styled.h3`

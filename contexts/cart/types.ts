@@ -4,13 +4,17 @@ import { ICartProduct } from '@/interfaces';
 
 export interface CartState {
   cart: ICartProduct[];
-  isLoaded: boolean;
+  totalPrice: number;
+  cookiesLoaded: boolean;
+  updatedProducts: boolean;
 };
 
 export interface CartContextProps extends CartState {
-  addToCart: (id: string, quantity: number) => void;
+  addProduct: (product: ICartProduct) => void;
   getCurrentQuantity: (id: string) => number | null;
   deleteToCart: (id: string) => void;
+  updateCart: () => Promise<void>;
+  unsubscribeCart: () => void;
 };
 
 export interface CartProviderProps {

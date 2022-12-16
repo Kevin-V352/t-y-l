@@ -19,10 +19,11 @@ const CartItem: FC<ICartItemProps> = ({ product }) => {
     title,
     img,
     stock,
-    price
+    price,
+    quantity: initialQuantity
   } = product;
 
-  const { addToCart, deleteToCart, getCurrentQuantity } = useContext(CartContext);
+  const { addProduct, deleteToCart } = useContext(CartContext);
 
   const {
     quantity,
@@ -30,11 +31,11 @@ const CartItem: FC<ICartItemProps> = ({ product }) => {
     disableRemove,
     addItem,
     removeItem
-  } = useQuantity(stock, (getCurrentQuantity(id) ?? undefined));
+  } = useQuantity(stock, initialQuantity);
 
   useEffect(() => {
 
-    addToCart(id, quantity);
+    addProduct({ ...product, quantity });
 
   }, [quantity]);
 

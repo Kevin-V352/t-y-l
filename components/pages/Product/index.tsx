@@ -10,7 +10,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { CartContext } from '@/contexts';
 import { useQuantity, useResponsive } from '@/hooks';
-import { IProductDetailsPageProps } from '@/interfaces';
+import { ICartProduct, IProductDetailsPageProps } from '@/interfaces';
 import { MainLayout } from '@/layouts';
 import { Button, QuantitySelector } from '@/ui';
 import { formatters } from '@/utils';
@@ -25,10 +25,11 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
     title,
     price,
     description,
-    stock
+    stock,
+    slug
   } = product;
 
-  const { addToCart, getCurrentQuantity } = useContext(CartContext);
+  const { addProduct, getCurrentQuantity } = useContext(CartContext);
 
   const {
     quantity,
@@ -41,6 +42,22 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
   const currentResolution = useResponsive();
 
   const isDesktop = currentResolution ? (currentResolution >= 1024) : false;
+
+  const addToCart = (): void => {
+
+    const formattedProduct: ICartProduct = {
+      id,
+      img,
+      title,
+      price,
+      quantity,
+      slug,
+      stock
+    };
+
+    addProduct(formattedProduct);
+
+  };
 
   return (
     <MainLayout
@@ -83,7 +100,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
             text='Agregar al carrito'
             variant='primary'
             fluid
-            onClick={() => addToCart(id, quantity)}
+            onClick={addToCart}
           />
           {
             isDesktop && <S.Description>{description}</S.Description>

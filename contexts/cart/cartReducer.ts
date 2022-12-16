@@ -6,6 +6,9 @@ type CartActionType =
   | { type: 'ADD_PRODUCT'; payload: ICartProduct[] }
   | { type: 'DELETE_PRODUCT'; payload: ICartProduct[] }
   | { type: 'LOAD_CART_BY_COOKIES'; payload: ICartProduct[] }
+  | { type: 'LOAD_TOTAL_PRICE'; payload: number }
+  | { type: 'UPDATE_CART'; payload: ICartProduct[] }
+  | { type: 'UNSUBSCRIBE_CART' }
 
 export const CartReducer = (state: CartState, action: CartActionType): CartState => {
 
@@ -14,8 +17,8 @@ export const CartReducer = (state: CartState, action: CartActionType): CartState
     case 'LOAD_CART_BY_COOKIES':
       return {
         ...state,
-        isLoaded: true,
-        cart:     action.payload
+        cookiesLoaded: true,
+        cart:          action.payload
       };
 
     case 'ADD_PRODUCT':
@@ -28,6 +31,25 @@ export const CartReducer = (state: CartState, action: CartActionType): CartState
       return {
         ...state,
         cart: action.payload
+      };
+
+    case 'LOAD_TOTAL_PRICE':
+      return {
+        ...state,
+        totalPrice: action.payload
+      };
+
+    case 'UPDATE_CART':
+      return {
+        ...state,
+        updatedProducts: true,
+        cart:            action.payload
+      };
+
+    case 'UNSUBSCRIBE_CART':
+      return {
+        ...state,
+        updatedProducts: false
       };
 
     default:

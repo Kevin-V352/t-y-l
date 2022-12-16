@@ -1,5 +1,5 @@
-import { ICartProductResponse } from '@/interfaces';
+import { ICartProduct } from '@/interfaces';
 
 export interface ICartItemProps {
-  product: ICartProductResponse;
+  product: ICartProduct;
 };

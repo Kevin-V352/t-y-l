@@ -2,11 +2,16 @@ import { FC, useEffect, useReducer } from 'react';
 
 import Cookies from 'js-cookie';
 
+import { tylAPI } from '@/api';
+import { ICartProduct } from '@/interfaces';
+
 import { CartContext, CartProviderProps, CartReducer, CartState } from './';
 
 const CART_INITIAL_STATE: CartState = {
-  cart:     [],
-  isLoaded: false
+  cart:            [],
+  totalPrice:      0,
+  cookiesLoaded:   false,
+  updatedProducts: false
 };
 
 export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element => {
@@ -22,6 +27,7 @@ export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element =
   useEffect(() => {
 
     saveCartInCookies();
+    calcTotalPrice();
 
   }, [state.cart]);
 
@@ -39,13 +45,13 @@ export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element =
 
   };
 
-  const addToCart = (id: string, quantity: number): void => {
+  const addProduct = (product: ICartProduct): void => {
 
     let newCart = [...state.cart];
-    const itemIndex = newCart.findIndex(({ id: productId }) => (productId === id));
+    const itemIndex = newCart.findIndex(({ id: productId }) => (productId === product.id));
 
-    if (itemIndex !== -1) newCart[itemIndex] = { id, quantity };
-    else newCart = [...newCart, { id, quantity }];
+    if (itemIndex !== -1) newCart[itemIndex] = product;
+    else newCart = [...newCart, product];
 
     dispatch({ type: 'ADD_PRODUCT', payload: newCart });
 
@@ -69,12 +75,44 @@ export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element =
 
   };
 
+  const calcTotalPrice = (): void => {
+
+    const totalPrice = state.cart.reduce((acc, { price, quantity }) => (acc + (price * quantity)), 0);
+
+    dispatch({ type: 'LOAD_TOTAL_PRICE', payload: totalPrice });
+
+  };
+
+  const updateCart = async (): Promise<void> => {
+
+    try {
+
+      const { data } = await tylAPI.post<ICartProduct[]>('/cart', { cartItems: state.cart });
+      dispatch({ type: 'UPDATE_CART', payload: data });
+
+    } catch (error) {
+
+      console.log(error);
+      // TODO: Implement error handler
+
+    };
+
+  };
+
+  const unsubscribeCart = (): void => {
+
+    dispatch({ type: 'UNSUBSCRIBE_CART' });
+
+  };
+
   return (
     <CartContext.Provider value={{
       ...state,
-      addToCart,
+      addProduct,
       deleteToCart,
-      getCurrentQuantity
+      getCurrentQuantity,
+      updateCart,
+      unsubscribeCart
     }}>
       {children}
     </CartContext.Provider>
