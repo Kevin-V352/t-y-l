@@ -1,8 +1,8 @@
-import { ICartProduct, ICartProductResponse } from '@/interfaces';
+import { ICartProduct } from '@/interfaces';
 
-export const revalidateStock = (currentCart: ICartProduct[], updatedProducts: ICartProductResponse[]): ICartProductResponse[] => {
+export const revalidateStock = (currentCart: ICartProduct[], updatedProducts: ICartProduct[]): ICartProduct[] => {
 
-  const response: ICartProductResponse[] = [];
+  const response: ICartProduct[] = [];
 
   currentCart.forEach((cartItem) => {
 
@@ -12,24 +12,6 @@ export const revalidateStock = (currentCart: ICartProduct[], updatedProducts: IC
 
     if (cartItem.quantity > dbProduct.stock) response.push({ ...dbProduct, quantity: dbProduct.stock });
     else response.push({ ...dbProduct, quantity: cartItem.quantity });
-
-  });
-
-  return response;
-
-};
-
-export const syncProducts = (currentCart: ICartProduct[], updatedProducts: ICartProductResponse[]): ICartProductResponse[] => {
-
-  const response: ICartProductResponse[] = [];
-
-  currentCart.forEach((cartItem) => {
-
-    const dbProduct = updatedProducts.find((product) => product.id === cartItem.id);
-
-    if (!dbProduct) return;
-
-    response.push(dbProduct);
 
   });
 

@@ -1,10 +1,9 @@
 import { hygraphAPI } from '@/api';
-import { ICardProduct, IProductDetails, ICartProductResponse } from '@/interfaces';
+import { ICardProduct, IProductDetails } from '@/interfaces';
 import {
   GET_FILTERED_PRODUCTS,
   GET_ALL_SLUGS,
-  GET_PRODUCT_BY_SLUG,
-  GET_PRODUCTS_BY_IDS
+  GET_PRODUCT_BY_SLUG
 } from 'graphql/queries/products';
 
 interface IQueries {
@@ -24,10 +23,6 @@ type TGetAllSlugsResponse =
 
 type TGetProductBySlugResponse =
   | [IProductDetails, null]
-  | [null, any]
-
-type TGetProductsByIds =
-  | [ICartProductResponse[], null]
   | [null, any]
 
 export const searchProducts = async (queries: IQueries): Promise<TSearchProductsResponse> => {
@@ -90,26 +85,6 @@ export const getProductBySlug = async (slug: string): Promise<TGetProductBySlugR
     });
 
     return [product, null];
-
-  } catch (error) {
-
-    console.log(error);
-    return [null, error];
-
-  };
-
-};
-
-export const getProductsByIds = async (ids: string[]): Promise<TGetProductsByIds> => {
-
-  try {
-
-    const { products }: { products: ICartProductResponse[] } = await hygraphAPI.request({
-      document:  GET_PRODUCTS_BY_IDS,
-      variables: { ids }
-    });
-
-    return [products, null];
 
   } catch (error) {
 

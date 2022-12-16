@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { hygraphAPI } from '@/api';
-import { ICartProduct, ICartProductResponse } from '@/interfaces';
+import { ICartProduct } from '@/interfaces';
 import { calculators } from '@/utils';
 import { GET_PRODUCTS_BY_IDS } from 'graphql/queries/products';
 
 type Data =
   | { message: string }
-  | ICartProductResponse[]
+  | ICartProduct[]
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
@@ -23,7 +23,7 @@ const getCartProducts = async (req: ExtendedNextApiRequest, res: NextApiResponse
 
   try {
 
-    const { products }: { products: ICartProductResponse[] } = await hygraphAPI.request({
+    const { products }: { products: ICartProduct[] } = await hygraphAPI.request({
       document:  GET_PRODUCTS_BY_IDS,
       variables: { ids }
     });
