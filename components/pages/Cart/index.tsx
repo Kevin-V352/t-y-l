@@ -1,6 +1,7 @@
-import { FC, useContext, useEffect } from 'react';
+import { FC, useContext } from 'react';
 
 import { CartContext } from '@/contexts';
+import { useUpdateCart } from '@/hooks';
 import { MainLayout } from '@/layouts';
 import { Button, CartItem } from '@/ui';
 
@@ -8,7 +9,9 @@ import * as S from './styles';
 
 const Cart: FC = () => {
 
-  const { cart, cookiesLoaded, updatedProducts, updateCart, unsubscribeCart } = useContext(CartContext);
+  const { cart, cookiesLoaded, updatedProducts } = useContext(CartContext);
+
+  useUpdateCart();
 
   const contentType = (!cookiesLoaded || !updatedProducts) ? 'load' : (cart.length >= 1) ? 'products' : 'empty';
 
@@ -48,15 +51,6 @@ const Cart: FC = () => {
     };
 
   };
-
-  useEffect(() => {
-
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    if (cookiesLoaded) updateCart();
-
-    return () => unsubscribeCart();
-
-  }, [cookiesLoaded]);
 
   return (
     <MainLayout
