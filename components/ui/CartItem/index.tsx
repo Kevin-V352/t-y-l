@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/promise-function-async */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { FC, memo, useContext, useEffect } from 'react';
 
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 import { CartContext } from '@/contexts';
 import { useQuantity } from '@/hooks';
@@ -16,6 +19,7 @@ const CartItem: FC<ICartItemProps> = ({ product }) => {
 
   const {
     id,
+    slug,
     title,
     img,
     stock,
@@ -39,9 +43,13 @@ const CartItem: FC<ICartItemProps> = ({ product }) => {
 
   }, [quantity]);
 
+  const router = useRouter();
+
   return (
     <S.Container>
-      <S.Title>{title}</S.Title>
+      <S.Title onClick={() => router.push(`/product/${slug}`)}>
+        {title}
+      </S.Title>
       <S.ImageWrapper>
         <Image
           src={img[0].url}

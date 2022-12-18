@@ -51,6 +51,8 @@ export const Title = styled.h3`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-decoration: underline;
+  cursor: pointer;
 `;
 
 export const ImageWrapper = styled.div`
