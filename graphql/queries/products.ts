@@ -58,3 +58,11 @@ export const GET_PRODUCTS_BY_IDS = gql`
     }
   }
 `;
+
+export const GET_CURRENT_PRICE_OF_PRODUCT = gql`
+  query getCurrentPriceOfProduct($id: ID) {
+    product(where: { id: $id }) {
+      price
+    }
+  }
+`;
