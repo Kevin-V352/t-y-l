@@ -2,10 +2,10 @@ import { CustomStyles } from '@/types';
 
 export interface IQuantitySelectorContainer {
   customStyles?: CustomStyles;
+  $loading?: boolean;
 };
 
 export interface IQuantitySelectorProps extends IQuantitySelectorContainer {
-  loading?: boolean;
   quantity: number;
   maxQuantity: number;
   disableAdd?: boolean;
