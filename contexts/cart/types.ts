@@ -1,17 +1,20 @@
 import { ReactNode } from 'react';
 
-export interface ICartProduct {
-  id: string;
-  quantity: number;
-};
+import { ICartProduct } from '@/interfaces';
 
 export interface CartState {
   cart: ICartProduct[];
+  totalPrice: number;
+  cookiesLoaded: boolean;
+  updatedProducts: boolean;
 };
 
 export interface CartContextProps extends CartState {
-  addToCart: (id: string, quantity: number) => void;
+  addProduct: (product: ICartProduct) => void;
   getCurrentQuantity: (id: string) => number | null;
+  deleteToCart: (id: string) => void;
+  updateCart: () => Promise<void>;
+  unsubscribeCart: () => void;
 };
 
 export interface CartProviderProps {

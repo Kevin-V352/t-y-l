@@ -1,6 +1,7 @@
 export { default as AdvertisingBox } from './AdvertisingBox';
 export { default as BaseSidebar } from './BaseSidebar';
 export { default as Button } from './Button';
+export { default as CartItem } from './CartItem';
 export { default as CategoryTag } from './CategoryTag';
 export { default as Chip } from './Chip';
 export { default as CustomSlider } from './CustomSlider';
@@ -15,4 +16,5 @@ export { default as ProductCard } from './ProductCard';
 export { default as ProductSlider } from './ProductSlider';
 export { default as QuantitySelector } from './QuantitySelector';
 export { default as SearchBar } from './SearchBar';
+export { default as Skeleton } from './Skeleton';
 export { default as Slider } from './Slider';

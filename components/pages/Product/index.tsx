@@ -4,15 +4,16 @@ import { FC, useContext } from 'react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Image from 'next/image';
 import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { CartContext } from '@/contexts';
-import { useQuantity, useResponsive } from '@/hooks';
-import { IProductDetailsPageProps } from '@/interfaces';
+import { useCurrentPrice, useQuantity, useUpdateCart } from '@/hooks';
+import { ICartProduct, IProductDetailsPageProps } from '@/interfaces';
 import { MainLayout } from '@/layouts';
-import { Button, QuantitySelector } from '@/ui';
+import { Skeleton, Button, QuantitySelector } from '@/ui';
 import { formatters } from '@/utils';
 
 import * as S from './styles';
@@ -25,10 +26,13 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
     title,
     price,
     description,
-    stock
+    stock,
+    slug
   } = product;
 
-  const { addToCart, getCurrentQuantity } = useContext(CartContext);
+  const { cookiesLoaded, updatedProducts, addProduct, getCurrentQuantity } = useContext(CartContext);
+
+  useUpdateCart();
 
   const {
     quantity,
@@ -38,9 +42,29 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
     removeItem
   } = useQuantity(stock, (getCurrentQuantity(id) ?? undefined));
 
-  const currentResolution = useResponsive();
+  const { currentPrice, isLoading: currentPriceIsLoading } = useCurrentPrice(id);
 
-  const isDesktop = currentResolution ? (currentResolution >= 1024) : false;
+  const loadingQuantity = (!cookiesLoaded || !updatedProducts);
+
+  // TODO: REPLACE THIS
+  const isDesktop = useMediaQuery('(min-width:1024px)');
+  const bigScreen = useMediaQuery('(min-width:1920px)');
+
+  const addToCart = (): void => {
+
+    const formattedProduct: ICartProduct = {
+      id,
+      img,
+      title,
+      price,
+      quantity,
+      slug,
+      stock
+    };
+
+    addProduct(formattedProduct);
+
+  };
 
   return (
     <MainLayout
@@ -70,7 +94,20 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
         </S.SwiperWrapper>
         <S.Content>
           <S.Title>{title}</S.Title>
-          <S.Price>{formatters.currencyFormat(price)}</S.Price>
+          {
+            currentPriceIsLoading
+              ? (
+                  <Skeleton
+                    variant="rounded"
+                    animation="wave"
+                    width={150}
+                    height={bigScreen ? 44 : 38}
+                  />
+                )
+              : (
+                  <S.Price>{formatters.currencyFormat(currentPrice)}</S.Price>
+                )
+          }
           <QuantitySelector
             quantity={quantity}
             maxQuantity={stock}
@@ -78,12 +115,13 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
             remove={removeItem}
             disableAdd={disableAdd}
             disableRemove={disableRemove}
+            $loading={loadingQuantity}
           />
           <Button
             text='Agregar al carrito'
             variant='primary'
             fluid
-            onClick={() => addToCart(id, quantity)}
+            onClick={addToCart}
           />
           {
             isDesktop && <S.Description>{description}</S.Description>

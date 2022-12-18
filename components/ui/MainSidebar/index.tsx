@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 
 import { List } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import { BaseSidebar, OptionList } from '@/ui';
 
@@ -9,10 +10,12 @@ import { IMainSidebarProps } from './types';
 
 const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
 
+  const router = useRouter();
+
   const options = [
     {
       text: 'Carrito',
-      cb:   () => console.log('NAME'),
+      cb:   async () => await router.push('/cart'),
       icon: <S.CartIcon />
     },
     {

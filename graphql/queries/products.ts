@@ -9,7 +9,7 @@ export const GET_FILTERED_PRODUCTS = gql`
       },
       orderBy: $sort
     ) {
-      img {
+      img(first: 1) {
         url
       }
       title
@@ -36,9 +36,33 @@ export const GET_PRODUCT_BY_SLUG = gql`
       description
       discountRate
       stock
+      slug
       img {
         url
       }
     } 
+  }
+`;
+
+export const GET_PRODUCTS_BY_IDS = gql`
+  query getProductsByIds($ids: [ID]) {
+    products(where: { id_in: $ids }) {
+      id
+      title
+      price
+      stock
+      slug
+      img(first: 1) {
+        url
+      }
+    }
+  }
+`;
+
+export const GET_CURRENT_PRICE_OF_PRODUCT = gql`
+  query getCurrentPriceOfProduct($id: ID) {
+    product(where: { id: $id }) {
+      price
+    }
   }
 `;

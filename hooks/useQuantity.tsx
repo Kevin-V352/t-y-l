@@ -25,6 +25,12 @@ const useQuantity = (maxQuantity: number, initialValue: number = 1): IHookRespon
 
   }, [state.quantity]);
 
+  useEffect(() => {
+
+    if (state.quantity !== initialValue) setState((prevState) => ({ ...prevState, quantity: initialValue }));
+
+  }, [initialValue]);
+
   const validateButtons = (): void => {
 
     setState((prevState) => ({

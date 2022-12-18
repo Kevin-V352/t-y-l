@@ -47,6 +47,7 @@ export const Wrapper = styled.button<IButtonWrapperProps>`
   align-items: center;
   justify-content: center;
   gap: 5px;
+  user-select: none;
   width: ${({ fluid = false }) => fluid ? '100%' : 'auto'};
   ${({ variant }) => selectVariant(variant)}
 `;
