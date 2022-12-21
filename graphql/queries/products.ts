@@ -19,6 +19,16 @@ export const GET_FILTERED_PRODUCTS = gql`
   }
 `;
 
+export const GET_ALL_PRODUCTS_FOR_THE_MENU = gql`
+  query getAllProductsForTheMenu {
+    products {
+      title
+      price
+      categories
+    }
+  }
+`;
+
 export const GET_ALL_SLUGS = gql`
   query getAllSlugs {
     products {
