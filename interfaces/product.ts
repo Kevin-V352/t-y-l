@@ -25,3 +25,12 @@ export interface ICartProduct {
   slug:     string;
   stock:    number;
 };
+
+export interface IPDFProduct {
+  title: string;
+  price: number;
+};
+
+export interface IPDFProductFromDB extends IPDFProduct {
+  categories: string[];
+};
