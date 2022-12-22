@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import fileDownload from 'js-file-download';
 import { toast } from 'react-toastify';
 
-import { tylAPI } from '@/api';
+import { tylAPI } from '@/apis';
 
 interface ISaveMenuDocument {
   id:             string;
