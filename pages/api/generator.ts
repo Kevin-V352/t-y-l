@@ -348,6 +348,7 @@ const createMenuFile = async (products: IPDFProductFromDB[]): Promise<TCreateMen
 
   } catch (error: any) {
 
+    console.error(error);
     return [null, error];
 
   }; // ? (11)
