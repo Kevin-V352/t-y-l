@@ -11,6 +11,7 @@ export { default as FilterSidebar } from './FilterSidebar';
 export { default as MainSidebar } from './MainSidebar';
 export { default as Menu } from './Menu';
 export { default as Navbar } from './NavBar';
+export { default as Notification } from './Notification';
 export { default as OptionList } from './OptionList';
 export { default as ProductCard } from './ProductCard';
 export { default as ProductSlider } from './ProductSlider';
