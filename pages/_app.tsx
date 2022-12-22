@@ -1,9 +1,21 @@
+import '../styles/globals.css';
+import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app';
+import { ThemeProvider } from 'styled-components';
+
+import { CartProvider } from '@/contexts';
+import { defaultTheme } from '@/themes';
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
 
-  return <Component {...pageProps} />;
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <CartProvider>
+        <Component {...pageProps} />
+      </CartProvider>
+    </ThemeProvider>
+  );
 
 };
 
-export default MyApp;
+export default appWithTranslation(MyApp);

@@ -1,0 +1,28 @@
+{
+  "page": {
+    "title": "Búsqueda de producto"
+  },
+  "filters": {
+    "categories": {
+      "drinks_without_alcohol": "Bebidas sin alcohol",
+      "soft_driks": "Gaseosas",
+      "non_carbonated_drinks": "Bebidas sin gas",
+      "energizers": "Energizantes",
+      "alcoholic_drinks": "Bebidas con alcohol",
+      "wines": "Vinos",
+      "beers": "Cervezas",
+      "distillates": "Destilados",
+      "appetizers": "Aperitivos",
+      "snacks": "Snacks",
+      "sweet": "Dulces",
+      "salty": "Salados",
+      "others": "Otros"
+    },
+    "sort": {
+      "price_DESC": "Mayor precio",
+      "price_ASC": "Menor precio",
+      "publishedAt_DESC": "Más recientes"
+    }
+  }
+
+}
