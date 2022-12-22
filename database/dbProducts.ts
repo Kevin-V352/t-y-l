@@ -1,4 +1,4 @@
-import { hygraphAPI } from '@/api';
+import { hygraphAPI } from '@/apis';
 import { ICardProduct, IProductDetails } from '@/interfaces';
 import {
   GET_FILTERED_PRODUCTS,

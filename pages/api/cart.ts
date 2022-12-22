@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { hygraphAPI } from '@/api';
+import { hygraphAPI } from '@/apis';
 import { ICartProduct } from '@/interfaces';
 import { calculators } from '@/utils';
 import { GET_PRODUCTS_BY_IDS } from 'graphql/queries/products';

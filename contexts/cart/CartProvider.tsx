@@ -2,7 +2,7 @@ import { FC, useEffect, useReducer } from 'react';
 
 import Cookies from 'js-cookie';
 
-import { tylAPI } from '@/api';
+import { tylAPI } from '@/apis';
 import { ICartProduct } from '@/interfaces';
 
 import { CartContext, CartProviderProps, CartReducer, CartState } from './';

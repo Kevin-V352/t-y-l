@@ -4,7 +4,7 @@ import pdf, { CreateOptions, FileInfo } from 'html-pdf';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
-import { hygraphAPI } from '@/api';
+import { hygraphAPI } from '@/apis';
 import { IPDFProduct, IPDFProductFromDB } from '@/interfaces';
 import { formatters } from '@/utils';
 
