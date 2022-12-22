@@ -1,5 +1,8 @@
+import fs from 'fs';
+
 import pdf, { CreateOptions, FileInfo } from 'html-pdf';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { v4 as uuidv4 } from 'uuid';
 
 import { hygraphAPI } from '@/api';
 import { IPDFProduct, IPDFProductFromDB } from '@/interfaces';
@@ -217,7 +220,7 @@ const createMenuFile = async (products: IPDFProductFromDB[]): Promise<TCreateMen
   }); // ? (4)
 
   const arrResp = Object.entries(objResp); // ? (5)
-  const arrays: any[] = []; // ? (6)
+  const arrays: Array<[string, IPDFProduct[]]> = []; // ? (6)
 
   arrResp.forEach(([category, products]) => {
 
@@ -327,9 +330,9 @@ const createMenuFile = async (products: IPDFProductFromDB[]): Promise<TCreateMen
     format:      'A4'
   }; // ? (9)
 
-  const process = new Promise<FileInfo>((resolve, reject) => {
+  const createFileProcess = new Promise<FileInfo>((resolve, reject) => {
 
-    pdf.create(content, options).toFile('./tempFiles/menu_tyl', (err, res) => {
+    pdf.create(content, options).toFile(`${process.cwd()}/tempFiles/${uuidv4()}.pdf`, (err, res) => {
 
       if (err) reject(err);
       else resolve(res);
@@ -340,7 +343,7 @@ const createMenuFile = async (products: IPDFProductFromDB[]): Promise<TCreateMen
 
   try {
 
-    const response = await process;
+    const response = await createFileProcess;
     return [response, null];
 
   } catch (error: any) {
@@ -348,6 +351,20 @@ const createMenuFile = async (products: IPDFProductFromDB[]): Promise<TCreateMen
     return [null, error];
 
   }; // ? (11)
+
+};
+
+const deleteMenuFile = (path: string): void => {
+
+  try {
+
+    fs.unlinkSync(path);
+
+  } catch (err) {
+
+    console.error(err);
+
+  };
 
 };
 
@@ -365,7 +382,26 @@ const generatePDFList = async (res: NextApiResponse<Data>): Promise<void> => {
 
     if (!fileInfo) return res.status(400).json({ message: 'An error occurred when generating the document' });
 
-    res.status(200).json({ message: 'OK' });
+    const { filename: filePath } = fileInfo;
+
+    const { size } = fs.statSync(filePath);
+
+    res.writeHead(200, {
+      'Content-Type':   'application/pdf',
+      'Content-Length': size
+    });
+
+    const readStream = fs.createReadStream(filePath);
+
+    readStream.pipe(res);
+
+    readStream.on('end', () => deleteMenuFile(filePath));
+    readStream.on('error', (error) => {
+
+      deleteMenuFile(filePath);
+      console.error(error);
+
+    });
 
   } catch (error) {
 
