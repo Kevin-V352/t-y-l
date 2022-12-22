@@ -1,9 +1,12 @@
 import React, { FC } from 'react';
 
+import 'react-toastify/dist/ReactToastify.css';
+
 import { List } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { BaseSidebar, OptionList } from '@/ui';
+import { BaseSidebar, Notification, OptionList } from '@/ui';
+import { getters } from '@/utils';
 
 import * as S from './styles';
 import { IMainSidebarProps } from './types';
@@ -11,6 +14,13 @@ import { IMainSidebarProps } from './types';
 const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
 
   const router = useRouter();
+
+  const saveFileOptions = {
+    id:             'mobile_notification',
+    pendingMessage: 'Estamos generando el archivo. Un momento por favor...',
+    successMessage: 'Menú generado exitosamente. Descargando...',
+    errorMessage:   'Se ha producido un error al intentar generar el archivo.'
+  };
 
   const options = [
     {
@@ -20,7 +30,7 @@ const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
     },
     {
       text: 'Descargar lista en PDF',
-      cb:   () => console.log('NAME'),
+      cb:   async () => await getters.saveMenuDocument(saveFileOptions, onClose),
       icon: <S.DownloadIcon />
     },
     {
@@ -48,6 +58,7 @@ const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
           ))
         }
       </List>
+      <Notification />
     </BaseSidebar>
   );
 
