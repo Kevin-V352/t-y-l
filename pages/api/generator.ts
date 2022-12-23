@@ -243,14 +243,8 @@ const createMenuFile = async (products: IPDFProductFromDB[]): Promise<TCreateMen
   }); // ? (7)
 
   const content = /* html */`
-    <?xml version="1.0"?>
-    <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
-    <fontconfig>
-      <dir>/var/task/my-font-directory/</dir>
-      <cachedir>/tmp/fonts-cache/</cachedir>
-      <config></config>
-    </fontconfig>
-    <html>
+    <!DOCTYPE html>
+    <html lang="es">
 
       <head>
         <meta charset="utf-8">
