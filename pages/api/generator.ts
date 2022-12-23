@@ -381,7 +381,7 @@ const generatePDFList = async (res: NextApiResponse<Data>): Promise<void> => {
 
     const [fileInfo] = await createMenuFile(products);
 
-    if (!fileInfo) return res.status(400).json({ message: 'An error occurred when generating the document' });
+    if (!fileInfo) return res.status(400).json({ message: 'An error has occurred when generating the document' });
 
     const { filename: filePath } = fileInfo;
 
@@ -407,7 +407,7 @@ const generatePDFList = async (res: NextApiResponse<Data>): Promise<void> => {
   } catch (error) {
 
     console.log(error);
-    res.status(400).json({ message: 'An error occurred while trying to connect to DB' });
+    res.status(400).json({ message: 'An error has occurred while trying to connect to DB' });
 
   };
 
