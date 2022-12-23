@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 
 import pdf, { CreateOptions, FileInfo } from 'html-pdf';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -327,7 +328,11 @@ const createMenuFile = async (products: IPDFProductFromDB[]): Promise<TCreateMen
   const options: CreateOptions = {
     type:        'pdf',
     orientation: 'portrait',
-    format:      'A4'
+    format:      'A4',
+    phantomPath: path.resolve(
+      process.cwd(),
+      'node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs'
+    )
   }; // ? (9)
 
   const createFileProcess = new Promise<FileInfo>((resolve, reject) => {
