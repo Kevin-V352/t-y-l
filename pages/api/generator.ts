@@ -137,9 +137,6 @@ type TCreateMenuFile =
     ]
   }; */
 
-process.env.FONTCONFIG_PATH = path.join(process.cwd(), 'my-font-directory');
-process.env.LD_LIBRARY_PATH = path.join(process.cwd(), 'bins');
-
 // TODO: REVISAR COMO DECLARAR ESTAS FUNCIONES EN UN ARCHIVO APARTE
 //! ACTUALMENTE NO FUNCIONAN EN OTROS LUGARES POR QUE NO HAY ACCESO A FILESYSTEM
 
@@ -327,6 +324,9 @@ const createMenuFile = async (products: IPDFProductFromDB[]): Promise<TCreateMen
 
     </html>
 `; // ? (8)
+
+  process.env.LD_LIBRARY_PATH = path.join(process.cwd(), 'bins');
+  process.env.FONTCONFIG_PATH = path.join(process.cwd(), 'fonts');
 
   const options: CreateOptions = {
     type:        'pdf',
