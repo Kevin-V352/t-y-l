@@ -1,15 +1,14 @@
 import fs from 'fs';
-import path from 'path';
 
-import pdf, { CreateOptions, FileInfo } from 'html-pdf';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import PDFDocument from 'pdfkit';
 import { v4 as uuidv4 } from 'uuid';
 
-import { hygraphAPI } from '@/apis';
+// import { hygraphAPI } from '@/apis';
 import { IPDFProduct, IPDFProductFromDB } from '@/interfaces';
-import { formatters } from '@/utils';
+/* import { formatters } from '@/utils'; */
 
-import { GET_ALL_PRODUCTS_FOR_THE_MENU } from '../../graphql/queries/products';
+// import { GET_ALL_PRODUCTS_FOR_THE_MENU } from '../../graphql/queries/products';
 
 interface Data {
   message: string;
@@ -17,9 +16,9 @@ interface Data {
 
 // TODO: Move function createMenuFile
 
-type TCreateMenuFile =
+/* type TCreateMenuFile =
   | [FileInfo, null]
-  | [null, Error]
+  | [null, Error] */
 
 // ? 1 category   = 23 products = 1 page
 // ? 2 categories = 10 products = 1 page
@@ -137,61 +136,8 @@ type TCreateMenuFile =
     ]
   }; */
 
-// TODO: REVISAR COMO DECLARAR ESTAS FUNCIONES EN UN ARCHIVO APARTE
-//! ACTUALMENTE NO FUNCIONAN EN OTROS LUGARES POR QUE NO HAY ACCESO A FILESYSTEM
-
-const generateContent = (categoryList: Array<[string, IPDFProduct[]]>): string => {
-
-  let totalTemplate = '';
-
-  categoryList.forEach(([categoryName, products]) => {
-
-    const list = products.reduce((partialSum, currentProduct) => {
-
-      const newLiElement = /* html */`
-        <li>
-          <div>
-            <span>${currentProduct.title}</span>
-            <hr>
-            <span>${formatters.currencyFormat(currentProduct.price)}</span>
-          </div>  
-        </li>
-      `;
-
-      return (partialSum + newLiElement);
-
-    }, '');
-
-    const partialTemplate = /* html */`
-      <main class="page">
-        <img
-          src="https://media.graphassets.com/mGG1Lvs8RAGKkbNWt2fJ"
-          alt="brand_icon"
-          class="brand_icon"
-        >
-        <div class="page_content">
-
-          <h1 class="main_title">Lista de productos</h1>
-
-          <h3 class="category_title">${categoryName}</h3>
-          <hr>
-          <ul class="products_list">        
-            ${list}
-          </ul>
-
-        </div>
-      </main>
-  `;
-
-    totalTemplate = totalTemplate + partialTemplate;
-
-  });
-
-  return totalTemplate;
-
-};
-
-const createMenuFile = async (products: IPDFProductFromDB[]): Promise<TCreateMenuFile> => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const createMenuFile = (products: IPDFProductFromDB[]): string => {
 
   //* (1) NUMERO MAXIMO DE PRODUCTOS POR PAGINA
   //* (2) LISTA DE CATEGORIAS PRINCIPALES
@@ -239,180 +185,148 @@ const createMenuFile = async (products: IPDFProductFromDB[]): Promise<TCreateMen
 
   }); // ? (7)
 
-  const content = /* html */`
-    <!DOCTYPE html>
-    <html lang="es">
+  //* Create instance
+  const doc = new PDFDocument({
+    size: 'A4'
+  });
 
-      <head>
-        <meta charset="utf-8">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true">
-        <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
-        <title>PDF Result Template</title>
-        <style>
-          body {
-            padding: 0;
-            margin: 0;
-            font-family: 'Dosis';
-          }
+  const filePath = `${process.cwd()}/tmp/${uuidv4()}.pdf`;
 
-          .page {
-            height: 1403px;
-            padding: 30px;
-            box-sizing: border-box;
-            background: url('https://media.graphassets.com/GF6G6llRCC4tBgf8UERZ');
-            background-size: cover;
-            display: -webkit-flex;
-            -webkit-flex-direction: column;
-          }
+  doc.pipe(fs.createWriteStream(filePath));
 
-          .page_content {
-            background: linear-gradient(180deg, rgba(70, 57, 63, 0.98) 50%, rgba(48, 46, 57, 0.98) 100%);
-            padding: 30px;
-            margin-top: 20px;
-            -webkit-flex: 1;
-          }
+  //* Background image
+  doc.image('public/assets/backgrounds/home_2.png', 0, 0, {
+    width:  595.28,
+    height: 841.89
+  });
 
-          .main_title {
-            margin: 0;
-            font-size: 3rem;
-            color: #FFF;
-            text-align: center;
-            font-weight: 500;
-          }
+  doc.image('public/assets/icons/brand_2.png', 222.64, 0, {
+    width:  150,
+    height: 150
+  });
 
-          .brand_icon {
-            width: 250px;
-            height: 250px;
-            margin: 0 auto;
-          }
+  const grad = doc.linearGradient(267.64, 0, 267.64, 781.89);
+  grad
+    .stop(0, '#46393f', 0.98)
+    .stop(1, '#302e38', 0.98);
 
-          .category_title {
-            color: #FFF;
-            font-weight: 500;
-            font-size: 3rem;
-            margin: 20px 0;
-          }
+  doc.rect(30, 170, 535.28, 641.89);
+  doc.fill(grad);
 
-          .category_separator {
-            color: #FFF;
-            margin: 0;
-          }
-
-          .products_list > li {
-            color: #FFF;
-            font-weight: 500;
-            font-size: 1.6rem;
-          }
-
-          .products_list > li > div {
-            display: -webkit-flex;
-          }
-
-          .products_list > li > div > hr {
-            -webkit-flex: 1;
-            border: none;
-            border-bottom: 3px dotted #FFF;
-            margin: 0 8px 6px 8px;
-          }
-        </style>
-      </head>
-
-      <body>
-        ${generateContent(arrays)}
-      </body>
-
-    </html>
-`; // ? (8)
-
-  process.env.LD_LIBRARY_PATH = path.join(process.cwd(), 'bins');
-  process.env.FONTCONFIG_PATH = path.join(process.cwd(), 'fonts');
-
-  const options: CreateOptions = {
-    type:        'pdf',
-    orientation: 'portrait',
-    format:      'A4',
-    phantomPath: path.resolve(
-      process.cwd(),
-      'node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs'
-    )
-  }; // ? (9)
-
-  const createFileProcess = new Promise<FileInfo>((resolve, reject) => {
-
-    pdf.create(content, options).toFile(`${process.cwd()}/tempFiles/${uuidv4()}.pdf`, (err, res) => {
-
-      if (err) reject(err);
-      else resolve(res);
-
+  //* Page title
+  doc
+    .fillColor('#FFF')
+    .font('fonts/Dosis-SemiBold.ttf')
+    .fontSize(30)
+    .text('Lista de productos', 70, 200, {
+      align: 'center'
     });
 
-  }); // ? (10)
+  //* Product category
+  doc
+    .text('Categoria ejemplo', 60, 250, {
+      underline: true
+    });
 
-  try {
+  //* Product list
+  /* const a = [
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE ',
+    'EL PEPEPEPPEPEPEPEPEPEPEPEPEPEPE '
+  ]; */
 
-    const response = await createFileProcess;
-    return [response, null];
+  /* doc
+    .fontSize(16)
+    .list(a, 60, 280, { bulletRadius: 3 })
+  ; */
 
-  } catch (error: any) {
+  //* End
+  doc.end();
 
-    console.error(error);
-    return [null, error];
-
-  }; // ? (11)
-
-  // ? :B
+  return filePath;
 
 };
-
-const deleteMenuFile = (path: string): void => {
-
-  try {
-
-    fs.unlinkSync(path);
-
-  } catch (err) {
-
-    console.error(err);
-
-  };
-
-};
-
-//! //////////////////////////////////////////////////////////////
 
 const generatePDFList = async (res: NextApiResponse<Data>): Promise<void> => {
 
   try {
 
-    const { products }: { products: IPDFProductFromDB[] } = await hygraphAPI.request({
+    /* const { products }: { products: IPDFProductFromDB[] } = await hygraphAPI.request({
       document: GET_ALL_PRODUCTS_FOR_THE_MENU
+    }); */
+
+    //* Create instance
+    const doc = new PDFDocument({
+      size: 'A4'
     });
 
-    const [fileInfo] = await createMenuFile(products);
+    //* Background image
+    doc.image('public/assets/backgrounds/home_2.png', 0, 0, {
+      width:  595.28,
+      height: 841.89
+    });
 
-    if (!fileInfo) return res.status(400).json({ message: 'An error has occurred when generating the document' });
+    //* Brand logo
+    doc.image('public/assets/icons/brand_2.png', 222.64, 0, {
+      width:  150,
+      height: 150
+    });
 
-    const { filename: filePath } = fileInfo;
+    //* Gradient container
+    const grad = doc.linearGradient(267.64, 0, 267.64, 781.89);
+    grad
+      .stop(0, '#46393f', 0.98)
+      .stop(1, '#302e38', 0.98);
 
-    const { size } = fs.statSync(filePath);
+    doc.rect(30, 170, 535.28, 641.89);
+    doc.fill(grad);
 
+    //* Page title
+    doc
+      .fillColor('#FFF')
+      .font('fonts/Dosis-SemiBold.ttf')
+      .fontSize(30)
+      .text('Lista de productos', 70, 200, {
+        align: 'center'
+      });
+
+    //* Product category
+    doc
+      .text('Categoria ejemplo', 60, 250, {
+        underline: true
+      });
+
+    //* End
+    doc.end();
+
+    //* Headers
     res.writeHead(200, {
-      'Content-Type':   'application/pdf',
-      'Content-Length': size
+      'Content-Type': 'application/pdf'
     });
 
-    const readStream = fs.createReadStream(filePath);
-
-    readStream.pipe(res);
-
-    readStream.on('end', () => deleteMenuFile(filePath));
-    readStream.on('error', (error) => {
-
-      deleteMenuFile(filePath);
-      console.error(error);
-
-    });
+    //* Send file
+    doc.pipe(res);
 
   } catch (error) {
 
