@@ -282,13 +282,13 @@ const generatePDFList = async (res: NextApiResponse<Data>): Promise<void> => {
     });
 
     //* Background image
-    doc.image('public/assets/backgrounds/home_2.png', 0, 0, {
+    doc.image(`${process.cwd()}/public/assets/backgrounds/home_2.png`, 0, 0, {
       width:  595.28,
       height: 841.89
     });
 
     //* Brand logo
-    doc.image('public/assets/icons/brand_2.png', 222.64, 0, {
+    doc.image(`${process.cwd()}/public/assets/icons/brand_2.png`, 222.64, 0, {
       width:  150,
       height: 150
     });
@@ -305,7 +305,7 @@ const generatePDFList = async (res: NextApiResponse<Data>): Promise<void> => {
     //* Page title
     doc
       .fillColor('#FFF')
-      .font('fonts/Dosis-SemiBold.ttf')
+      .font(`${process.cwd()}/fonts/Dosis-SemiBold.ttf`)
       .fontSize(30)
       .text('Lista de productos', 70, 200, {
         align: 'center'
