@@ -1,7 +1,7 @@
 export interface IExpandableOptionListProps {
   text: string;
   options: IInternalItem[];
-  onClick: () => void;
+  onClick?: () => void;
   paddingLeft?: number;
 };
 

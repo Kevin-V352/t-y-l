@@ -16,10 +16,9 @@ const Search: FC<ISearchPageProps> = ({ products }) => {
   const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  // const router = useRouter();
   const { t } = useTranslation('search');
 
-  const { changeCategory, sortItems } = useFilter();
+  const { sortItems } = useFilter();
   const currentResolution = useResponsive();
 
   const isDesktop = currentResolution ? (currentResolution >= 1024) : false;
@@ -48,10 +47,7 @@ const Search: FC<ISearchPageProps> = ({ products }) => {
       <S.Container>
         {
           isDesktop && (
-            <FilterDesktop
-              changeCategory={changeCategory}
-              customStyles={S.customStylesFilterDesktop}
-            />
+            <FilterDesktop customStyles={S.customStylesFilterDesktop} />
           )
         }
         <S.OptionsWrapper>
@@ -99,7 +95,6 @@ const Search: FC<ISearchPageProps> = ({ products }) => {
       </S.Container>
       <FilterSidebar
         open={openFilter}
-        changeCategory={changeCategory}
         onClose={() => setOpenFilter(false)}
       />
       <Menu

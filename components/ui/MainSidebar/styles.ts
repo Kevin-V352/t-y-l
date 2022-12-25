@@ -1,5 +1,6 @@
 import { AiOutlineCloudDownload } from 'react-icons/ai';
 import { CgShoppingCart } from 'react-icons/cg';
+import { IoFilter } from 'react-icons/io5';
 import { MdOutlineLocalOffer } from 'react-icons/md';
 import styled, { css } from 'styled-components';
 
@@ -17,5 +18,9 @@ export const DownloadIcon = styled(AiOutlineCloudDownload)`
 `;
 
 export const OfferIcon = styled(MdOutlineLocalOffer)`
+  ${commonIconStyles}
+`;
+
+export const CategoryIcon = styled(IoFilter)`
   ${commonIconStyles}
 `;

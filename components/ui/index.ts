@@ -6,6 +6,7 @@ export { default as CategoryTag } from './CategoryTag';
 export { default as Chip } from './Chip';
 export { default as CustomSlider } from './CustomSlider';
 export { default as ExpandableOptionList } from './ExpandableOptionList';
+export { default as FilterContent } from './FilterContent';
 export { default as FilterDesktop } from './FilterDesktop';
 export { default as FilterSidebar } from './FilterSidebar';
 export { default as MainSidebar } from './MainSidebar';
