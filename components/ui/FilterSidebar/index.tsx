@@ -14,7 +14,7 @@ const FilterSideBar: FC<IFilterSidebarProps> = ({ open, onClose }) => {
       onClose={onClose}
     >
       <List>
-        <FilterContent />
+        <FilterContent onOptionIsSelected={onClose} />
       </List>
     </BaseSidebar>
   );
