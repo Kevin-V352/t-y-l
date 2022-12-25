@@ -37,15 +37,26 @@ const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
     },
     {
       text: 'Ofertas',
-      cb:   () => console.log('NAME'),
-      icon: <S.OfferIcon />
+      icon: <S.OfferIcon />,
+      cb:   () => {
+
+        onClose();
+
+      }
     },
     {
       text: 'Categorias',
-      cb:   () => setCategoriesOpen((prevState) => !prevState),
-      icon: <S.CategoryIcon />
+      icon: <S.CategoryIcon />,
+      cb:   () => setCategoriesOpen((prevState) => !prevState)
     }
   ];
+
+  const onCategoryOptionIsSelected = (): void => {
+
+    setCategoriesOpen(false);
+    onClose();
+
+  };
 
   return (
     <BaseSidebar
@@ -69,7 +80,7 @@ const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
           timeout="auto"
           unmountOnExit
         >
-          <FilterContent />
+          <FilterContent onOptionIsSelected={onCategoryOptionIsSelected} />
         </Collapse>
       </List>
       <Notification />
