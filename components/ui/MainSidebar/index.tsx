@@ -1,17 +1,19 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { List } from '@mui/material';
+import { Collapse, List } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { BaseSidebar, Notification, OptionList } from '@/ui';
+import { BaseSidebar, FilterContent, Notification, OptionList } from '@/ui';
 import { getters } from '@/utils';
 
 import * as S from './styles';
 import { IMainSidebarProps } from './types';
 
 const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
+
+  const [categoriesOpen, setCategoriesOpen] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -37,6 +39,11 @@ const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
       text: 'Ofertas',
       cb:   () => console.log('NAME'),
       icon: <S.OfferIcon />
+    },
+    {
+      text: 'Categorias',
+      cb:   () => setCategoriesOpen((prevState) => !prevState),
+      icon: <S.CategoryIcon />
     }
   ];
 
@@ -57,6 +64,13 @@ const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
             />
           ))
         }
+        <Collapse
+          in={categoriesOpen}
+          timeout="auto"
+          unmountOnExit
+        >
+          <FilterContent />
+        </Collapse>
       </List>
       <Notification />
     </BaseSidebar>
