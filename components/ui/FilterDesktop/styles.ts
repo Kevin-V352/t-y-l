@@ -15,6 +15,6 @@ export const Container = styled.div<IFilterDesktopContainerProps>`
 export const Title = styled.h3`
   color: ${({ theme }) => theme.text.harvest_gold};
   font-size: var(--primary-font-size);
-  font-weight: 500;
+  font-weight: 600;
   margin: 0 0 20px 0;
 `;

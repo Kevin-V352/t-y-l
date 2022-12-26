@@ -17,6 +17,11 @@ declare module 'styled-components' {
       white:        string;
     };
     button: {
+      mocha:              string;
+      ferra:              string;
+      cocoa:              string;
+      oslo_grey:          string;
+      transparent_white:  string;
     };
     border: {
       light_grey:         string;

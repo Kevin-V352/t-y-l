@@ -1,7 +1,7 @@
 import { CgCloseO } from 'react-icons/cg';
 import styled, { css } from 'styled-components';
 
-import { commonBackground } from 'styles/commonStyles';
+import { commonBackground, commonShadow } from '@/styles';
 
 export const quantitySelectorCustomStyles = css`
   grid-area: cs;
@@ -14,7 +14,7 @@ export const quantitySelectorCustomStyles = css`
 
 export const Container = styled.div`
   ${commonBackground}
-  box-shadow: ${({ theme }) => `${theme.border.transparent_black} 0px 2px 15px 2px`};
+  ${commonShadow}
   padding: 10px;
   display: grid;
   gap: 10px;
@@ -45,14 +45,14 @@ export const Container = styled.div`
 export const Title = styled.h3`
   grid-area: title;
   margin: 0;
-  font-size: var(--primary-font-size);
-  color: ${({ theme }) => theme.text.white};
-  font-weight: 500;
+  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   text-decoration: underline;
   cursor: pointer;
+  font-size: var(--primary-font-size);
+  color: ${({ theme }) => theme.text.white};
 `;
 
 export const ImageWrapper = styled.div`

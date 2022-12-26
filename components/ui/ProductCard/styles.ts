@@ -1,9 +1,7 @@
 /* eslint-disable max-len */
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-const boxShadow = css`
-  box-shadow: ${({ theme }) => `${theme.border.transparent_black} 0px 2px 15px 2px`};
-`;
+import { commonShadow } from '@/styles';
 
 export const Container = styled.div`
   width: 100%;
@@ -14,7 +12,7 @@ export const Container = styled.div`
   background: ${({ theme: { background } }) => `linear-gradient(180deg, ${background.black_cat} 50%, ${background.outer_space} 100%)`};
   align-items: center;
   padding-bottom: 40px;
-  ${boxShadow}
+  ${commonShadow}
 `;
 
 export const Image = styled.img`
@@ -51,7 +49,7 @@ export const Button = styled.button`
   font-weight: bold;
   font-size: var(--secondary-font-size);
   cursor: pointer;
-  ${boxShadow}
+  ${commonShadow}
 
   :hover {
     box-shadow: ${({ theme }) => `${theme.border.transparent_black} 0px 2px 15px 2px`};

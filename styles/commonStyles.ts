@@ -31,3 +31,7 @@ export const commonBackground = css`
   background: ${({ theme }) => theme.background.black_cat};
   background: ${({ theme: { background } }) => `linear-gradient(180deg, ${background.black_cat} 50%, ${background.dark_grey} 100%)`};
 `;
+
+export const commonShadow = css`
+  box-shadow: ${({ theme }) => `${theme.border.transparent_black} 0px 2px 15px 2px`};
+`;

@@ -12,15 +12,22 @@ const selectVariant = (variant: 'primary' | 'outlined'): FlattenInterpolation<Th
 
     case 'primary':
       return css`
-        background: rgb(167,110,80);
-        background: linear-gradient(180deg, rgba(167,110,80,1) 50%, rgba(109,78,71,1) 100%);
-        border: #92614E solid 2px;
+        background: ${({ theme }) => theme.button.mocha};
+        background: ${({ theme: { button } }) => `linear-gradient(180deg, ${button.mocha} 50%, ${button.ferra} 100%)`};
+        border: ${({ theme }) => `${theme.button.cocoa} solid 2px`};
         ${boxShadow}
 
         :hover {
           box-shadow: ${({ theme }) => `${theme.border.transparent_black} 0px 2px 15px 2px`};
           text-shadow: ${({ theme }) => `0 0 7px ${theme.border.transparent_black}`};
         };
+
+        :disabled {
+          text-shadow: none;
+          background: ${({ theme }) => theme.button.oslo_grey};
+          background: ${({ theme }) => `linear-gradient(180deg, ${theme.button.oslo_grey} 50%, ${theme.button.transparent_white} 100%)`};
+          border-color: ${({ theme }) => theme.button.oslo_grey}
+        }
       `;
 
     case 'outlined':
@@ -29,7 +36,7 @@ const selectVariant = (variant: 'primary' | 'outlined'): FlattenInterpolation<Th
         border: ${({ theme }) => theme.border.light_grey} solid 2px;
       `;
 
-  }
+  };
 
 };
 
@@ -48,6 +55,7 @@ export const Wrapper = styled.button<IButtonWrapperProps>`
   justify-content: center;
   gap: 5px;
   user-select: none;
+  grid-area: ${({ gridArea }) => gridArea};
   width: ${({ fluid = false }) => fluid ? '100%' : 'auto'};
   ${({ variant }) => selectVariant(variant)}
 `;
