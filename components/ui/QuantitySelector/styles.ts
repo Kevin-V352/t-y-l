@@ -36,7 +36,7 @@ export const Quantity = styled.span`
   grid-area: quantity;
   font-size: var(--primary-font-size);
   color: ${({ theme }) => theme.text.harvest_gold};
-  font-weight: 500;
+  font-weight: 600;
   user-select: none;
 `;
 

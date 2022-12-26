@@ -118,10 +118,11 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
             $loading={loadingQuantity}
           />
           <Button
+            fluid
             text='Agregar al carrito'
             variant='primary'
-            fluid
             onClick={addToCart}
+            disabled={(currentPriceIsLoading || loadingQuantity)}
           />
           {
             isDesktop && <S.Description>{description}</S.Description>
