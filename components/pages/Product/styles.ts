@@ -69,15 +69,17 @@ export const ImgWrapper = styled.div`
 `;
 
 export const Title = styled.h1`
+  margin: 0;
+  font-weight: 600;
   font-size: var(--primary-font-size);
   color: ${({ theme }) => theme.text.white};
-  margin: 0;
 `;
 
 export const Price = styled.h3`
+  margin: 0;
+  font-weight: 600;
   font-size: var(--primary-font-size);
   color: ${({ theme }) => theme.text.harvest_gold};
-  margin: 0;
 `;
 
 export const Description = styled.p`
