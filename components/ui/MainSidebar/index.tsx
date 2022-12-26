@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,6 +14,12 @@ import { IMainSidebarProps } from './types';
 const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
 
   const [categoriesOpen, setCategoriesOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+
+    if (!open) setCategoriesOpen(false);
+
+  }, [open]);
 
   const router = useRouter();
 
