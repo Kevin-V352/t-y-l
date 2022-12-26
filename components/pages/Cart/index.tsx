@@ -4,12 +4,13 @@ import { CartContext } from '@/contexts';
 import { useUpdateCart } from '@/hooks';
 import { MainLayout } from '@/layouts';
 import { Button, CartItem } from '@/ui';
+import { formatters } from '@/utils';
 
 import * as S from './styles';
 
 const Cart: FC = () => {
 
-  const { cart, cookiesLoaded, updatedProducts } = useContext(CartContext);
+  const { cart, cookiesLoaded, updatedProducts, totalPrice } = useContext(CartContext);
 
   useUpdateCart();
 
@@ -28,12 +29,27 @@ const Cart: FC = () => {
 
       case 'products':
         return (
-          cart.map((product) => (
-            <CartItem
-              key={product.id}
-              product={product}
-            />
-          ))
+          <>
+            <S.ProductList>
+              {
+                cart.map((product) => (
+                  <CartItem
+                    key={product.id}
+                    product={product}
+                  />
+                ))
+              }
+            </S.ProductList>
+            <S.SummaryWrapper>
+              <S.SummaryText>Total:</S.SummaryText>
+              <S.SummaryPrice>{formatters.currencyFormat(totalPrice)}</S.SummaryPrice>
+              <Button
+                text='Continuar compra'
+                variant='primary'
+                gridArea='btn'
+              />
+            </S.SummaryWrapper>
+          </>
         );
 
       default:
@@ -57,7 +73,7 @@ const Cart: FC = () => {
       title="Carrito"
       desc="This is the cart"
     >
-      <S.Container>
+      <S.Container status={contentType}>
         <S.Title>Carrito</S.Title>
         {conditionalRender(contentType)}
       </S.Container>
