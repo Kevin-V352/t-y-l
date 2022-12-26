@@ -16,7 +16,11 @@ const defaultTheme: DefaultTheme = {
     white:        '#FFF'
   },
   button: {
-
+    mocha:             '#A76E50',
+    ferra:             '#6D4E47',
+    cocoa:             '#92614E',
+    oslo_grey:         '#8B898A',
+    transparent_white: 'rgba(255, 255, 255, 0.1)'
   },
   border: {
     light_grey:        '#E4D9D5',
