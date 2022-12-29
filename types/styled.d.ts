@@ -15,6 +15,7 @@ declare module 'styled-components' {
       light_grey:   string;
       oslo_grey:    string;
       white:        string;
+      error:        string;
     };
     button: {
       mocha:              string;
@@ -30,6 +31,7 @@ declare module 'styled-components' {
       transparent_black:  string;
       transparent_white:  string;
       white:              string;
+      error:              string;
     };
     icon: {
       black_cat:    string;
