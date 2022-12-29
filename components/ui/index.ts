@@ -20,3 +20,4 @@ export { default as QuantitySelector } from './QuantitySelector';
 export { default as SearchBar } from './SearchBar';
 export { default as Skeleton } from './Skeleton';
 export { default as Slider } from './Slider';
+export { default as TextInput } from './TextInput';
