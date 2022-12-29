@@ -1,5 +1,7 @@
 import { FC, useContext } from 'react';
 
+import Link from 'next/link';
+
 import { CartContext } from '@/contexts';
 import { useUpdateCart } from '@/hooks';
 import { MainLayout } from '@/layouts';
@@ -43,11 +45,13 @@ const Cart: FC = () => {
             <S.SummaryWrapper>
               <S.SummaryText>Total:</S.SummaryText>
               <S.SummaryPrice>{formatters.currencyFormat(totalPrice)}</S.SummaryPrice>
-              <Button
-                text='Continuar compra'
-                variant='primary'
-                gridArea='btn'
-              />
+              <Link href="/checkout/address">
+                <Button
+                  text='Continuar compra'
+                  variant='primary'
+                  gridArea='btn'
+                />
+              </Link>
             </S.SummaryWrapper>
           </>
         );
