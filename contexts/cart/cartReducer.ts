@@ -1,4 +1,4 @@
-import { ICartProduct } from '@/interfaces';
+import { ClientFormData, ICartProduct } from '@/interfaces';
 
 import { CartState } from './';
 
@@ -9,6 +9,7 @@ type CartActionType =
   | { type: 'LOAD_TOTAL_PRICE'; payload: number }
   | { type: 'UPDATE_CART'; payload: ICartProduct[] }
   | { type: 'UNSUBSCRIBE_CART' }
+  | { type: 'LOAD_USER_DATA'; payload: ClientFormData }
 
 export const CartReducer = (state: CartState, action: CartActionType): CartState => {
 
@@ -50,6 +51,12 @@ export const CartReducer = (state: CartState, action: CartActionType): CartState
       return {
         ...state,
         updatedProducts: false
+      };
+
+    case 'LOAD_USER_DATA':
+      return {
+        ...state,
+        userData: action.payload
       };
 
     default:

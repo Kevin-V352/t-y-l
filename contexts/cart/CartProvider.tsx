@@ -3,12 +3,13 @@ import { FC, useEffect, useReducer } from 'react';
 import Cookies from 'js-cookie';
 
 import { tylAPI } from '@/apis';
-import { ICartProduct } from '@/interfaces';
+import { ClientFormData, ICartProduct } from '@/interfaces';
 
 import { CartContext, CartProviderProps, CartReducer, CartState } from './';
 
 const CART_INITIAL_STATE: CartState = {
   cart:            [],
+  userData:        null,
   totalPrice:      0,
   cookiesLoaded:   false,
   updatedProducts: false
@@ -105,6 +106,22 @@ export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element =
 
   };
 
+  const setClientData = (data: ClientFormData, saveData: boolean): void => {
+
+    if (saveData) {
+
+      Cookies.set('userData', JSON.stringify(data));
+
+    } else {
+
+      if (Cookies.get('userData')) Cookies.remove('userData');
+
+    };
+
+    dispatch({ type: 'LOAD_USER_DATA', payload: data });
+
+  };
+
   return (
     <CartContext.Provider value={{
       ...state,
@@ -112,7 +129,8 @@ export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element =
       deleteToCart,
       getCurrentQuantity,
       updateCart,
-      unsubscribeCart
+      unsubscribeCart,
+      setClientData
     }}>
       {children}
     </CartContext.Provider>
