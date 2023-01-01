@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components';
 
 import { commonBackground, commonShadow } from '@/styles';
 
+import { ICartItemContainerProps, ICartItemTitleProps } from './types';
+
 export const quantitySelectorCustomStyles = css`
   grid-area: cs;
   margin: 0 auto;
@@ -12,7 +14,7 @@ export const quantitySelectorCustomStyles = css`
   };
 `;
 
-export const Container = styled.div`
+export const Container = styled.div<ICartItemContainerProps>`
   ${commonBackground}
   ${commonShadow}
   padding: 10px;
@@ -20,39 +22,79 @@ export const Container = styled.div`
   gap: 10px;
   grid-template-columns: 30% 1fr min-content;
   grid-template-rows: repeat(min-content) auto;
-  grid-template-areas: 
-    'img title      deleteButton'
-    'img totalPrice totalPrice'
-    'cs  cs         cs'
-  ;
+  
+  
+  ${({ editable }) => (
+    editable
+      ? (`
+          grid-template-areas: 
+            'img title      deleteButton'
+            'img totalPrice totalPrice'
+            'cs  cs         cs'
+          ;
+      `)
+      : (`
+          grid-template-areas: 
+            'img      title      title'
+            'img      totalPrice totalPrice'
+            'quantity quantity   quantity'
+          ;
+      `)
+  )}
 
   @media screen and (min-width: 768px) {
     padding: 20px;
     grid-column-gap: 20px;
     grid-auto-rows: auto;
-    grid-template-areas: 
-      'img title      deleteButton'
-      'img totalPrice totalPrice'
-      'img  cs         cs'
-    ;
+    
+
+    ${({ editable }) => (
+      editable
+        ? (`
+            grid-template-areas: 
+              'img title      deleteButton'
+              'img totalPrice totalPrice'
+              'img  cs         cs'
+            ;
+        `)
+        : (`
+            grid-template-columns: 30% 1fr;
+            grid-template-rows: repeat(2, min-content) 1fr;
+            grid-template-areas: 
+              'img title'
+              'img totalPrice'
+              'img quantity'
+            ;
+        `)
+    )}
   };
 
   @media screen and (min-width: 1024px) {
     grid-template-columns: 15% 1fr min-content;
+
+    ${({ editable }) => (
+      editable
+        ? (`
+            grid-template-columns: 15% 1fr min-content;
+        `)
+        : (`
+            grid-template-columns: 15% 1fr;
+        `)
+    )}
   };
 `;
 
-export const Title = styled.h3`
+export const Title = styled.h3<ICartItemTitleProps>`
   grid-area: title;
   margin: 0;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-decoration: underline;
   cursor: pointer;
   font-size: var(--primary-font-size);
   color: ${({ theme }) => theme.text.white};
+  text-decoration: ${({ editable }) => editable ? 'underline' : 'none'};
 `;
 
 export const ImageWrapper = styled.div`
@@ -73,4 +115,11 @@ export const DeleteButton = styled(CgCloseO)`
   grid-area: deleteButton;
   font-size: var(--primary-font-size);
   color: ${({ theme }) => theme.text.white};
+`;
+
+export const TotalQuantity = styled.span`
+  grid-area: quantity;
+  font-weight: 500;
+  font-size: var(--secondary-font-size);
+  color: ${({ theme }) => theme.text.harvest_gold};
 `;

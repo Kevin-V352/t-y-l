@@ -38,6 +38,7 @@ const Cart: FC = () => {
                   <CartItem
                     key={product.id}
                     product={product}
+                    editable
                   />
                 ))
               }
