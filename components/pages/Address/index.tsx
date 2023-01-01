@@ -3,6 +3,7 @@ import { FC, ChangeEvent, useRef, useEffect, useContext } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControl, FormGroup, RadioGroup } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { useTheme } from 'styled-components';
 import * as yup from 'yup';
@@ -11,6 +12,7 @@ import { CartContext } from '@/contexts';
 import { ClientFormData, ClientFormType } from '@/interfaces';
 import { MainLayout } from '@/layouts';
 import { Button, TextInput } from '@/ui';
+import { getters } from '@/utils';
 
 import * as S from './styles';
 
@@ -48,11 +50,7 @@ const Address: FC = () => {
   const { setClientData } = useContext(CartContext);
 
   const styledTheme = useTheme();
-
-  const commonFormControlLabelProps = {
-    styledTheme,
-    control: <S.CustomRadio styledTheme={styledTheme} />
-  };
+  const router = useRouter();
 
   const {
     register,
@@ -62,8 +60,9 @@ const Address: FC = () => {
     trigger,
     formState: { errors }
   } = useForm<ClientFormData>({
-    resolver: yupResolver(getValidationSchema(formType.current))
-    // defaultValues: reloadAddressFromCookies()
+    resolver:      yupResolver(getValidationSchema(formType.current)),
+    // TODO: Corregir bug de hidratacion al recargar
+    defaultValues: getters.getUserDataFromCookies()
   });
 
   useEffect(() => {
@@ -77,6 +76,11 @@ const Address: FC = () => {
 
   }, [formType.current]);
 
+  const commonFormControlLabelProps = {
+    styledTheme,
+    control: <S.CustomRadio styledTheme={styledTheme} />
+  };
+
   const changeRadioGroupState = (event: ChangeEvent<HTMLInputElement>): void => {
 
     const { name, value } = event.target;
@@ -89,9 +93,10 @@ const Address: FC = () => {
 
   };
 
-  const onSubmit = (data: ClientFormData): void => {
+  const onSubmit = async (data: ClientFormData): Promise<void> => {
 
     setClientData(data, saveUserData.current);
+    await router.push('/checkout/summary');
 
   };
 
@@ -193,25 +198,25 @@ const Address: FC = () => {
 
           {
             (getValues('deliveryMethod') === 'home_delivery') &&
-              (
-                <>
-                  <TextInput
-                    label="Ciudad"
-                    type="text"
-                    error={!!errors.city}
-                    helperText={errors.city?.message}
-                    {...register('city')}
-                  />
+            (
+              <>
+                <TextInput
+                  label="Ciudad"
+                  type="text"
+                  error={!!errors.city}
+                  helperText={errors.city?.message}
+                  {...register('city')}
+                />
 
-                  <TextInput
-                    label="Dirección"
-                    type="text"
-                    error={!!errors.address}
-                    helperText={errors.address?.message}
-                    {...register('address')}
-                  />
-                </>
-              )
+                <TextInput
+                  label="Dirección"
+                  type="text"
+                  error={!!errors.address}
+                  helperText={errors.address?.message}
+                  {...register('address')}
+                />
+              </>
+            )
           }
 
           <S.Separator />
@@ -226,12 +231,14 @@ const Address: FC = () => {
             />
           </FormGroup>
 
-          <Button
-            text="Confirmar datos"
-            variant="primary"
-            type="submit"
-            customStyles={S.customButtonStyles}
-          />
+          <S.ButtonWrapper>
+            <Button
+              text="Confirmar datos"
+              variant="primary"
+              type="submit"
+              fluid
+            />
+          </S.ButtonWrapper>
 
         </S.Form>
       </S.Container>

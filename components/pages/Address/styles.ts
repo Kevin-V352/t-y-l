@@ -1,20 +1,12 @@
 import { Checkbox, FormControlLabel, FormHelperText, FormLabel, Radio } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { commonBackground } from '@/styles';
 
 import { ICustomFormControlLabelProps } from './types';
 
 const commonSvgSize = 26;
-
-export const customButtonStyles = css`
-  @media screen and (min-width: 1024px) {
-    grid-area: btn;
-    width: 40%;
-    justify-self: center;
-  };
-`;
 
 export const Container = styled.div`
   ${commonBackground}
@@ -26,6 +18,10 @@ export const Container = styled.div`
 
   @media screen and (min-width: 768px) {
     padding: 35px;
+  };
+
+  @media screen and (min-width: 1024px) {
+    padding: 40px;
   };
 `;
 
@@ -67,6 +63,14 @@ export const Separator = styled.div`
 
   @media screen and (min-width: 1024px) {
     display: none;
+  };
+`;
+
+export const ButtonWrapper = styled.div`
+  @media screen and (min-width: 1024px) {
+    grid-area: btn;
+    width: 40%;
+    justify-self: center;
   };
 `;
 
