@@ -9,6 +9,7 @@ export { default as ExpandableOptionList } from './ExpandableOptionList';
 export { default as FilterContent } from './FilterContent';
 export { default as FilterDesktop } from './FilterDesktop';
 export { default as FilterSidebar } from './FilterSidebar';
+export { default as Loader } from './Loader';
 export { default as MainSidebar } from './MainSidebar';
 export { default as Menu } from './Menu';
 export { default as Navbar } from './NavBar';
