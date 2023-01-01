@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-floating-promises */
+import Cookies from 'js-cookie';
 import fileDownload from 'js-file-download';
 import { toast } from 'react-toastify';
 
 import { tylAPI } from '@/apis';
+import { ClientFormData } from '@/interfaces';
 
 interface ISaveMenuDocument {
   id:             string;
@@ -52,5 +54,15 @@ export const saveMenuDocument = async (options: ISaveMenuDocument, cb?: () => vo
       autoClose: 2500
     }
   );
+
+};
+
+export const getUserDataFromCookies = (): ClientFormData | undefined => {
+
+  const userPrevData = Cookies.get('userData');
+
+  if (!userPrevData) return undefined;
+
+  return JSON.parse(userPrevData);
 
 };
