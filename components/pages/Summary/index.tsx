@@ -1,11 +1,14 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { FC, useContext, useEffect } from 'react';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 import { useRouter } from 'next/router';
 
 import { CartContext } from '@/contexts';
-import { useResponsive } from '@/hooks';
+import { useCreateOrder, useResponsive } from '@/hooks';
 import { MainLayout } from '@/layouts';
-import { Button, CartItem } from '@/ui';
+import { Button, CartItem, Notification } from '@/ui';
 import { formatters } from '@/utils';
 
 import * as S from './styles';
@@ -22,6 +25,8 @@ const Summary: FC = () => {
 
   const currentResolution = useResponsive();
 
+  const { loading, saveOrder } = useCreateOrder();
+
   useEffect(() => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -35,10 +40,16 @@ const Summary: FC = () => {
 
   const {
     name,
-    phone,
+    phoneNumber,
     paymentMethod,
     deliveryMethod
   } = userData;
+
+  const submitOrder = async (): Promise<void> => {
+
+    await saveOrder(userData, cart, totalPrice);
+
+  };
 
   return (
     <MainLayout
@@ -54,7 +65,7 @@ const Summary: FC = () => {
           </S.Item>
           <S.Item>
             <S.TextItem variant='primary'>Teléfono:</S.TextItem>
-            <S.TextItem variant='secondary'>{phone}</S.TextItem>
+            <S.TextItem variant='secondary'>{phoneNumber}</S.TextItem>
           </S.Item>
           {
             userData.city && (
@@ -87,9 +98,11 @@ const Summary: FC = () => {
           {
             isDesktop && (
               <Button
+                fluid
                 text='Crear orden'
                 variant='primary'
-                fluid
+                onClick={submitOrder}
+                disabled={loading}
               />
             )
           }
@@ -109,10 +122,13 @@ const Summary: FC = () => {
             <Button
               text='Crear orden'
               variant='primary'
+              onClick={submitOrder}
+              disabled={loading}
             />
           )
         }
       </S.Container>
+      <Notification />
     </MainLayout>
   );
 
