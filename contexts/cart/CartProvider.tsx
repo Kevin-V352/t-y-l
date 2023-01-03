@@ -122,6 +122,12 @@ export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element =
 
   };
 
+  const clearCart = (): void => {
+
+    dispatch({ type: 'CLEAR_CART' });
+
+  };
+
   return (
     <CartContext.Provider value={{
       ...state,
@@ -130,7 +136,8 @@ export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element =
       getCurrentQuantity,
       updateCart,
       unsubscribeCart,
-      setClientData
+      setClientData,
+      clearCart
     }}>
       {children}
     </CartContext.Provider>

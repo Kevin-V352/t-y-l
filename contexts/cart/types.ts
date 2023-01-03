@@ -17,6 +17,7 @@ export interface CartContextProps extends CartState {
   updateCart: () => Promise<void>;
   unsubscribeCart: () => void;
   setClientData: (data: ClientFormData, saveData: boolean) => void;
+  clearCart: () => void;
 };
 
 export interface CartProviderProps {

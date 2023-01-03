@@ -10,6 +10,7 @@ type CartActionType =
   | { type: 'UPDATE_CART'; payload: ICartProduct[] }
   | { type: 'UNSUBSCRIBE_CART' }
   | { type: 'LOAD_USER_DATA'; payload: ClientFormData }
+  | { type: 'CLEAR_CART' }
 
 export const CartReducer = (state: CartState, action: CartActionType): CartState => {
 
@@ -57,6 +58,13 @@ export const CartReducer = (state: CartState, action: CartActionType): CartState
       return {
         ...state,
         userData: action.payload
+      };
+
+    case 'CLEAR_CART':
+      return {
+        ...state,
+        cart:     [],
+        userData: null
       };
 
     default:
