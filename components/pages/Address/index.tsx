@@ -20,7 +20,7 @@ const formValidation = yup.object().shape({
   paymentMethod:  yup.string().required('El método de pago es requerido'),
   deliveryMethod: yup.string().required('El método de envío es requerido'),
   name:           yup.string().required('El nombre es requerido'),
-  phone:          yup.string().required('El número telefónico es requerido')
+  phoneNumber:    yup.string().required('El número telefónico es requerido')
 });
 
 const formValidationWithAddress = formValidation.shape({
@@ -191,9 +191,9 @@ const Address: FC = () => {
           <TextInput
             label="Teléfono"
             type="tel"
-            error={!!errors.phone}
-            helperText={errors.phone?.message}
-            {...register('phone')}
+            error={!!errors.phoneNumber}
+            helperText={errors.phoneNumber?.message}
+            {...register('phoneNumber')}
           />
 
           {

@@ -4,7 +4,7 @@ export interface ClientFormData {
   paymentMethod:  string;
   deliveryMethod: ClientFormType;
   name:           string;
-  phone:          string;
+  phoneNumber:    string;
   city?:          string;
   address?:       string;
 };
