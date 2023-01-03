@@ -15,13 +15,18 @@ export const Container = styled.div<ICartContainerProps>`
   gap: 20px;
   ${({ status }) => (status === 'products') && 'margin-bottom: 132px;'}
 
+  @media screen and (min-width: 768px) {
+    padding: 35px;
+  };
+
   @media screen and (min-width: 1024px) {
-    display: grid;
+    display: ${({ status }) => (status !== 'products') ? 'flex' : 'grid'};
     grid-template-areas: 
       'title    title'
       'products summary'
     ;
-    grid-template-columns: 1fr min-content;
+    grid-template-rows: min-content auto;
+    grid-template-columns: 1fr 30%;
     grid-column-gap: 40px;
     padding: 40px;
     margin-bottom: 0;
@@ -102,6 +107,7 @@ export const SummaryWrapper = styled.div`
     ;
     grid-template-columns: min-content 1fr;
     grid-column-gap: 40px;
+    grid-row-gap: 40px;
     padding: 40px;
     height: min-content;
   };

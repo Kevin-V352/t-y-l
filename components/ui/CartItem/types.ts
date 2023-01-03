@@ -1,5 +1,13 @@
 import { ICartProduct } from '@/interfaces';
 
-export interface ICartItemProps {
+export interface ICartItemContainerProps {
+  editable?: boolean;
+};
+
+export interface ICartItemTitleProps {
+  editable?: boolean;
+};
+
+export interface ICartItemProps extends ICartItemContainerProps {
   product: ICartProduct;
 };

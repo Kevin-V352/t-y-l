@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/promise-function-async */
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { FC, memo, useContext, useEffect } from 'react';
 
 import Image from 'next/image';
@@ -15,7 +14,7 @@ import { ICartItemProps } from './types';
 
 const propAreEqual = (prevProps: ICartItemProps, nextProps: ICartItemProps): boolean => prevProps.product.id === nextProps.product.id;
 
-const CartItem: FC<ICartItemProps> = ({ product }) => {
+const CartItem: FC<ICartItemProps> = ({ product, editable = false }) => {
 
   const {
     id,
@@ -37,17 +36,26 @@ const CartItem: FC<ICartItemProps> = ({ product }) => {
     removeItem
   } = useQuantity(stock, initialQuantity);
 
+  const router = useRouter();
+
   useEffect(() => {
 
     addProduct({ ...product, quantity });
 
   }, [quantity]);
 
-  const router = useRouter();
+  const pluralQuantity = (quantity > 1) ? 'unidades' : 'unidad';
+
+  const redirectToProduct = (): void => {
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    if (editable) router.push(`/product/${slug}`);
+
+  };
 
   return (
-    <S.Container>
-      <S.Title onClick={() => router.push(`/product/${slug}`)}>
+    <S.Container editable={editable}>
+      <S.Title onClick={redirectToProduct}>
         {title}
       </S.Title>
       <S.ImageWrapper>
@@ -57,16 +65,27 @@ const CartItem: FC<ICartItemProps> = ({ product }) => {
         />
       </S.ImageWrapper>
       <S.Price>{formatters.currencyFormat(price * quantity)}</S.Price>
-      <QuantitySelector
-        quantity={quantity}
-        maxQuantity={stock}
-        add={addItem}
-        remove={removeItem}
-        disableAdd={disableAdd}
-        disableRemove={disableRemove}
-        customStyles={S.quantitySelectorCustomStyles}
-      />
-      <S.DeleteButton onClick={() => deleteToCart(id)} />
+      {
+        editable
+          ? (
+            <>
+              <QuantitySelector
+                quantity={quantity}
+                maxQuantity={stock}
+                add={addItem}
+                remove={removeItem}
+                disableAdd={disableAdd}
+                disableRemove={disableRemove}
+                customStyles={S.quantitySelectorCustomStyles}
+              />
+              <S.DeleteButton onClick={() => deleteToCart(id)} />
+            </>
+            )
+          : (
+              <S.TotalQuantity>{quantity} {pluralQuantity}</S.TotalQuantity>
+            )
+      }
+
     </S.Container>
   );
 

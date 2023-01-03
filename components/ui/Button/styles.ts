@@ -58,4 +58,5 @@ export const Wrapper = styled.button<IButtonWrapperProps>`
   grid-area: ${({ gridArea }) => gridArea};
   width: ${({ fluid = false }) => fluid ? '100%' : 'auto'};
   ${({ variant }) => selectVariant(variant)}
+  ${({ customStyles }) => customStyles}
 `;
