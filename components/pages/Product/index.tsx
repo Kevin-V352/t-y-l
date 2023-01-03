@@ -5,6 +5,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
+import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -31,6 +32,8 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
   } = product;
 
   const { cookiesLoaded, updatedProducts, addProduct, getCurrentQuantity } = useContext(CartContext);
+
+  const { t } = useTranslation('product');
 
   useUpdateCart();
 
@@ -119,7 +122,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
           />
           <Button
             fluid
-            text='Agregar al carrito'
+            text={t('btn_1')}
             variant='primary'
             onClick={addToCart}
             disabled={(currentPriceIsLoading || loadingQuantity)}

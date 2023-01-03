@@ -1,0 +1,12 @@
+{
+  "locales": ["es"],
+  "defaultLocale": "es",
+  "pages": {
+    "*": ["common"],
+    "/search/[query]": ["search"],
+    "/product/[slug]": ["product"],
+    "/cart": ["cart"],
+    "/checkout/address": ["address"],
+    "/checkout/summary": ["summary"]
+  }
+}

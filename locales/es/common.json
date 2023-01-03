@@ -1,7 +1,4 @@
 {
-  "page": {
-    "title": "Búsqueda de producto"
-  },
   "filters": {
     "categories": {
       "drinks_without_alcohol": "Bebidas sin alcohol",
@@ -17,12 +14,12 @@
       "sweet": "Dulces",
       "salty": "Salados",
       "others": "Otros"
-    },
-    "sort": {
-      "price_DESC": "Mayor precio",
-      "price_ASC": "Menor precio",
-      "publishedAt_DESC": "Más recientes"
     }
+  },
+  "main_sidebar": {
+    "cart": "Carrito",
+    "download_file": "Descargar lista en PDF",
+    "offers": "Ofertas",
+    "categories": "Categorias"
   }
-
 }

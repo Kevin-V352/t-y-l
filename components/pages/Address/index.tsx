@@ -3,6 +3,7 @@ import { FC, ChangeEvent, useRef, useEffect, useContext } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControl, FormGroup, RadioGroup } from '@mui/material';
+import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { useTheme } from 'styled-components';
@@ -16,32 +17,6 @@ import { getters } from '@/utils';
 
 import * as S from './styles';
 
-const formValidation = yup.object().shape({
-  paymentMethod:  yup.string().required('El método de pago es requerido'),
-  deliveryMethod: yup.string().required('El método de envío es requerido'),
-  name:           yup.string().required('El nombre es requerido'),
-  phoneNumber:    yup.string().required('El número telefónico es requerido')
-});
-
-const formValidationWithAddress = formValidation.shape({
-  city:    yup.string().required('La ciudad es requerida'),
-  address: yup.string().required('La dirección es requerida')
-});
-
-const getValidationSchema = (type: ClientFormType): any => {
-
-  switch (type) {
-
-    case 'home_delivery':
-      return formValidationWithAddress;
-
-    default:
-      return formValidation;
-
-  };
-
-};
-
 const Address: FC = () => {
 
   const formType = useRef<ClientFormType>('');
@@ -51,6 +26,33 @@ const Address: FC = () => {
 
   const styledTheme = useTheme();
   const router = useRouter();
+  const { t } = useTranslation('address');
+
+  const formValidation = yup.object().shape({
+    paymentMethod:  yup.string().required(t('errors.payment_methods')),
+    deliveryMethod: yup.string().required(t('errors.delivery_methods')),
+    name:           yup.string().required(t('errors.name_input')),
+    phoneNumber:    yup.string().required(t('errors.phone_number_input'))
+  });
+
+  const formValidationWithAddress = formValidation.shape({
+    city:    yup.string().required(t('errors.city_input')),
+    address: yup.string().required(t('errors.address_input'))
+  });
+
+  const getValidationSchema = (type: ClientFormType): any => {
+
+    switch (type) {
+
+      case 'home_delivery':
+        return formValidationWithAddress;
+
+      default:
+        return formValidation;
+
+    };
+
+  };
 
   const {
     register,
@@ -102,11 +104,11 @@ const Address: FC = () => {
 
   return (
     <MainLayout
-      title='Datos de envio'
+      title={`T&L | ${t('page.title')}`}
       desc=''
     >
       <S.Container>
-        <S.Title>Datos de la orden</S.Title>
+        <S.Title>{t('page.title')}</S.Title>
         <S.Form onSubmit={handleSubmit(onSubmit)}>
 
           <FormControl
@@ -126,17 +128,17 @@ const Address: FC = () => {
             >
               <S.CustomFormControlLabel
                 value="cash"
-                label="Efectivo"
+                label={t('payment_methods.cash')}
                 {...commonFormControlLabelProps}
               />
               <S.CustomFormControlLabel
                 value="credit_card"
-                label="Tarjeta de crédito"
+                label={t('payment_methods.credit_card')}
                 {...commonFormControlLabelProps}
               />
               <S.CustomFormControlLabel
                 value="debit_card"
-                label="Tarjeta de débito"
+                label={t('payment_methods.debit_card')}
                 {...commonFormControlLabelProps}
               />
             </RadioGroup>
@@ -164,12 +166,12 @@ const Address: FC = () => {
             >
               <S.CustomFormControlLabel
                 value="withdrawal_by_local"
-                label="Retiro por local"
+                label={t('delivery_methods.withdrawal_by_local')}
                 {...commonFormControlLabelProps}
               />
               <S.CustomFormControlLabel
                 value="home_delivery"
-                label="Envió a domicilio"
+                label={t('delivery_methods.home_delivery')}
                 {...commonFormControlLabelProps}
               />
             </RadioGroup>
@@ -181,7 +183,7 @@ const Address: FC = () => {
           <S.Separator />
 
           <TextInput
-            label="Nombre"
+            label={t('name_input')}
             type="text"
             error={!!errors.name}
             helperText={errors.name?.message}
@@ -189,7 +191,7 @@ const Address: FC = () => {
           />
 
           <TextInput
-            label="Teléfono"
+            label={t('phone_number_input')}
             type="tel"
             error={!!errors.phoneNumber}
             helperText={errors.phoneNumber?.message}
@@ -201,7 +203,7 @@ const Address: FC = () => {
             (
               <>
                 <TextInput
-                  label="Ciudad"
+                  label={t('city_input')}
                   type="text"
                   error={!!errors.city}
                   helperText={errors.city?.message}
@@ -209,7 +211,7 @@ const Address: FC = () => {
                 />
 
                 <TextInput
-                  label="Dirección"
+                  label={t('address_input')}
                   type="text"
                   error={!!errors.address}
                   helperText={errors.address?.message}
@@ -223,7 +225,7 @@ const Address: FC = () => {
 
           <FormGroup>
             <S.CustomFormControlLabel
-              label="Recordar mis datos para futuros pedidos"
+              label={t('save_user_data_message')}
               styledTheme={styledTheme}
               control={<S.CustomCheckbox styledTheme={styledTheme} />}
               // eslint-disable-next-line padded-blocks
@@ -233,7 +235,7 @@ const Address: FC = () => {
 
           <S.ButtonWrapper>
             <Button
-              text="Confirmar datos"
+              text={t('btn_1')}
               variant="primary"
               type="submit"
               fluid

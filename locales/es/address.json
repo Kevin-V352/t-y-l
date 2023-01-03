@@ -1,0 +1,28 @@
+{
+  "page": {
+    "title": "Datos de la orden"
+  },
+  "payment_methods": {
+    "cash": "Efectivo",
+    "credit_card": "Tarjeta de crédito",
+    "debit_card": "Tarjeta de débito"
+  },
+  "delivery_methods": {
+    "withdrawal_by_local": "Retiro por local",
+    "home_delivery": "Envió a domicilio"
+  },
+  "name_input": "Nombre",
+  "phone_number_input": "Teléfono",
+  "city_input": "Ciudad",
+  "address_input": "Dirección",
+  "save_user_data_message": "Recordar mis datos para futuros pedidos",
+  "btn_1": "CONFIRMAR DATOS",
+  "errors": {
+    "payment_methods": "El método de pago es requerido",
+    "deliveryMethod": "El método de envío es requerido",
+    "name_input": "El nombre es requerido",
+    "phone_number_input": "El número telefónico es requerido",
+    "city_input": "La ciudad es requerida",
+    "address_input": "La dirección es requerida"
+  }
+}

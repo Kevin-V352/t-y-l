@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { useTranslation } from 'next-i18next';
+import useTranslation from 'next-translate/useTranslation';
 
 import { useFilter } from '@/hooks';
 import { ICategoryForSearch } from '@/interfaces';
@@ -10,7 +10,7 @@ import { IFilterContentProps } from './types';
 
 const FilterContent: FC<IFilterContentProps> = ({ onOptionIsSelected }) => {
 
-  const { t } = useTranslation('search');
+  const { t } = useTranslation('common');
 
   const { changeCategory } = useFilter();
 
