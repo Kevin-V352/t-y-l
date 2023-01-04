@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 
-import { useTranslation } from 'react-i18next';
+import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 import { FaSort } from 'react-icons/fa';
 import { IoFilter } from 'react-icons/io5';
 
@@ -16,6 +17,7 @@ const Search: FC<ISearchPageProps> = ({ products }) => {
   const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
+  const router = useRouter();
   const { t } = useTranslation('search');
 
   const { sortItems } = useFilter();
@@ -24,12 +26,14 @@ const Search: FC<ISearchPageProps> = ({ products }) => {
   const isDesktop = currentResolution ? (currentResolution >= 1024) : false;
   const open = !!anchorEl;
   const sortOptions = ['price_DESC', 'price_ASC', 'publishedAt_DESC'];
+  const currentQuery = router.query.query;
+  const pageTitle = (!!currentQuery && currentQuery !== '0') ? `T&L | ${currentQuery}` : `T&L | ${t('page.title')}`;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => setAnchorEl(event.currentTarget);
   const handleClose = (): void => setAnchorEl(null);
   const createSortOptions = (options: string[]): Array<{ text: string; cb: () => void }> => (
     options.map((option) => ({
-      text: t(`filters.sort.${option}`),
+      text: t(`sort.${option}`),
       cb:   () => {
 
         sortItems(option as any); handleClose();
@@ -40,7 +44,7 @@ const Search: FC<ISearchPageProps> = ({ products }) => {
 
   return (
     <MainLayout
-      title={`${t('page.title')}`}
+      title={pageTitle}
       // TODO: Hacer traducciones y unirlas con query de busqueda o categoria
       desc="Busqueda de producto X"
     >
@@ -54,7 +58,7 @@ const Search: FC<ISearchPageProps> = ({ products }) => {
           {
             !isDesktop && (
               <Button
-                text='Categorias'
+                text={t('btn_1')}
                 variant='outlined'
                 icon={<IoFilter />}
                 onClick={() => setOpenFilter(true)}
@@ -62,7 +66,7 @@ const Search: FC<ISearchPageProps> = ({ products }) => {
             )
           }
           <Button
-            text="Orden"
+            text={t('btn_2')}
             variant='outlined'
             icon={<FaSort />}
             id="basic-button"

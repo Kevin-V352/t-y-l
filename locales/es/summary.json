@@ -1,0 +1,22 @@
+{
+  "page": {
+    "title": "Resumen de compra"
+  },
+  "name": "Nombre:",
+  "phone_number": "Teléfono:",
+  "city": "Ciudad:",
+  "address": "Dirección:",
+  "payment_method": {
+    "label": "Método de pago:",
+    "cash": "Efectivo",
+    "credit_card": "Tarjeta de crédito",
+    "debit_card": "Tarjeta de débito"
+  },
+  "delivery_method": {
+    "label": "Método de entrega:",
+    "withdrawal_by_local": "Retiro por local",
+    "home_delivery": "Envió a domicilio"
+  },
+  "totalPrice": "Precio total:",
+  "btn_1": "CONFIRMAR COMPRA"
+}

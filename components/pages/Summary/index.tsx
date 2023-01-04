@@ -3,6 +3,7 @@ import { FC, useContext, useEffect } from 'react';
 
 import 'react-toastify/dist/ReactToastify.css';
 
+import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
 import { CartContext } from '@/contexts';
@@ -22,6 +23,8 @@ const Summary: FC = () => {
   } = useContext(CartContext);
 
   const router = useRouter();
+
+  const { t } = useTranslation('summary');
 
   const currentResolution = useResponsive();
 
@@ -53,24 +56,24 @@ const Summary: FC = () => {
 
   return (
     <MainLayout
-      title="Resumen de orden"
+      title={`T&L | ${t('page.title')}`}
       desc=""
     >
       <S.Container>
-        <S.Title>Resumen de orden</S.Title>
+        <S.Title>{t('page.title')}</S.Title>
         <S.DataList>
           <S.Item>
-            <S.TextItem variant='primary'>Nombre:</S.TextItem>
+            <S.TextItem variant='primary'>{t('name')}</S.TextItem>
             <S.TextItem variant='secondary'>{name}</S.TextItem>
           </S.Item>
           <S.Item>
-            <S.TextItem variant='primary'>Teléfono:</S.TextItem>
+            <S.TextItem variant='primary'>{t('phone_number')}</S.TextItem>
             <S.TextItem variant='secondary'>{phoneNumber}</S.TextItem>
           </S.Item>
           {
             userData.city && (
               <S.Item>
-                <S.TextItem variant='primary'>Ciudad:</S.TextItem>
+                <S.TextItem variant='primary'>{t('city')}</S.TextItem>
                 <S.TextItem variant='secondary'>{userData.city}</S.TextItem>
               </S.Item>
             )
@@ -78,28 +81,28 @@ const Summary: FC = () => {
           {
             userData.address && (
               <S.Item>
-                <S.TextItem variant='primary'>Dirección:</S.TextItem>
+                <S.TextItem variant='primary'>{t('address')}</S.TextItem>
                 <S.TextItem variant='secondary'>{userData.address}</S.TextItem>
               </S.Item>
             )
           }
           <S.Item>
-            <S.TextItem variant='primary'>Método de pago:</S.TextItem>
-            <S.TextItem variant='secondary'>{paymentMethod}</S.TextItem>
+            <S.TextItem variant='primary'>{t('payment_method.label')}</S.TextItem>
+            <S.TextItem variant='secondary'>{t(`payment_method.${paymentMethod}`)}</S.TextItem>
           </S.Item>
           <S.Item>
-            <S.TextItem variant='primary'>Método de entrega:</S.TextItem>
-            <S.TextItem variant='secondary'>{deliveryMethod}</S.TextItem>
+            <S.TextItem variant='primary'>{t('delivery_method.label')}</S.TextItem>
+            <S.TextItem variant='secondary'>{t(`delivery_method.${deliveryMethod}`)}</S.TextItem>
           </S.Item>
           <S.Item>
-            <S.TextItem variant='primary'>Precio total: </S.TextItem>
+            <S.TextItem variant='primary'>{t('totalPrice')}</S.TextItem>
             <S.TextItem variant='secondary'>{formatters.currencyFormat(totalPrice)}</S.TextItem>
           </S.Item>
           {
             isDesktop && (
               <Button
                 fluid
-                text='Crear orden'
+                text={t('btn_1')}
                 variant='primary'
                 onClick={submitOrder}
                 disabled={loading}
@@ -120,7 +123,7 @@ const Summary: FC = () => {
         {
           !isDesktop && (
             <Button
-              text='Crear orden'
+              text={t('btn_1')}
               variant='primary'
               onClick={submitOrder}
               disabled={loading}

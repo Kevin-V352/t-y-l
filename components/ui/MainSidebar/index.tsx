@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 
 import 'react-toastify/dist/ReactToastify.css';
-
 import { Collapse, List } from '@mui/material';
+import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
 import { BaseSidebar, FilterContent, Notification, OptionList } from '@/ui';
@@ -23,6 +23,8 @@ const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
 
   const router = useRouter();
 
+  const { t } = useTranslation('common');
+
   const saveFileOptions = {
     id:             'mobile_notification',
     pendingMessage: 'Estamos generando el archivo. Un momento por favor...',
@@ -32,17 +34,17 @@ const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
 
   const options = [
     {
-      text: 'Carrito',
+      text: t('main_sidebar.cart'),
       cb:   async () => await router.push('/cart'),
       icon: <S.CartIcon />
     },
     {
-      text: 'Descargar lista en PDF',
+      text: t('main_sidebar.download_file'),
       cb:   async () => await getters.saveMenuDocument(saveFileOptions, onClose),
       icon: <S.DownloadIcon />
     },
     {
-      text: 'Ofertas',
+      text: t('main_sidebar.offers'),
       icon: <S.OfferIcon />,
       cb:   () => {
 
@@ -51,7 +53,7 @@ const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
       }
     },
     {
-      text: 'Categorias',
+      text: t('main_sidebar.categories'),
       icon: <S.CategoryIcon />,
       cb:   () => setCategoriesOpen((prevState) => !prevState)
     }
