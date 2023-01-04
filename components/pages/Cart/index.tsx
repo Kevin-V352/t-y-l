@@ -1,5 +1,8 @@
 import { FC, useContext } from 'react';
 
+import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
+
 import { CartContext } from '@/contexts';
 import { useUpdateCart } from '@/hooks';
 import { MainLayout } from '@/layouts';
@@ -11,6 +14,8 @@ import * as S from './styles';
 const Cart: FC = () => {
 
   const { cart, cookiesLoaded, updatedProducts, totalPrice } = useContext(CartContext);
+
+  const { t } = useTranslation('cart');
 
   useUpdateCart();
 
@@ -36,6 +41,7 @@ const Cart: FC = () => {
                   <CartItem
                     key={product.id}
                     product={product}
+                    editable
                   />
                 ))
               }
@@ -43,11 +49,13 @@ const Cart: FC = () => {
             <S.SummaryWrapper>
               <S.SummaryText>Total:</S.SummaryText>
               <S.SummaryPrice>{formatters.currencyFormat(totalPrice)}</S.SummaryPrice>
-              <Button
-                text='Continuar compra'
-                variant='primary'
-                gridArea='btn'
-              />
+              <Link href="/checkout/address">
+                <Button
+                  text={t('btn_1')}
+                  variant='primary'
+                  gridArea='btn'
+                />
+              </Link>
             </S.SummaryWrapper>
           </>
         );
@@ -58,7 +66,7 @@ const Cart: FC = () => {
             <S.Title>Tu carrito está vacío</S.Title>
             <S.HighlightedText>¿No sabés qué comprar? ¡Varios de productos te esperan!</S.HighlightedText>
             <Button
-              text="Descubrir ofertas"
+              text={t('btn_2')}
               variant='primary'
             />
           </S.LoaderWrapper>
@@ -70,11 +78,11 @@ const Cart: FC = () => {
 
   return (
     <MainLayout
-      title="Carrito"
+      title={`T&L | ${t('page.title')}`}
       desc="This is the cart"
     >
       <S.Container status={contentType}>
-        <S.Title>Carrito</S.Title>
+        <S.Title>{t('page.title')}</S.Title>
         {conditionalRender(contentType)}
       </S.Container>
     </MainLayout>

@@ -1,5 +1,4 @@
 import type { NextPage, GetServerSideProps } from 'next';
-/* import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; */
 
 import { dbProducts } from '@/database';
 import { ISearchPageProps } from '@/interfaces';
@@ -13,7 +12,7 @@ const SearchPage: NextPage<ISearchPageProps> = ({ products }) => {
 
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query, locale = 'es' }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   const [products] = await dbProducts.searchProducts(query as any);
 
@@ -21,7 +20,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query, locale = '
 
   return {
     props: {
-      /* ...(await serverSideTranslations(locale, ['search'])), */
       products
     }
   };

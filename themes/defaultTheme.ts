@@ -13,7 +13,8 @@ const defaultTheme: DefaultTheme = {
     harvest_gold: '#DDBC54',
     light_grey:   '#E4D9D5',
     oslo_grey:    '#8B898A',
-    white:        '#FFF'
+    white:        '#FFF',
+    error:        '#D32F2F'
   },
   button: {
     mocha:             '#A76E50',
@@ -28,7 +29,8 @@ const defaultTheme: DefaultTheme = {
     pastel_orange:     '#FB9F40',
     transparent_black: 'rgba(0, 0, 0, 0.3)',
     transparent_white: 'rgba(255, 255, 255, 0.1)',
-    white:             '#FFF'
+    white:             '#FFF',
+    error:             '#D32F2F'
   },
   icon: {
     black_cat:    'rgba(70, 57, 63, 0.98)',
