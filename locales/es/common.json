@@ -21,5 +21,10 @@
     "download_file": "Descargar lista en PDF",
     "offers": "Ofertas",
     "categories": "Categorias"
+  },
+  "download_notification": {
+    "pending_message": "Estamos generando el archivo. Un momento por favor...",
+    "success_message": "Menú generado exitosamente. Descargando...",
+    "error_message":   "Se ha producido un error al intentar generar el archivo."
   }
 }

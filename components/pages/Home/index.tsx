@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import useTranslation from 'next-translate/useTranslation';
+
 import { useResponsive } from '@/hooks';
 import { MainLayout } from '@/layouts';
 import { CustomSlider, Slider, ProductSlider, AdvertisingBox } from '@/ui';
@@ -25,12 +27,14 @@ const sliderItems2 = [
 
 const Home: FC = () => {
 
+  const { t } = useTranslation('home');
+
   const currentResolution = useResponsive();
   const isDesktop = currentResolution ? (currentResolution >= 1024) : false;
 
   return (
     <MainLayout
-      title='TYL'
+      title={t('page.title')}
       desc='Venta de bebidas'
     >
       <section>

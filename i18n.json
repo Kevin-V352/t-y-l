@@ -3,6 +3,7 @@
   "defaultLocale": "es",
   "pages": {
     "*": ["common"],
+    "/": ["home"],
     "/search/[query]": ["search"],
     "/product/[slug]": ["product"],
     "/cart": ["cart"],
