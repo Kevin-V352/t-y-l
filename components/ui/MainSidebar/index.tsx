@@ -5,7 +5,7 @@ import { Collapse, List } from '@mui/material';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
-import { BaseSidebar, FilterContent, Notification, OptionList } from '@/ui';
+import { BaseSidebar, FilterContent, OptionList } from '@/ui';
 import { getters } from '@/utils';
 
 import * as S from './styles';
@@ -27,9 +27,9 @@ const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
 
   const saveFileOptions = {
     id:             'mobile_notification',
-    pendingMessage: 'Estamos generando el archivo. Un momento por favor...',
-    successMessage: 'Menú generado exitosamente. Descargando...',
-    errorMessage:   'Se ha producido un error al intentar generar el archivo.'
+    pendingMessage: t('download_notification.pending_message'),
+    successMessage: t('download_notification.success_message'),
+    errorMessage:   t('download_notification.error_message')
   };
 
   const options = [
@@ -91,7 +91,6 @@ const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
           <FilterContent onOptionIsSelected={onCategoryOptionIsSelected} />
         </Collapse>
       </List>
-      <Notification />
     </BaseSidebar>
   );
 
