@@ -7,7 +7,6 @@ export const CustomMenu = styled(Menu)`
     background: linear-gradient(180deg, rgba(70, 57, 63, 0.98) 50%, rgba(48,46,57,1) 100%);
     margin-top: 1rem;
   };
-  
 `;
 
 export const CustomMenuItem = styled(MenuItem)`
