@@ -83,45 +83,40 @@ export const SummaryWrapper = styled.div`
   width: 100%;
   padding: 20px 30px;
   box-sizing: border-box;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-  grid-template-columns: 1fr min-content;
-  grid-template-areas: 
-    'text price'
-    'btn  btn'
-  ;
 
   @media screen and (min-width: 768px) {
-    grid-template-areas: 'text price btn';
-    grid-template-columns: repeat(2, min-content) 1fr;
-    grid-column-gap: 40px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     padding: 40px;
   };
 
   @media screen and (min-width: 1024px) {
     ${commonShadow}
     position: static;
-    grid-template-areas: 
-      'text price'
-      'btn  btn'
-    ;
-    grid-template-columns: min-content 1fr;
-    grid-column-gap: 40px;
-    grid-row-gap: 40px;
-    padding: 40px;
     height: min-content;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
   };
 `;
 
+export const SummaryTextWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
+
 export const SummaryText = styled.span`
-  grid-area: text;
+  margin-right: 20px;
   font-weight: 600;
   font-size: var(--primary-font-size);
   color: ${({ theme }) => theme.text.white};
 `;
 
 export const SummaryPrice = styled.span`
-  grid-area: price;
   font-weight: 600;
   font-size: var(--primary-font-size);
   color: ${({ theme }) => theme.text.harvest_gold};

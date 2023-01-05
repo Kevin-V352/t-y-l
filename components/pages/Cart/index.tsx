@@ -47,13 +47,14 @@ const Cart: FC = () => {
               }
             </S.ProductList>
             <S.SummaryWrapper>
-              <S.SummaryText>Total:</S.SummaryText>
-              <S.SummaryPrice>{formatters.currencyFormat(totalPrice)}</S.SummaryPrice>
+              <S.SummaryTextWrapper>
+                <S.SummaryText>Total:</S.SummaryText>
+                <S.SummaryPrice>{formatters.currencyFormat(totalPrice)}</S.SummaryPrice>
+              </S.SummaryTextWrapper>
               <Link href="/checkout/address">
                 <Button
                   text={t('btn_1')}
                   variant='primary'
-                  gridArea='btn'
                 />
               </Link>
             </S.SummaryWrapper>
