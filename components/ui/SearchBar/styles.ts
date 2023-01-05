@@ -16,11 +16,17 @@ export const Container = styled.div`
   height: 40px;
   width: 100%;
   max-width: 600px;
+  margin-left: 5px;
+
+  @media screen and (min-width: 1024px) {
+    margin-left: 0;
+  };
 `;
 
 export const Input = styled.input`
   font-size: 1.8rem;
   background-color: transparent;
+  width: 100%;
   border: none;
   color: white;
   :focus {
