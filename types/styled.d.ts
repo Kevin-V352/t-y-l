@@ -5,16 +5,18 @@ declare module 'styled-components' {
     background: {
       black_cat:      string;
       dark_grey:      string;
-      indian_yellow:  string;
       outer_space:    string;
-      saffron_mango:  string;
+      indian_yellow:  string;
       sand:           string;
+      saffron_mango:  string;
+      light_orange:   string;
     };
     text: {
       harvest_gold: string;
       light_grey:   string;
       oslo_grey:    string;
       white:        string;
+      black:        string;
       error:        string;
     };
     button: {
