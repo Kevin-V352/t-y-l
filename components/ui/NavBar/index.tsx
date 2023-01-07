@@ -162,6 +162,7 @@ const NavBar: FC = () => {
         open={!!anchorEl}
         anchorEl={anchorEl}
         onClose={handleClose}
+        disableScrollLock
       >
         <FilterContent />
       </S.CustomMenu>
