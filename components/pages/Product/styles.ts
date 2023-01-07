@@ -89,3 +89,25 @@ export const Description = styled.p`
   font-size: var(--secondary-font-size);
   color: ${({ theme }) => theme.text.light_grey};
 `;
+
+export const ConfirmModalWrapper = styled.div`
+  ${commonBackground}
+  width: calc(100vw - 20px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  @media screen and (min-width: 768px) {
+    width: 50vw;
+  };
+
+  @media screen and (min-width: 1024px) {
+    width: 30vw;
+  };
+`;

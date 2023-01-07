@@ -1,12 +1,14 @@
 /* eslint-disable import/no-unresolved */
-import { FC, useContext } from 'react';
+import { FC, useContext, useState, useRef } from 'react';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
 
+import { Modal } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -14,7 +16,7 @@ import { CartContext } from '@/contexts';
 import { useCurrentPrice, useQuantity, useUpdateCart } from '@/hooks';
 import { ICartProduct, IProductDetailsPageProps } from '@/interfaces';
 import { MainLayout } from '@/layouts';
-import { Skeleton, Button, QuantitySelector } from '@/ui';
+import { Skeleton, Button, QuantitySelector, Checkbox } from '@/ui';
 import { formatters } from '@/utils';
 
 import * as S from './styles';
@@ -31,7 +33,18 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
     slug
   } = product;
 
-  const { cookiesLoaded, updatedProducts, addProduct, getCurrentQuantity } = useContext(CartContext);
+  const {
+    cookiesLoaded,
+    updatedProducts,
+    hideMessage1,
+    hideMessageInProducts,
+    addProduct,
+    getCurrentQuantity
+  } = useContext(CartContext);
+
+  const [openConfirmModal, setOpenConfirmModal] = useState<boolean>(false);
+
+  const hideConfirmationMessage = useRef<boolean>(false);
 
   const { t } = useTranslation('product');
 
@@ -66,6 +79,15 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
     };
 
     addProduct(formattedProduct);
+
+    if (!hideMessage1) setOpenConfirmModal(true);
+
+  };
+
+  const handleClose = (): void => {
+
+    setOpenConfirmModal(false);
+    if (hideConfirmationMessage.current) hideMessageInProducts();
 
   };
 
@@ -135,6 +157,35 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
           !isDesktop && <S.Description>{description}</S.Description>
         }
       </S.Container>
+      <Modal
+        open={openConfirmModal}
+        onClose={handleClose}
+        aria-labelledby="confirm-modal-title"
+        aria-describedby="confirm-modal-description"
+      >
+        <S.ConfirmModalWrapper>
+          <S.Title id="confirm-modal-title">El producto se añadio al carrito</S.Title>
+          <Button
+            text="Seguir comprando"
+            variant="primary"
+            onClick={handleClose}
+          />
+          <Link
+            href="/cart"
+            prefetch={false}
+          >
+            <Button
+              text="Ir al carrito"
+              variant="primary"
+            />
+          </Link>
+          <Checkbox
+            label="No quiero volver a ver esto"
+            // eslint-disable-next-line padded-blocks
+            onChange={(_, checked) => { hideConfirmationMessage.current = checked; }}
+          />
+        </S.ConfirmModalWrapper>
+      </Modal>
     </MainLayout>
   );
 

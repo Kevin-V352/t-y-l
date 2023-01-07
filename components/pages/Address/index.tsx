@@ -2,7 +2,7 @@
 import { FC, ChangeEvent, useRef, useEffect, useContext } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormControl, FormGroup, RadioGroup } from '@mui/material';
+import { FormControl, RadioGroup } from '@mui/material';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
@@ -12,7 +12,7 @@ import * as yup from 'yup';
 import { CartContext } from '@/contexts';
 import { ClientFormData, ClientFormType } from '@/interfaces';
 import { MainLayout } from '@/layouts';
-import { Button, TextInput } from '@/ui';
+import { Button, Checkbox, TextInput } from '@/ui';
 import { getters } from '@/utils';
 
 import * as S from './styles';
@@ -223,15 +223,11 @@ const Address: FC = () => {
 
           <S.Separator />
 
-          <FormGroup>
-            <S.CustomFormControlLabel
-              label={t('save_user_data_message')}
-              styledTheme={styledTheme}
-              control={<S.CustomCheckbox styledTheme={styledTheme} />}
-              // eslint-disable-next-line padded-blocks
-              onChange={(_, checked) => { saveUserData.current = checked; }}
-            />
-          </FormGroup>
+          <Checkbox
+            label={t('save_user_data_message')}
+            // eslint-disable-next-line padded-blocks
+            onChange={(_, checked) => { saveUserData.current = checked; }}
+          />
 
           <S.ButtonWrapper>
             <Button

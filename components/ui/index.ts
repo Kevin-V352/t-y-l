@@ -3,6 +3,7 @@ export { default as BaseSidebar } from './BaseSidebar';
 export { default as Button } from './Button';
 export { default as CartItem } from './CartItem';
 export { default as CategoryTag } from './CategoryTag';
+export { default as Checkbox } from './Checkbox';
 export { default as Chip } from './Chip';
 export { default as CustomSlider } from './CustomSlider';
 export { default as ExpandableOptionList } from './ExpandableOptionList';

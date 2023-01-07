@@ -5,22 +5,24 @@ import { CartState } from './';
 type CartActionType =
   | { type: 'ADD_PRODUCT'; payload: ICartProduct[] }
   | { type: 'DELETE_PRODUCT'; payload: ICartProduct[] }
-  | { type: 'LOAD_CART_BY_COOKIES'; payload: ICartProduct[] }
+  | { type: 'LOAD_DATA_BY_COOKIES'; payload: { cart: ICartProduct[]; hideMessage1: boolean } }
   | { type: 'LOAD_TOTAL_PRICE'; payload: number }
   | { type: 'UPDATE_CART'; payload: ICartProduct[] }
   | { type: 'UNSUBSCRIBE_CART' }
   | { type: 'LOAD_USER_DATA'; payload: ClientFormData }
   | { type: 'CLEAR_CART' }
+  | { type: 'HIDE_MESSAGE_1' };
 
 export const CartReducer = (state: CartState, action: CartActionType): CartState => {
 
   switch (action.type) {
 
-    case 'LOAD_CART_BY_COOKIES':
+    case 'LOAD_DATA_BY_COOKIES':
       return {
         ...state,
         cookiesLoaded: true,
-        cart:          action.payload
+        cart:          action.payload.cart,
+        hideMessage1:  action.payload.hideMessage1
       };
 
     case 'ADD_PRODUCT':
@@ -65,6 +67,12 @@ export const CartReducer = (state: CartState, action: CartActionType): CartState
         ...state,
         cart:     [],
         userData: null
+      };
+
+    case 'HIDE_MESSAGE_1':
+      return {
+        ...state,
+        hideMessage1: true
       };
 
     default:
