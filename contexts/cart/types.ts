@@ -8,6 +8,7 @@ export interface CartState {
   totalPrice: number;
   cookiesLoaded: boolean;
   updatedProducts: boolean;
+  hideMessage1: boolean;
 };
 
 export interface CartContextProps extends CartState {
@@ -18,6 +19,7 @@ export interface CartContextProps extends CartState {
   unsubscribeCart: () => void;
   setClientData: (data: ClientFormData, saveData: boolean) => void;
   clearCart: () => void;
+  hideMessageInProducts: () => void;
 };
 
 export interface CartProviderProps {

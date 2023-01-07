@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { FC, useEffect, useReducer } from 'react';
 
 import Cookies from 'js-cookie';
@@ -12,7 +13,8 @@ const CART_INITIAL_STATE: CartState = {
   userData:        null,
   totalPrice:      0,
   cookiesLoaded:   false,
-  updatedProducts: false
+  updatedProducts: false,
+  hideMessage1:    false
 };
 
 export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element => {
@@ -34,9 +36,16 @@ export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element =
 
   const loadCartWithCookies = (): void => {
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const prevCart = Cookies.get('cart') ? JSON.parse(Cookies.get('cart')!) : [];
-    dispatch({ type: 'LOAD_CART_BY_COOKIES', payload: prevCart });
+    const prevMessage1Status = Cookies.get('hide_message_1') ? JSON.parse(Cookies.get('hide_message_1')!) : false;
+
+    dispatch({
+      type:    'LOAD_DATA_BY_COOKIES',
+      payload: {
+        cart:         prevCart,
+        hideMessage1: prevMessage1Status
+      }
+    });
 
   };
 
@@ -128,6 +137,13 @@ export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element =
 
   };
 
+  const hideMessageInProducts = (): void => {
+
+    Cookies.set('hide_message_1', JSON.stringify(true));
+    dispatch({ type: 'HIDE_MESSAGE_1' });
+
+  };
+
   return (
     <CartContext.Provider value={{
       ...state,
@@ -137,7 +153,8 @@ export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element =
       updateCart,
       unsubscribeCart,
       setClientData,
-      clearCart
+      clearCart,
+      hideMessageInProducts
     }}>
       {children}
     </CartContext.Provider>
