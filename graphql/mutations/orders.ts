@@ -7,6 +7,8 @@ export const CREATE_ORDER = gql`
     $totalPrice: Float!,
     $paymentMethod: String!,
     $deliveryMethod: String!,
+    $city: String,
+    $address: String,
     $products: Json!
   ) {
     createOrder(
@@ -17,6 +19,8 @@ export const CREATE_ORDER = gql`
         paid: false, 
         paymentMethod: $paymentMethod, 
         deliveryMethod: $deliveryMethod,
+        city: $city,
+        address: $address,
         products: $products
       }
     ) {
