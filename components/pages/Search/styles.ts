@@ -17,12 +17,11 @@ export const Container = styled.div`
   @media screen and (min-width: 1024px) {
     display: grid;
     grid-template-columns: 20vw 1fr;
-    grid-auto-rows: min-content;
+    grid-auto-rows: min-content 1fr;
     gap: 30px;
     grid-template-areas: 
       'filters  buttons'
       'filters  products'
-      'filters  empty' 
     ;
   };
 `;
