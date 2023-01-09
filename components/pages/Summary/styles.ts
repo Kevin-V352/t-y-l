@@ -45,6 +45,7 @@ export const DataList = styled.ul`
     ${commonShadow}
     margin: 0;
     padding: 40px;
+    height: min-content;
   };
 `;
 
