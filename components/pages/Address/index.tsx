@@ -97,7 +97,29 @@ const Address: FC = () => {
 
   const onSubmit = async (data: ClientFormData): Promise<void> => {
 
-    setClientData(data, saveUserData.current);
+    const {
+      name,
+      phoneNumber,
+      paymentMethod,
+      deliveryMethod,
+      city,
+      address
+    } = data;
+
+    let userDataformatted: ClientFormData | any = {};
+
+    if (deliveryMethod === 'withdrawal_by_local' && (city ?? address)) {
+
+      userDataformatted = {
+        name,
+        phoneNumber,
+        paymentMethod,
+        deliveryMethod
+      };
+
+    } else userDataformatted = data;
+
+    setClientData(userDataformatted, saveUserData.current);
     await router.push('/checkout/summary');
 
   };
