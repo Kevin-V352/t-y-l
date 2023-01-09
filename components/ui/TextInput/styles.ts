@@ -42,6 +42,10 @@ export const CustomTextField = muiStyled(TextField)<ICustomTextFieldProps>(({ st
     },
     '&.Mui-focused fieldset': {
       borderColor: styledTheme.border.white
+    },
+    '& :-webkit-autofill': {
+      '-webkit-box-shadow':      `0 0 0 100px ${styledTheme.background.outer_space} inset`,
+      '-webkit-text-fill-color': styledTheme.text.white
     }
   }
 }));
