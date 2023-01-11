@@ -8,6 +8,7 @@
     "/product/[slug]": ["product"],
     "/cart": ["cart"],
     "/checkout/address": ["address"],
-    "/checkout/summary": ["summary"]
+    "/checkout/summary": ["summary"],
+    "/open-chat/[id]": ["open_chat"]
   }
 }
