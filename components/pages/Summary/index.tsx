@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { CartContext } from '@/contexts';
 import { useCreateOrder, useResponsive } from '@/hooks';
 import { MainLayout } from '@/layouts';
-import { Button, CartItem, Notification } from '@/ui';
+import { Button, CartItem, Loader, Notification } from '@/ui';
 import { formatters } from '@/utils';
 
 import * as S from './styles';
@@ -37,20 +37,101 @@ const Summary: FC = () => {
 
   }, []);
 
+  const contentType = !userData ? 'load' : 'content';
+
   const isDesktop = currentResolution ? (currentResolution >= 1024) : false;
-
-  if (!userData) return null;
-
-  const {
-    name,
-    phoneNumber,
-    paymentMethod,
-    deliveryMethod
-  } = userData;
 
   const submitOrder = async (): Promise<void> => {
 
-    await saveOrder(userData, cart, totalPrice);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    await saveOrder(userData!, cart, totalPrice);
+
+  };
+
+  const conditionalRender = (type: 'load' | 'content'): JSX.Element | JSX.Element[] => {
+
+    switch (type) {
+
+      case 'content':
+        return (
+          <>
+            <S.Title>{t('page.title')}</S.Title>
+            <S.DataList>
+              <S.Item>
+                <S.TextItem variant='primary'>{t('name')}</S.TextItem>
+                <S.TextItem variant='secondary'>{userData?.name}</S.TextItem>
+              </S.Item>
+              <S.Item>
+                <S.TextItem variant='primary'>{t('phone_number')}</S.TextItem>
+                <S.TextItem variant='secondary'>{userData?.phoneNumber}</S.TextItem>
+              </S.Item>
+              {
+                userData?.city && (
+                  <S.Item>
+                    <S.TextItem variant='primary'>{t('city')}</S.TextItem>
+                    <S.TextItem variant='secondary'>{userData.city}</S.TextItem>
+                  </S.Item>
+                )
+              }
+              {
+                userData?.address && (
+                  <S.Item>
+                    <S.TextItem variant='primary'>{t('address')}</S.TextItem>
+                    <S.TextItem variant='secondary'>{userData.address}</S.TextItem>
+                  </S.Item>
+                )
+              }
+              <S.Item>
+                <S.TextItem variant='primary'>{t('payment_method.label')}</S.TextItem>
+                <S.TextItem variant='secondary'>{t(`payment_method.${userData?.paymentMethod}`)}</S.TextItem>
+              </S.Item>
+              <S.Item>
+                <S.TextItem variant='primary'>{t('delivery_method.label')}</S.TextItem>
+                <S.TextItem variant='secondary'>{t(`delivery_method.${userData?.deliveryMethod}`)}</S.TextItem>
+              </S.Item>
+              <S.Item>
+                <S.TextItem variant='primary'>{t('totalPrice')}</S.TextItem>
+                <S.TextItem variant='secondary'>{formatters.currencyFormat(totalPrice)}</S.TextItem>
+              </S.Item>
+              {
+                isDesktop && (
+                  <Button
+                    fluid
+                    text={t('btn_1')}
+                    variant='primary'
+                    onClick={submitOrder}
+                    disabled={loading}
+                  />
+                )
+              }
+            </S.DataList>
+            <S.ProductList>
+              {
+                cart.map((product) => (
+                  <CartItem
+                    key={product.id}
+                    product={product}
+                  />
+                ))
+              }
+            </S.ProductList>
+            {
+              !isDesktop && (
+                <Button
+                  text={t('btn_1')}
+                  variant='primary'
+                  onClick={submitOrder}
+                  disabled={loading}
+                />
+              )
+            }
+          </>
+        );
+
+      default:
+        return <Loader />;
+
+    };
 
   };
 
@@ -59,77 +140,8 @@ const Summary: FC = () => {
       title={`T&L | ${t('page.title')}`}
       desc=""
     >
-      <S.Container>
-        <S.Title>{t('page.title')}</S.Title>
-        <S.DataList>
-          <S.Item>
-            <S.TextItem variant='primary'>{t('name')}</S.TextItem>
-            <S.TextItem variant='secondary'>{name}</S.TextItem>
-          </S.Item>
-          <S.Item>
-            <S.TextItem variant='primary'>{t('phone_number')}</S.TextItem>
-            <S.TextItem variant='secondary'>{phoneNumber}</S.TextItem>
-          </S.Item>
-          {
-            userData.city && (
-              <S.Item>
-                <S.TextItem variant='primary'>{t('city')}</S.TextItem>
-                <S.TextItem variant='secondary'>{userData.city}</S.TextItem>
-              </S.Item>
-            )
-          }
-          {
-            userData.address && (
-              <S.Item>
-                <S.TextItem variant='primary'>{t('address')}</S.TextItem>
-                <S.TextItem variant='secondary'>{userData.address}</S.TextItem>
-              </S.Item>
-            )
-          }
-          <S.Item>
-            <S.TextItem variant='primary'>{t('payment_method.label')}</S.TextItem>
-            <S.TextItem variant='secondary'>{t(`payment_method.${paymentMethod}`)}</S.TextItem>
-          </S.Item>
-          <S.Item>
-            <S.TextItem variant='primary'>{t('delivery_method.label')}</S.TextItem>
-            <S.TextItem variant='secondary'>{t(`delivery_method.${deliveryMethod}`)}</S.TextItem>
-          </S.Item>
-          <S.Item>
-            <S.TextItem variant='primary'>{t('totalPrice')}</S.TextItem>
-            <S.TextItem variant='secondary'>{formatters.currencyFormat(totalPrice)}</S.TextItem>
-          </S.Item>
-          {
-            isDesktop && (
-              <Button
-                fluid
-                text={t('btn_1')}
-                variant='primary'
-                onClick={submitOrder}
-                disabled={loading}
-              />
-            )
-          }
-        </S.DataList>
-        <S.ProductList>
-          {
-            cart.map((product) => (
-              <CartItem
-                key={product.id}
-                product={product}
-              />
-            ))
-          }
-        </S.ProductList>
-        {
-          !isDesktop && (
-            <Button
-              text={t('btn_1')}
-              variant='primary'
-              onClick={submitOrder}
-              disabled={loading}
-            />
-          )
-        }
+      <S.Container $loading={(contentType === 'load')}>
+        {conditionalRender(contentType)}
       </S.Container>
       <Notification />
     </MainLayout>

@@ -2,9 +2,9 @@ import styled from 'styled-components';
 
 import { commonBackground, commonShadow } from '@/styles';
 
-import { ISummaryTextItemProps } from './types';
+import { ISummaryContainerProps, ISummaryTextItemProps } from './types';
 
-export const Container = styled.div`
+export const Container = styled.div<ISummaryContainerProps>`
   ${commonBackground}
   flex: 1;
   padding: 20px;
@@ -18,13 +18,16 @@ export const Container = styled.div`
 
   @media screen and (min-width: 1024px) {
     padding: 40px;
-    display: grid;
-    grid-template-areas: 
-      'title    title'
-      'products summary'
-    ;
-    grid-template-columns: 1fr 30%;
-    grid-auto-rows: min-content;
+
+    ${({ $loading }) => !$loading && (`
+      display: grid;
+      grid-template-areas: 
+        'title    title'
+        'products summary'
+      ;
+      grid-template-columns: 1fr 30%;
+      grid-auto-rows: min-content;
+    `)}
   };
 `;
 

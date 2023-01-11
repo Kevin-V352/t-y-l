@@ -1,0 +1,15 @@
+{
+  "page": {
+    "title": "T&L | Realizar pedido",
+    "description": "¡Tu compra te espera! Termínala desde esta página."
+  },
+  "title_1": "Realizar pedido al vendedor",
+  "description_1": "¡Último paso! El botón de abajo abrirá un chat con el vendedor, el mismo se abrirá con un mensaje que se genera automáticamente, el cual debe enviar al vendedor para informarle de que quiere realizar la compra.",
+  "description_3": "Esta orden ya se encuentra pagada, con lo cual, no se puede volver a realizar el pedido.",
+  "btn_1": "ABRIR CHAT DE WHATSAPP",
+  "btn_2": "Volver al inicio",
+  "title_2": "¿Seguís teniendo dudas de como realizar un pedido?",
+  "description_2": "Te dejamos dos videos explicativos (elige tu dispositivo) acerca de como realizar la orden.",
+  "tab_1": "CELULAR",
+  "tab_2": "PC"
+}

@@ -18,6 +18,7 @@ declare module 'styled-components' {
       white:        string;
       black:        string;
       error:        string;
+      light_orange: string;
     };
     button: {
       mocha:              string;
