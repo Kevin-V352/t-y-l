@@ -25,6 +25,12 @@ export const Container = styled.div`
   };
 `;
 
+export const LoadContainer = styled.div`
+  ${commonBackground}
+  display: flex;
+  flex: 1;
+`;
+
 export const Title = styled.h1`
   margin: 0;
   font-weight: 600;

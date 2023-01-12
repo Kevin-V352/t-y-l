@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { FC, ChangeEvent, useRef, useEffect, useContext } from 'react';
+import { FC, ChangeEvent, useRef, useEffect, useContext, useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControl, RadioGroup } from '@mui/material';
@@ -12,12 +12,18 @@ import * as yup from 'yup';
 import { CartContext } from '@/contexts';
 import { ClientFormData, ClientFormType } from '@/interfaces';
 import { MainLayout } from '@/layouts';
-import { Button, Checkbox, TextInput } from '@/ui';
+import { Button, Checkbox, Loader, TextInput } from '@/ui';
 import { getters } from '@/utils';
 
 import * as S from './styles';
 
-const Address: FC = () => {
+const LoadScreen: FC = () => (
+  <S.LoadContainer>
+    <Loader />
+  </S.LoadContainer>
+);
+
+const AddressContent: FC = () => {
 
   const formType = useRef<ClientFormType>('');
   const saveUserData = useRef<boolean>(false);
@@ -63,7 +69,6 @@ const Address: FC = () => {
     formState: { errors }
   } = useForm<ClientFormData>({
     resolver:      yupResolver(getValidationSchema(formType.current)),
-    // TODO: Corregir bug de hidratacion al recargar
     defaultValues: getters.getUserDataFromCookies()
   });
 
@@ -125,143 +130,176 @@ const Address: FC = () => {
   };
 
   return (
+    <S.Container>
+      <S.Title>{t('page.title')}</S.Title>
+      <S.Form onSubmit={handleSubmit(onSubmit)}>
+
+        <FormControl
+          error={!!errors.paymentMethod}
+        >
+          <S.CustomFormLabel
+            id="payment-method-radio-buttons-group"
+            styledTheme={styledTheme}
+          >
+            Método de pago
+          </S.CustomFormLabel>
+          <RadioGroup
+            aria-labelledby="payment-method-radio-buttons-group"
+            name="paymentMethod"
+            value={getValues('paymentMethod') || null}
+            onChange={changeRadioGroupState}
+          >
+            <S.CustomFormControlLabel
+              value="cash"
+              label={t('payment_methods.cash')}
+              {...commonFormControlLabelProps}
+            />
+            <S.CustomFormControlLabel
+              value="credit_card"
+              label={t('payment_methods.credit_card')}
+              {...commonFormControlLabelProps}
+            />
+            <S.CustomFormControlLabel
+              value="debit_card"
+              label={t('payment_methods.debit_card')}
+              {...commonFormControlLabelProps}
+            />
+          </RadioGroup>
+          <S.CustomFormHelperText styledTheme={styledTheme}>
+            {errors.paymentMethod?.message}
+          </S.CustomFormHelperText>
+        </FormControl>
+
+        <S.Separator />
+
+        <FormControl
+          error={!!errors.deliveryMethod}
+        >
+          <S.CustomFormLabel
+            id="delivery-method-radio-buttons-group"
+            styledTheme={styledTheme}
+          >
+            Método de entrega
+          </S.CustomFormLabel>
+          <RadioGroup
+            aria-labelledby="delivery-method-radio-buttons-group"
+            name="deliveryMethod"
+            value={getValues('deliveryMethod') || null}
+            onChange={changeRadioGroupState}
+          >
+            <S.CustomFormControlLabel
+              value="withdrawal_by_local"
+              label={t('delivery_methods.withdrawal_by_local')}
+              {...commonFormControlLabelProps}
+            />
+            <S.CustomFormControlLabel
+              value="home_delivery"
+              label={t('delivery_methods.home_delivery')}
+              {...commonFormControlLabelProps}
+            />
+          </RadioGroup>
+          <S.CustomFormHelperText styledTheme={styledTheme}>
+            {errors.deliveryMethod?.message}
+          </S.CustomFormHelperText>
+        </FormControl>
+
+        <S.Separator />
+
+        <TextInput
+          label={t('name_input')}
+          type="text"
+          error={!!errors.name}
+          helperText={errors.name?.message}
+          {...register('name')}
+        />
+
+        <TextInput
+          label={t('phone_number_input')}
+          type="tel"
+          error={!!errors.phoneNumber}
+          helperText={errors.phoneNumber?.message}
+          {...register('phoneNumber')}
+        />
+
+        {
+          (getValues('deliveryMethod') === 'home_delivery') &&
+          (
+            <>
+              <TextInput
+                label={t('city_input')}
+                type="text"
+                error={!!errors.city}
+                helperText={errors.city?.message}
+                {...register('city')}
+              />
+
+              <TextInput
+                label={t('address_input')}
+                type="text"
+                error={!!errors.address}
+                helperText={errors.address?.message}
+                {...register('address')}
+              />
+            </>
+          )
+        }
+
+        <S.Separator />
+
+        <Checkbox
+          label={t('save_user_data_message')}
+          defaultChecked={!!getters.getUserDataFromCookies()}
+          // eslint-disable-next-line padded-blocks
+          onChange={(_, checked) => { saveUserData.current = checked; }}
+        />
+
+        <S.ButtonWrapper>
+          <Button
+            text={t('btn_1')}
+            variant="primary"
+            type="submit"
+            fluid
+          />
+        </S.ButtonWrapper>
+
+      </S.Form>
+    </S.Container>
+  );
+
+};
+
+const Address: FC = () => {
+
+  const [contentType, setContentType] = useState<'load' | 'content'>('load');
+
+  useEffect(() => {
+
+    setContentType('content');
+
+  }, []);
+
+  const { t } = useTranslation('address');
+
+  const conditionalRender = (type: 'load' | 'content'): JSX.Element | JSX.Element[] => {
+
+    switch (type) {
+
+      case 'content':
+        return <AddressContent />;
+
+      default:
+        return <LoadScreen />;
+
+    };
+
+  };
+
+  return (
     <MainLayout
       title={`T&L | ${t('page.title')}`}
       desc=''
     >
-      <S.Container>
-        <S.Title>{t('page.title')}</S.Title>
-        <S.Form onSubmit={handleSubmit(onSubmit)}>
-
-          <FormControl
-            error={!!errors.paymentMethod}
-          >
-            <S.CustomFormLabel
-              id="payment-method-radio-buttons-group"
-              styledTheme={styledTheme}
-            >
-              Método de pago
-            </S.CustomFormLabel>
-            <RadioGroup
-              aria-labelledby="payment-method-radio-buttons-group"
-              name="paymentMethod"
-              value={getValues('paymentMethod')}
-              onChange={changeRadioGroupState}
-            >
-              <S.CustomFormControlLabel
-                value="cash"
-                label={t('payment_methods.cash')}
-                {...commonFormControlLabelProps}
-              />
-              <S.CustomFormControlLabel
-                value="credit_card"
-                label={t('payment_methods.credit_card')}
-                {...commonFormControlLabelProps}
-              />
-              <S.CustomFormControlLabel
-                value="debit_card"
-                label={t('payment_methods.debit_card')}
-                {...commonFormControlLabelProps}
-              />
-            </RadioGroup>
-            <S.CustomFormHelperText styledTheme={styledTheme}>
-              {errors.paymentMethod?.message}
-            </S.CustomFormHelperText>
-          </FormControl>
-
-          <S.Separator />
-
-          <FormControl
-            error={!!errors.deliveryMethod}
-          >
-            <S.CustomFormLabel
-              id="delivery-method-radio-buttons-group"
-              styledTheme={styledTheme}
-            >
-              Método de entrega
-            </S.CustomFormLabel>
-            <RadioGroup
-              aria-labelledby="delivery-method-radio-buttons-group"
-              name="deliveryMethod"
-              value={getValues('deliveryMethod')}
-              onChange={changeRadioGroupState}
-            >
-              <S.CustomFormControlLabel
-                value="withdrawal_by_local"
-                label={t('delivery_methods.withdrawal_by_local')}
-                {...commonFormControlLabelProps}
-              />
-              <S.CustomFormControlLabel
-                value="home_delivery"
-                label={t('delivery_methods.home_delivery')}
-                {...commonFormControlLabelProps}
-              />
-            </RadioGroup>
-            <S.CustomFormHelperText styledTheme={styledTheme}>
-              {errors.deliveryMethod?.message}
-            </S.CustomFormHelperText>
-          </FormControl>
-
-          <S.Separator />
-
-          <TextInput
-            label={t('name_input')}
-            type="text"
-            error={!!errors.name}
-            helperText={errors.name?.message}
-            {...register('name')}
-          />
-
-          <TextInput
-            label={t('phone_number_input')}
-            type="tel"
-            error={!!errors.phoneNumber}
-            helperText={errors.phoneNumber?.message}
-            {...register('phoneNumber')}
-          />
-
-          {
-            (getValues('deliveryMethod') === 'home_delivery') &&
-            (
-              <>
-                <TextInput
-                  label={t('city_input')}
-                  type="text"
-                  error={!!errors.city}
-                  helperText={errors.city?.message}
-                  {...register('city')}
-                />
-
-                <TextInput
-                  label={t('address_input')}
-                  type="text"
-                  error={!!errors.address}
-                  helperText={errors.address?.message}
-                  {...register('address')}
-                />
-              </>
-            )
-          }
-
-          <S.Separator />
-
-          <Checkbox
-            label={t('save_user_data_message')}
-            // eslint-disable-next-line padded-blocks
-            onChange={(_, checked) => { saveUserData.current = checked; }}
-          />
-
-          <S.ButtonWrapper>
-            <Button
-              text={t('btn_1')}
-              variant="primary"
-              type="submit"
-              fluid
-            />
-          </S.ButtonWrapper>
-
-        </S.Form>
-      </S.Container>
+      {conditionalRender(contentType)}
     </MainLayout>
   );
 
