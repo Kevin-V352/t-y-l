@@ -16,7 +16,8 @@ const defaultTheme: DefaultTheme = {
     oslo_grey:    '#8B898A',
     white:        '#FFF',
     black:        '#000',
-    error:        '#D32F2F'
+    error:        '#D32F2F',
+    light_orange: '#FCBA43'
   },
   button: {
     mocha:             '#A76E50',

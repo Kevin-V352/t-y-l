@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 
+import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 
 import { tylAPI } from '@/apis';
+import { CartContext } from '@/contexts';
 import { ClientFormData, ICartProduct } from '@/interfaces';
 
 interface IHookResponse {
@@ -12,7 +14,11 @@ interface IHookResponse {
 
 const useCreateOrder = (): IHookResponse => {
 
+  const { clearCart } = useContext(CartContext);
   const [loading, setLoading] = useState<boolean>(false);
+  const redirectInProcess = useRef<boolean>(false);
+
+  const router = useRouter();
 
   const saveOrder = async (userData: ClientFormData, cart: ICartProduct[], totalPrice: number): Promise<void> => {
 
@@ -33,8 +39,18 @@ const useCreateOrder = (): IHookResponse => {
         success: {
           render ({ data }) {
 
-            console.log(data?.data.id);
-            setLoading(false);
+            clearCart();
+            if (!redirectInProcess.current) {
+
+              setTimeout(() => {
+
+                redirectInProcess.current = true;
+                // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                router.push(`/open-chat/${data?.data.id}`);
+
+              }, 2500);
+
+            };
             return 'Orden generada exitosamente. Redireccionando…';
 
           }

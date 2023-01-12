@@ -12,6 +12,7 @@ const Menu: FC<IMenuProps> = ({ buttonId, open, anchorElement, options, onClose 
       anchorEl={anchorElement}
       open={open}
       onClose={onClose}
+      disableScrollLock
       MenuListProps={{
         'aria-labelledby': buttonId
       }}
