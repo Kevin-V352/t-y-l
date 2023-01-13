@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { hygraphAPI } from '@/apis';
 import { IFullOrder, IProductStockResponse } from '@/interfaces';
-import { UPDATE_PRODUCT_QUANTITY } from 'graphql/mutations/product';
+import { PUBLISH_MANY_PRODUCTS, UPDATE_PRODUCT_QUANTITY } from 'graphql/mutations/product';
 
 import { GET_PRODUCT_QUANTITIES_BY_IDS } from '../../graphql/queries/product';
 
@@ -16,6 +16,10 @@ interface ExtendedNextApiRequest extends NextApiRequest {
 
 type TGetProductQuantitiesByIdResponse =
   | [IProductStockResponse[], null]
+  | [null, any];
+
+type TPublishProductsResponse =
+  | [number, null]
   | [null, any];
 
 const getProductQuantitiesById = async (ids: string[]): Promise<TGetProductQuantitiesByIdResponse> => {
@@ -40,13 +44,41 @@ const getProductQuantitiesById = async (ids: string[]): Promise<TGetProductQuant
 
 };
 
-const updateProductQuantitiesByIds = async (products: IProductStockResponse[]): Promise<boolean> => {
-
-  const promises = products.map(async (product) => await hygraphAPI.request({ document: UPDATE_PRODUCT_QUANTITY, variables: product }));
+const publishProducts = async (productIds: string[]): Promise<TPublishProductsResponse> => {
 
   try {
 
-    await Promise.all(promises);
+    const { publishManyProducts }: { publishManyProducts: { count: number } } = await hygraphAPI.request({
+      document:  PUBLISH_MANY_PRODUCTS,
+      variables: { ids: productIds }
+    });
+
+    if (publishManyProducts.count === 0) return [null, new Error('No product exists with the provided id')];
+
+    return [publishManyProducts.count, null];
+
+  } catch (error) {
+
+    console.error(error);
+    return [null, error];
+
+  };
+
+};
+
+const updateProductQuantitiesByIds = async (products: IProductStockResponse[]): Promise<boolean> => {
+
+  // eslint-disable-next-line @typescript-eslint/promise-function-async
+  const promisesToUpdate = products.map((product) => hygraphAPI.request({ document: UPDATE_PRODUCT_QUANTITY, variables: product }));
+  const ids = products.map(({ id }) => id);
+
+  try {
+
+    await Promise.all(promisesToUpdate);
+    const [responseToPosting] = await publishProducts(ids);
+
+    if (!responseToPosting) return false;
+
     return true;
 
   } catch (error) {
