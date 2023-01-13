@@ -10,3 +10,11 @@ export const UPDATE_PRODUCT_QUANTITY = gql`
     }
   }
 `;
+
+export const PUBLISH_MANY_PRODUCTS = gql`
+  mutation publishManyProducts($ids: [ID!]) {
+    publishManyProducts(to: PUBLISHED, where: { id_in: $ids }, publishBase: true) {
+      count
+    }
+  }
+`;
