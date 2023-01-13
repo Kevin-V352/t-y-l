@@ -34,3 +34,8 @@ export interface IPDFProduct {
 export interface IPDFProductFromDB extends IPDFProduct {
   categories: string[];
 };
+
+export interface IProductStockResponse {
+  id: string;
+  stock: number;
+};

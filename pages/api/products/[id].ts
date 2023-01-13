@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { hygraphAPI } from '@/apis';
-import { GET_CURRENT_PRICE_OF_PRODUCT } from 'graphql/queries/products';
+import { GET_CURRENT_PRICE_OF_PRODUCT } from 'graphql/queries/product';
 
 type Data =
   | { message: string }

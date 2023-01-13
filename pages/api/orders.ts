@@ -2,8 +2,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { hygraphAPI } from '@/apis';
 import { ClientFormData, ICartProduct } from '@/interfaces';
-import { CREATE_ORDER, PUBLISH_ORDER } from 'graphql/mutations/orders';
-import { GET_PRODUCT_PRICES_BY_IDS } from 'graphql/queries/products';
+import { CREATE_ORDER, PUBLISH_ORDER } from 'graphql/mutations/order';
+import { GET_LAST_ORDER_NUMBER } from 'graphql/queries/order';
+import { GET_PRODUCT_PRICES_AND_STOCK_BY_IDS } from 'graphql/queries/product';
 
 type Data =
   | { message: string }
@@ -17,9 +18,10 @@ interface IExtendedNextApiRequest extends NextApiRequest {
   };
 };
 
-interface IMinProduct {
+interface IMinProductWithStock {
   id: string;
   price: number;
+  stock: number;
 };
 
 interface IMinProductWithQuantity {
@@ -28,24 +30,49 @@ interface IMinProductWithQuantity {
   currentPrice: number;
 };
 
-type IGetProductPricesByIdsResponse =
-  | [IMinProduct[], null]
+type TGetOrderNumberResponse =
+  | [number, null]
   | [null, any];
 
-type ISaveOrderInDBResponse =
+type TGetProductPricesAndStockByIdsResponse =
+  | [IMinProductWithStock[], null]
+  | [null, any];
+
+type TSaveOrderInDBResponse =
   | [string, null]
   | [null, any];
 
-type IPublishOrderResponse =
+type TPublishOrderResponse =
   | [string, null]
   | [null, any];
 
-const getProductPricesByIds = async (ids: string[]): Promise<IGetProductPricesByIdsResponse> => {
+const getOrderNumber = async (): Promise<TGetOrderNumberResponse> => {
 
   try {
 
-    const { products }: { products: IMinProduct[] } = await hygraphAPI.request({
-      document:  GET_PRODUCT_PRICES_BY_IDS,
+    const { orders }: { orders: Array<{ orderNumber: number }> } = await hygraphAPI.request({
+      document: GET_LAST_ORDER_NUMBER
+    });
+
+    if (orders.length === 0) return [1, null];
+
+    return [(orders[0].orderNumber + 1), null];
+
+  } catch (error) {
+
+    console.error(error);
+    return [null, error];
+
+  };
+
+};
+
+const getProductPricesAndStockByIds = async (ids: string[]): Promise<TGetProductPricesAndStockByIdsResponse> => {
+
+  try {
+
+    const { products }: { products: IMinProductWithStock[] } = await hygraphAPI.request({
+      document:  GET_PRODUCT_PRICES_AND_STOCK_BY_IDS,
       variables: { ids }
     });
 
@@ -60,7 +87,11 @@ const getProductPricesByIds = async (ids: string[]): Promise<IGetProductPricesBy
 
 };
 
-const saveOrderInDB = async (userData: ClientFormData, products: any[], totalPrice: number): Promise<ISaveOrderInDBResponse> => {
+const saveOrderInDB = async (userData: ClientFormData, products: any[], totalPrice: number): Promise<TSaveOrderInDBResponse> => {
+
+  const [orderNumber, orderNumberError] = await getOrderNumber();
+
+  if (!orderNumber) return [null, orderNumberError];
 
   try {
 
@@ -69,7 +100,8 @@ const saveOrderInDB = async (userData: ClientFormData, products: any[], totalPri
       variables: {
         ...userData,
         products,
-        totalPrice
+        totalPrice,
+        orderNumber
       }
     });
 
@@ -84,7 +116,7 @@ const saveOrderInDB = async (userData: ClientFormData, products: any[], totalPri
 
 };
 
-const publishOrder = async (orderId: string): Promise<IPublishOrderResponse> => {
+const publishOrder = async (orderId: string): Promise<TPublishOrderResponse> => {
 
   try {
 
@@ -120,22 +152,32 @@ const createOrder = async (req: IExtendedNextApiRequest, res: NextApiResponse<Da
   const ids = cart.map(({ id }) => id);
 
   //* OBTENEMOS TODOS LOS PRODUCTOS ACTUALIZADOS DE DB
-  const [productsFromDB] = await getProductPricesByIds(ids);
+  const [productsFromDB] = await getProductPricesAndStockByIds(ids);
 
-  if (!productsFromDB) return res.status(400).json({ message: 'ERROR: An error has occurred while trying to communicate with DB' });
+  if (!productsFromDB) return res.status(500).json({ message: 'ERROR: An error has occurred while trying to communicate with DB' });
 
   //* CREAMOS UN NUEVO ARREGLO PARA CALCULAR EL PRECIO REAL SUMADO DE TODOS LOS PRODUCTOS
   const tempCart: IMinProductWithQuantity[] = [];
 
+  //* CREAMOS UNA VARIABLE BOOLEANA PARA VALIDAR SI HAY SUFICIENTE STOCK DE LOS PRODUCTOS SOLICITADOS
+  let notEnoughStock = false;
+
+  //* RECORREMOS EL CARRITO DEL CLIENTE PARA GENERAR UN NUEVO CARRITO TEMPORAL, EL CUAL UTILIZAREMOS
+  //* PARA ALGUNAS VALIDACIONES, ADEMAS DE VALIDAR POR CADA PRODUCTO SI HAY SUFICIENTE STOCK
   cart.forEach(({ id, quantity }) => {
 
     const productFromDB = productsFromDB.find(({ id: dbProductId }) => (dbProductId === id));
 
     if (!productFromDB) return;
 
+    if ((productFromDB.stock - quantity) < 0) notEnoughStock = true;
+
     tempCart.push({ id, quantity, currentPrice: productFromDB.price });
 
   });
+
+  //* SI DETECTAMOS QUE NO HAY SUFICIENTE STOCK DE ALGUNO DE LOS PRODUCTOS, CANCELAMOS LA CREACION
+  if (notEnoughStock) res.status(400).json({ message: 'ERROR: Not enough stock of some of the requested products' });
 
   //* CALCULAMOS EL PRECIO TOTAL CON LOS PRECIOS ACTUALIZADOS DESDE DB
   const realTotalPrice = tempCart.reduce((acc, { currentPrice, quantity }) => (acc + (currentPrice * quantity)), 0);
@@ -154,15 +196,15 @@ const createOrder = async (req: IExtendedNextApiRequest, res: NextApiResponse<Da
   //* GUARDAMOS LA ORDEN EN DB
   const [orderId] = await saveOrderInDB(userData, productsToOrder, totalPrice);
 
-  if (!orderId) return res.status(400).json({ message: 'ERROR: An error has occurred while creating the order' });
+  if (!orderId) return res.status(500).json({ message: 'ERROR: An error has occurred while creating the order' });
 
   //* PUBLICAMOS LA ORDEN
   const [updatedOrderId] = await publishOrder(orderId);
 
-  if (!updatedOrderId) return res.status(400).json({ message: 'ERROR: An error occurred while trying to publish the order' });
+  if (!updatedOrderId) return res.status(500).json({ message: 'ERROR: An error occurred while trying to publish the order' });
 
   //* RESPONDEMOS CON EL ID DE LA NUEVA ORDEN CREADA
-  return res.status(200).json({ id: updatedOrderId });
+  return res.status(201).json({ id: updatedOrderId });
 
 };
 
