@@ -7,7 +7,7 @@ import { hygraphAPI } from '@/apis';
 import { IPDFProduct, IPDFProductFromDB } from '@/interfaces';
 import { formatters } from '@/utils';
 
-import { GET_ALL_PRODUCTS_FOR_THE_MENU } from '../../graphql/queries/products';
+import { GET_ALL_PRODUCTS_FOR_THE_MENU } from '../../graphql/queries/product';
 
 interface Data {
   message: string;

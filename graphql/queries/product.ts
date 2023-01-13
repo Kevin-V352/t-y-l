@@ -85,3 +85,12 @@ export const GET_CURRENT_PRICE_OF_PRODUCT = gql`
     }
   }
 `;
+
+export const GET_PRODUCT_QUANTITIES_BY_IDS = gql`
+  query getProductsByIds($ids: [ID]) {
+    products(where: { id_in: $ids }) {
+      id
+      stock
+    }
+  }
+`;

@@ -4,7 +4,7 @@ import {
   GET_FILTERED_PRODUCTS,
   GET_ALL_SLUGS,
   GET_PRODUCT_BY_SLUG
-} from 'graphql/queries/products';
+} from 'graphql/queries/product';
 
 interface IQueries {
   query: string;

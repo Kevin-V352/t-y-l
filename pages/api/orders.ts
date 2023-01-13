@@ -2,8 +2,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { hygraphAPI } from '@/apis';
 import { ClientFormData, ICartProduct } from '@/interfaces';
-import { CREATE_ORDER, PUBLISH_ORDER } from 'graphql/mutations/orders';
-import { GET_PRODUCT_PRICES_BY_IDS } from 'graphql/queries/products';
+import { CREATE_ORDER, PUBLISH_ORDER } from 'graphql/mutations/order';
+import { GET_PRODUCT_PRICES_BY_IDS } from 'graphql/queries/product';
 
 type Data =
   | { message: string }
@@ -28,19 +28,19 @@ interface IMinProductWithQuantity {
   currentPrice: number;
 };
 
-type IGetProductPricesByIdsResponse =
+type TGetProductPricesByIdsResponse =
   | [IMinProduct[], null]
   | [null, any];
 
-type ISaveOrderInDBResponse =
+type TSaveOrderInDBResponse =
   | [string, null]
   | [null, any];
 
-type IPublishOrderResponse =
+type TPublishOrderResponse =
   | [string, null]
   | [null, any];
 
-const getProductPricesByIds = async (ids: string[]): Promise<IGetProductPricesByIdsResponse> => {
+const getProductPricesByIds = async (ids: string[]): Promise<TGetProductPricesByIdsResponse> => {
 
   try {
 
@@ -60,7 +60,7 @@ const getProductPricesByIds = async (ids: string[]): Promise<IGetProductPricesBy
 
 };
 
-const saveOrderInDB = async (userData: ClientFormData, products: any[], totalPrice: number): Promise<ISaveOrderInDBResponse> => {
+const saveOrderInDB = async (userData: ClientFormData, products: any[], totalPrice: number): Promise<TSaveOrderInDBResponse> => {
 
   try {
 
@@ -84,7 +84,7 @@ const saveOrderInDB = async (userData: ClientFormData, products: any[], totalPri
 
 };
 
-const publishOrder = async (orderId: string): Promise<IPublishOrderResponse> => {
+const publishOrder = async (orderId: string): Promise<TPublishOrderResponse> => {
 
   try {
 
@@ -162,7 +162,7 @@ const createOrder = async (req: IExtendedNextApiRequest, res: NextApiResponse<Da
   if (!updatedOrderId) return res.status(400).json({ message: 'ERROR: An error occurred while trying to publish the order' });
 
   //* RESPONDEMOS CON EL ID DE LA NUEVA ORDEN CREADA
-  return res.status(200).json({ id: updatedOrderId });
+  return res.status(201).json({ id: updatedOrderId });
 
 };
 

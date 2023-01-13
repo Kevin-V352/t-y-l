@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { hygraphAPI } from '@/apis';
 import { ICartProduct } from '@/interfaces';
 import { calculators } from '@/utils';
-import { GET_PRODUCTS_BY_IDS } from 'graphql/queries/products';
+import { GET_PRODUCTS_BY_IDS } from 'graphql/queries/product';
 
 type Data =
   | { message: string }
@@ -33,7 +33,7 @@ const getCartProducts = async (req: ExtendedNextApiRequest, res: NextApiResponse
   } catch (error) {
 
     console.log(error);
-    res.status(200).json({ message: 'Error when trying to get data from DB' });
+    res.status(500).json({ message: 'Error when trying to get data from DB' });
 
   };
 
