@@ -2,6 +2,7 @@ import { gql } from 'graphql-request';
 
 export const CREATE_ORDER = gql`
   mutation createOrder(
+    $orderNumber: Int!,
     $name: String!,
     $phoneNumber: String!,
     $totalPrice: Float!,
@@ -13,6 +14,7 @@ export const CREATE_ORDER = gql`
   ) {
     createOrder(
       data: {
+        orderNumber: $orderNumber,
         name: $name, 
         phoneNumber: $phoneNumber, 
         totalPrice: $totalPrice, 
