@@ -1,31 +1,33 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { hygraphAPI } from '@/apis';
-import { GET_CURRENT_PRICE_OF_PRODUCT } from 'graphql/queries/product';
+import { GET_CURRENT_PRICE_AND_STOCK_BY_ID } from 'graphql/queries/product';
+
+import { IProductPriceAndStockResponse } from '../../../interfaces/product';
 
 type Data =
   | { message: string }
-  | { price: number }
+  | IProductPriceAndStockResponse
 
-const getCurrentPriceOfProduct = async (req: NextApiRequest, res: NextApiResponse<Data>): Promise<void> => {
+const getCurrentPriceAndStock = async (req: NextApiRequest, res: NextApiResponse<Data>): Promise<void> => {
 
   const { id } = req.query;
 
   try {
 
-    const { product }: { product: { price: number } | null } = await hygraphAPI.request({
-      document:  GET_CURRENT_PRICE_OF_PRODUCT,
+    const { product }: { product: IProductPriceAndStockResponse | null } = await hygraphAPI.request({
+      document:  GET_CURRENT_PRICE_AND_STOCK_BY_ID,
       variables: { id }
     });
 
-    if (!product) return res.status(400).json({ message: 'There is no product with this id' });
+    if (!product) return res.status(400).json({ message: 'ERROR: There is no product with this id' });
 
     res.status(200).json(product);
 
   } catch (error) {
 
     console.log(error);
-    res.status(400).json({ message: 'Error when trying to get data from DB' });
+    res.status(500).json({ message: 'ERROR: Error when trying to get data from DB' });
 
   };
 
@@ -36,7 +38,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse<Data>):
   switch (req.method) {
 
     case 'GET':
-      await getCurrentPriceOfProduct(req, res);
+      await getCurrentPriceAndStock(req, res);
       break;
 
     default:

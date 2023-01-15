@@ -5,14 +5,13 @@ export interface IQuantitySelectorContainer {
   $loading?: boolean;
 };
 
-export interface IQuantitySelectorProps extends IQuantitySelectorContainer {
-  quantity: number;
+export interface IQuantitySelectorContentProps {
   maxQuantity: number;
-  disableAdd?: boolean;
-  disableRemove?: boolean;
-  add: () => void;
-  remove: () => void;
+  initialValue?: number;
+  onChange?: (quantity: number) => void;
 };
+
+export interface IQuantitySelectorProps extends IQuantitySelectorContainer, IQuantitySelectorContentProps {};
 
 export interface IButtonProps {
   disabled: boolean;

@@ -2,6 +2,9 @@
   "page": {
     "title": "Carrito"
   },
+  "summary_text": "Total: ",
+  "empty_title": "Tu carrito está vacío",
+  "empty_description": "¿No sabés qué comprar? ¡Varios de productos te esperan!",
   "btn_1": "CONTINUAR COMPRA",
   "btn_2": "DESCUBRIR OFERTAS"
 }

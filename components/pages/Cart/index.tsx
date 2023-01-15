@@ -48,7 +48,7 @@ const Cart: FC = () => {
             </S.ProductList>
             <S.SummaryWrapper>
               <S.SummaryTextWrapper>
-                <S.SummaryText>Total:</S.SummaryText>
+                <S.SummaryText>{t('summary_text')}</S.SummaryText>
                 <S.SummaryPrice>{formatters.currencyFormat(totalPrice)}</S.SummaryPrice>
               </S.SummaryTextWrapper>
               <Link href="/checkout/address">
@@ -64,8 +64,8 @@ const Cart: FC = () => {
       default:
         return (
           <S.LoaderWrapper>
-            <S.Title>Tu carrito está vacío</S.Title>
-            <S.HighlightedText>¿No sabés qué comprar? ¡Varios de productos te esperan!</S.HighlightedText>
+            <S.Title>{t('empty_title')}</S.Title>
+            <S.HighlightedText>{t('empty_description')}</S.HighlightedText>
             <Button
               text={t('btn_2')}
               variant='primary'

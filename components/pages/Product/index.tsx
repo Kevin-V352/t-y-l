@@ -13,7 +13,7 @@ import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { CartContext } from '@/contexts';
-import { useCurrentPrice, useQuantity, useUpdateCart } from '@/hooks';
+import { useCurrentPrice, useUpdateCart } from '@/hooks';
 import { ICartProduct, IProductDetailsPageProps } from '@/interfaces';
 import { MainLayout } from '@/layouts';
 import { Skeleton, Button, QuantitySelector, Checkbox } from '@/ui';
@@ -27,9 +27,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
     id,
     img,
     title,
-    price,
     description,
-    stock,
     slug
   } = product;
 
@@ -45,20 +43,13 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
   const [openConfirmModal, setOpenConfirmModal] = useState<boolean>(false);
 
   const hideConfirmationMessage = useRef<boolean>(false);
+  const currentQuantity = useRef<number>(0);
 
   const { t } = useTranslation('product');
 
   useUpdateCart();
 
-  const {
-    quantity,
-    disableAdd,
-    disableRemove,
-    addItem,
-    removeItem
-  } = useQuantity(stock, (getCurrentQuantity(id) ?? undefined));
-
-  const { currentPrice, isLoading: currentPriceIsLoading } = useCurrentPrice(id);
+  const { currentStock, currentPrice, isLoading: currentPriceIsLoading } = useCurrentPrice(id);
 
   const loadingQuantity = (!cookiesLoaded || !updatedProducts);
 
@@ -72,10 +63,10 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
       id,
       img,
       title,
-      price,
-      quantity,
       slug,
-      stock
+      quantity: currentQuantity.current,
+      price:    currentPrice ?? 0,
+      stock:    currentStock ?? 0
     };
 
     addProduct(formattedProduct);
@@ -134,13 +125,11 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
                 )
           }
           <QuantitySelector
-            quantity={quantity}
-            maxQuantity={stock}
-            add={addItem}
-            remove={removeItem}
-            disableAdd={disableAdd}
-            disableRemove={disableRemove}
+            initialValue={getCurrentQuantity(id) ?? 1}
+            maxQuantity={(currentStock ?? 0)}
             $loading={loadingQuantity}
+            // eslint-disable-next-line padded-blocks
+            onChange={(quantity) => { currentQuantity.current = quantity; }}
           />
           <Button
             fluid

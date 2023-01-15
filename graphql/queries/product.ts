@@ -79,10 +79,11 @@ export const GET_PRODUCT_PRICES_AND_STOCK_BY_IDS = gql`
   }
 `;
 
-export const GET_CURRENT_PRICE_OF_PRODUCT = gql`
+export const GET_CURRENT_PRICE_AND_STOCK_BY_ID = gql`
   query getCurrentPriceOfProduct($id: ID) {
     product(where: { id: $id }) {
       price
+      stock
     }
   }
 `;
