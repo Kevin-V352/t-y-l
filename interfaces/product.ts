@@ -39,3 +39,8 @@ export interface IProductStockResponse {
   id: string;
   stock: number;
 };
+
+export interface IProductPriceAndStockResponse {
+  price: number;
+  stock: number;
+};
