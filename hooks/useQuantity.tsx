@@ -11,7 +11,7 @@ interface IHookResponse extends IHookState {
   removeItem: () => void;
 };
 
-const useQuantity = (maxQuantity: number, initialValue: number = 1): IHookResponse => {
+const useQuantity = (maxQuantity: number, initialValue: number = 1, onChange?: (quantity: number) => void): IHookResponse => {
 
   const [state, setState] = useState<IHookState>({
     quantity:      initialValue,
@@ -22,6 +22,7 @@ const useQuantity = (maxQuantity: number, initialValue: number = 1): IHookRespon
   useEffect(() => {
 
     validateButtons();
+    if (onChange) onChange(state.quantity);
 
   }, [state.quantity]);
 

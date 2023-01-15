@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/promise-function-async */
-import { FC, memo, useContext, useEffect } from 'react';
+import { FC, memo, useContext, useEffect, useState } from 'react';
 
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { CartContext } from '@/contexts';
-import { useQuantity } from '@/hooks';
 import { QuantitySelector } from '@/ui';
 import { formatters } from '@/utils';
 
@@ -28,23 +27,17 @@ const CartItem: FC<ICartItemProps> = ({ product, editable = false }) => {
 
   const { addProduct, deleteToCart } = useContext(CartContext);
 
-  const {
-    quantity,
-    disableAdd,
-    disableRemove,
-    addItem,
-    removeItem
-  } = useQuantity(stock, initialQuantity);
+  const [currentQuantity, setCurrentQuantity] = useState(initialQuantity);
 
   const router = useRouter();
 
   useEffect(() => {
 
-    addProduct({ ...product, quantity });
+    addProduct({ ...product, quantity: currentQuantity });
 
-  }, [quantity]);
+  }, [currentQuantity]);
 
-  const pluralQuantity = (quantity > 1) ? 'unidades' : 'unidad';
+  const pluralQuantity = (currentQuantity > 1) ? 'unidades' : 'unidad';
 
   const redirectToProduct = (): void => {
 
@@ -64,25 +57,22 @@ const CartItem: FC<ICartItemProps> = ({ product, editable = false }) => {
           layout="fill"
         />
       </S.ImageWrapper>
-      <S.Price>{formatters.currencyFormat(price * quantity)}</S.Price>
+      <S.Price>{formatters.currencyFormat(price * currentQuantity)}</S.Price>
       {
         editable
           ? (
             <>
               <QuantitySelector
-                quantity={quantity}
                 maxQuantity={stock}
-                add={addItem}
-                remove={removeItem}
-                disableAdd={disableAdd}
-                disableRemove={disableRemove}
+                initialValue={initialQuantity}
                 customStyles={S.quantitySelectorCustomStyles}
+                onChange={(quantity) => setCurrentQuantity(quantity)}
               />
               <S.DeleteButton onClick={() => deleteToCart(id)} />
             </>
             )
           : (
-              <S.TotalQuantity>{quantity} {pluralQuantity}</S.TotalQuantity>
+              <S.TotalQuantity>{currentQuantity} {pluralQuantity}</S.TotalQuantity>
             )
       }
 
