@@ -1,25 +1,18 @@
 import { useState, useId, FC } from 'react';
 
-import { CategoryItem } from '@/interfaces';
 import { Chip } from '@/ui';
 
 import * as S from './styles';
+import { ICustomSliderProps } from './types';
 
-interface SliderProps {
-  mode: 1 | 2;
-  sliderItems: CategoryItem[];
-};
-
-const coronaImage = 'https://picsum.photos/id/42/1920/1080';
-
-const CustomSlider: FC<SliderProps> = ({ mode, sliderItems }) => {
+const CustomSlider: FC<ICustomSliderProps> = ({ mode, sliderItems }) => {
 
   const [slideIndex, setSlideIndex] = useState<number>(0);
 
   return (
     <S.Container mode={mode}>
       {
-        sliderItems.map(({ title }, index) => (
+        sliderItems.map(({ category, img }, index) => (
           <S.SlideContainer
             key={useId()}
             mode={mode}
@@ -27,10 +20,10 @@ const CustomSlider: FC<SliderProps> = ({ mode, sliderItems }) => {
             onMouseEnter={() => setSlideIndex(index)}
           >
             <Chip
-              text={title}
+              text={category}
               customStyles={S.chipCustomStyles}
             />
-            <S.SlideImage src={coronaImage} />
+            <S.SlideImage src={img.url} />
           </S.SlideContainer>
         ))
       }

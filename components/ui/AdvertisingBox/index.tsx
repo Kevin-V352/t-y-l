@@ -10,7 +10,7 @@ const AdvertisingBox: FC<Props> = ({ img }) => {
   return (
     <S.Container>
       <Image
-        src="https://picsum.photos/id/30/1920/1080"
+        src={img}
         layout="fill"
         objectFit="cover"
         quality={100}

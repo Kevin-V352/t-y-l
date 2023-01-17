@@ -5,3 +5,15 @@ export interface ContainerProps {
 export interface SlideContainerProps extends ContainerProps {
   $active: boolean;
 };
+
+interface CategoryItem {
+  category: string;
+  img: {
+    url: string;
+  };
+};
+
+export interface ICustomSliderProps {
+  mode: 1 | 2;
+  sliderItems: CategoryItem[];
+};
