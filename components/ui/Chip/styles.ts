@@ -16,6 +16,7 @@ export const ChipContainer = styled.div<ChipContentProps>`
 
 export const ChipText = styled.span`
   color: white;
+  white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   line-height: normal;

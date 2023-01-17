@@ -11,8 +11,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Chip } from '@/ui';
 
 import * as S from './styles';
+import { ISliderProps } from './types';
 
-const Slider: FC = () => {
+const Slider: FC<ISliderProps> = ({ sliderItems }) => {
 
   return (
     <S.SwiperWrapper>
@@ -26,18 +27,18 @@ const Slider: FC = () => {
         onSlideChange={() => console.log('slide change')}
       >
         {
-          [1, 2, 3].map((el, i) => (
-            <SwiperSlide key={i}>
+          sliderItems.map(({ category, img }) => (
+            <SwiperSlide key={category}>
               <S.SlideContent>
                 <S.SlideImageWrapper>
                   <Image
-                    src="https://picsum.photos/seed/picsum/1920/1080"
+                    src={img.url}
                     layout="fill"
                     objectFit="cover"
                     quality={100}
                   />
                   <Chip
-                    text="WHISKY"
+                    text={category}
                     customStyles={S.chipCustomStyles}
                   />
                 </S.SlideImageWrapper>

@@ -3,82 +3,80 @@ import { FC } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 
 import { useResponsive } from '@/hooks';
+import { ICategoryItem, IHomePageProps } from '@/interfaces';
 import { MainLayout } from '@/layouts';
 import { CustomSlider, Slider, ProductSlider, AdvertisingBox } from '@/ui';
 
 import * as S from './styles';
 
-const sliderItems1 = [
-  { title: 'Licores' },
-  { title: 'Cerveza' },
-  { title: 'Cerveza' },
-  { title: 'Cerveza' },
-  { title: 'Cerveza' },
-  { title: 'Cerveza' },
-  { title: 'Cerveza' },
-  { title: 'Cerveza' }
-];
+const Home: FC<IHomePageProps> = ({ content }) => {
 
-const sliderItems2 = [
-  { title: 'Licores' },
-  { title: 'Cerveza' },
-  { title: 'Cerveza' }
-];
+  const {
+    image1,
+    image2,
+    categories1,
+    categories2
+  } = content;
 
-const Home: FC = () => {
-
-  const { t } = useTranslation('home');
+  const { t: tHome } = useTranslation('home');
+  const { t: tCommon } = useTranslation('common');
 
   const currentResolution = useResponsive();
   const isDesktop = currentResolution ? (currentResolution >= 1024) : false;
 
+  const translateCategories = (categories: ICategoryItem[]): ICategoryItem[] => {
+
+    return categories.map(({ category, img }) => ({ category: tCommon(`filters.categories.${category}`), img }));
+
+  };
+
   return (
     <MainLayout
-      title={t('page.title')}
-      desc='Venta de bebidas'
+      title={tHome('page.title')}
+      desc={tHome('page.description')}
     >
       <section>
         {
           isDesktop
             ? (
-              <CustomSlider
-                mode={1}
-                sliderItems={sliderItems1}
-              />
+                <CustomSlider
+                  mode={1}
+                  sliderItems={translateCategories(categories1)}
+                />
               )
-            : <Slider />
+            : <Slider sliderItems={translateCategories(categories1)} />
         }
       </section>
       <section>
         <ProductSlider
-          title="NUEVO"
+          title={tHome('new_products')}
           generalId="new_products"
         />
       </section>
       <section>
-        <AdvertisingBox img=''/>
+        <AdvertisingBox img={image1.url} />
       </section>
       <section>
         {
           isDesktop
             ? (
-              <CustomSlider
-                mode={2}
-                sliderItems={sliderItems2}
-              />
+                <CustomSlider
+                  mode={2}
+                  sliderItems={translateCategories(categories2)}
+                />
               )
-            : <Slider />
+            : <Slider sliderItems={translateCategories(categories2)} />
         }
       </section>
       <section>
         <ProductSlider
-          title="POPULARES"
+          title={tHome('popular_products')}
           generalId="popular_products"
           customStyles={S.popularSliderCustomStyles}
         />
       </section>
       <section>
-        <AdvertisingBox img=''/>
+        <AdvertisingBox img={image2.url} />
       </section>
     </MainLayout>
   );

@@ -1,4 +1,4 @@
-import { ICardProduct, IOrderMin, IProductDetails } from '@/interfaces';
+import { ICardProduct, IHomeContentResponse, IOrderMin, IProductDetails } from '@/interfaces';
 
 export interface ISearchPageProps {
   products: ICardProduct[];
@@ -10,4 +10,8 @@ export interface IProductDetailsPageProps {
 
 export interface IOpenChatPageProps {
   order: IOrderMin;
+};
+
+export interface IHomePageProps {
+  content: IHomeContentResponse;
 };

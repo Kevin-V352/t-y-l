@@ -1,5 +1,8 @@
 {
   "page": {
-    "title": "T&L"
-  }
+    "title": "T&L",
+    "description": "Somos una tienda en línea que ofrece una amplia variedad de bebidas, desde cervezas artesanales hasta vinos finos y licores premium. Contamos con una selección cuidadosamente curada de productos de alta calidad y precios razonables. Además, ofrecemos envío a todo el país y opciones de entrega rápida para que pueda disfrutar de sus bebidas favoritas en cualquier momento. ¡Visítenos hoy y descubra su próxima bebida favorita!"
+  },
+  "new_products": "NUEVO",
+  "popular_products": "POPULARES"
 }
