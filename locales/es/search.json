@@ -8,5 +8,6 @@
     "publishedAt_DESC": "Más recientes"
   },
   "btn_1": "CATEGORIAS",
-  "btn_2": "ORDEN"
-}
+  "btn_2": "ORDEN",
+  "no_results_message": "Sin resultados..."
+} 
