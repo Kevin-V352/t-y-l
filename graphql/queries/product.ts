@@ -1,20 +1,34 @@
 import { gql } from 'graphql-request';
 
 export const GET_FILTERED_PRODUCTS = gql`
-  query getFilteredProducts($category: [Categories!], $sort: ProductOrderByInput, $searchTerm: String) {
-    products(
+  query getFilteredProducts(
+      $category: [Categories!], 
+      $sort: ProductOrderByInput, 
+      $searchTerm: String,
+      $skip: Int
+    ) {
+    productsConnection(
       where: { 
         title_contains: $searchTerm,
         categories_contains_some: $category
       },
-      orderBy: $sort
+      orderBy: $sort,
+      skip: $skip
     ) {
-      img(first: 1) {
-        url
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
       }
-      title
-      price
-      slug
+      edges {
+        node {
+          img(first: 1) {
+            url
+          }
+          title
+          price
+          slug
+        }
+      }
     }
   }
 `;
