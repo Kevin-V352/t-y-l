@@ -12,12 +12,13 @@ const CustomSlider: FC<ICustomSliderProps> = ({ mode, sliderItems }) => {
   return (
     <S.Container mode={mode}>
       {
-        sliderItems.map(({ category, img }, index) => (
+        sliderItems.map(({ img, category, cb }, index) => (
           <S.SlideContainer
             key={useId()}
             mode={mode}
             $active={(slideIndex === index)}
             onMouseEnter={() => setSlideIndex(index)}
+            onClick={cb}
           >
             <Chip
               text={category}

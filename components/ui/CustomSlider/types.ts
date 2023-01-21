@@ -11,6 +11,7 @@ interface CategoryItem {
   img: {
     url: string;
   };
+  cb?: () => void;
 };
 
 export interface ICustomSliderProps {
