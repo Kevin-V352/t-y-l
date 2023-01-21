@@ -1,7 +1,16 @@
 import { BsFilter } from 'react-icons/bs';
+import { CgArrowLeftO, CgArrowRightO } from 'react-icons/cg';
 import styled, { css } from 'styled-components';
 
 import { commonBackground } from '@/styles';
+
+import { IButtonProps } from './types';
+
+const commonButtonStyles = css<IButtonProps>`
+  cursor: pointer;
+  font-size: var(--primary-font-size);
+  color: ${({ theme, disabled }) => disabled ? theme.text.oslo_grey : theme.text.white};
+`;
 
 export const customStylesFilterDesktop = css`
   grid-area: filters;
@@ -13,15 +22,17 @@ export const Container = styled.div`
   flex-direction: column;
   padding: 35px;
   flex: 1;
+  gap: 35px;
 
   @media screen and (min-width: 1024px) {
     display: grid;
     grid-template-columns: 20vw 1fr;
-    grid-auto-rows: min-content 1fr;
+    grid-template-rows: min-content 1fr;
     gap: 30px;
     grid-template-areas: 
-      'filters  buttons'
-      'filters  products'
+      'filters      buttons'
+      'filters      products'
+      'pageSelector pageSelector'
     ;
   };
 `;
@@ -49,8 +60,8 @@ export const ProductList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 35px;
-  margin-top: 35px;
   grid-area: products;
+  height: min-content;
 
   @media screen and (min-width: 768px) {
     display: grid;
@@ -75,5 +86,29 @@ export const FilterIcon = styled(BsFilter)`
 export const NotResultsText = styled.span`
   margin: auto;
   font-size: var(--primary-font-size);
-  color: ${({ theme }) => theme.text.light_grey}
+  color: ${({ theme }) => theme.text.light_grey};
+`;
+
+export const PageSelectorWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  grid-area: pageSelector;
+`;
+
+export const CurrentPage = styled.span`
+  font-size: var(--primary-font-size);
+  color: ${({ theme }) => theme.text.harvest_gold};
+  font-weight: 600;
+  user-select: none;
+`;
+
+export const BackButton = styled(CgArrowLeftO)`
+  ${commonButtonStyles}
+`;
+
+export const FowardButton = styled(CgArrowRightO)`
+  ${commonButtonStyles}
 `;

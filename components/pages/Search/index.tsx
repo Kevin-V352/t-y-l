@@ -1,52 +1,49 @@
+/* eslint-disable padded-blocks */
 import { FC, useState } from 'react';
 
 import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
 import { FaSort } from 'react-icons/fa';
 import { IoFilter } from 'react-icons/io5';
 
 import { useFilter, useResponsive } from '@/hooks';
-import { ISearchPageProps } from '@/interfaces';
+import { IPaginatedProducts } from '@/interfaces';
 import { MainLayout } from '@/layouts';
 import { Button, FilterDesktop, FilterSidebar, Menu, ProductCard } from '@/ui';
 
 import * as S from './styles';
 
-const Search: FC<ISearchPageProps> = ({ products }) => {
+const Search: FC<IPaginatedProducts> = ({ products, pageInfo }) => {
 
   const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const router = useRouter();
-  const { t } = useTranslation('search');
+  const { t: tSearch } = useTranslation('search');
+  const { t: tCommon } = useTranslation('common');
 
-  const { sortItems } = useFilter();
+  const { queries, currentQuery, currentPage, sortItems, changePage } = useFilter();
   const currentResolution = useResponsive();
 
   const isDesktop = currentResolution ? (currentResolution >= 1024) : false;
   const open = !!anchorEl;
   const sortOptions = ['price_DESC', 'price_ASC', 'publishedAt_DESC'];
-  const currentQuery = router.query.query;
-  const pageTitle = (!!currentQuery && currentQuery !== '0') ? `T&L | ${currentQuery}` : `T&L | ${t('page.title')}`;
+  const pageTitle = (!!currentQuery && currentQuery !== '0') ? `T&L | ${currentQuery}` : `T&L | ${tCommon(`filters.categories.${queries.category}`)}`;
+  const noResults = (products.length === 0);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => setAnchorEl(event.currentTarget);
   const handleClose = (): void => setAnchorEl(null);
+  const navigateToNextPage = (): void => { if (pageInfo.hasNextPage) changePage(currentPage + 1); };
+  const navigateToPrevPage = (): void => { if (pageInfo.hasPreviousPage) changePage(currentPage - 1); };
   const createSortOptions = (options: string[]): Array<{ text: string; cb: () => void }> => (
     options.map((option) => ({
-      text: t(`sort.${option}`),
-      cb:   () => {
-
-        sortItems(option as any); handleClose();
-
-      }
+      text: tSearch(`sort.${option}`),
+      cb:   () => { sortItems(option as any); handleClose(); }
     }))
   );
 
   return (
     <MainLayout
       title={pageTitle}
-      // TODO: Hacer traducciones y unirlas con query de busqueda o categoria
-      desc="Busqueda de producto X"
+      desc={''}
     >
       <S.Container>
         {
@@ -58,7 +55,7 @@ const Search: FC<ISearchPageProps> = ({ products }) => {
           {
             !isDesktop && (
               <Button
-                text={t('btn_1')}
+                text={tSearch('btn_1')}
                 variant='outlined'
                 icon={<IoFilter />}
                 onClick={() => setOpenFilter(true)}
@@ -66,7 +63,7 @@ const Search: FC<ISearchPageProps> = ({ products }) => {
             )
           }
           <Button
-            text={t('btn_2')}
+            text={tSearch('btn_2')}
             variant='outlined'
             icon={<FaSort />}
             id="basic-button"
@@ -74,26 +71,40 @@ const Search: FC<ISearchPageProps> = ({ products }) => {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
+            disabled={noResults}
           />
         </S.OptionsWrapper>
         {
-          (products.length === 0)
+          noResults
             ? (
                 <S.NotResultsText>
-                  Sin resultados...
+                  {tSearch('no_results_message')}
                 </S.NotResultsText>
               )
             : (
-                <S.ProductList>
-                  {
-                    products.map((product) => (
-                      <ProductCard
-                        key={product.slug}
-                        product={product}
-                      />
-                    ))
-                  }
-                </S.ProductList>
+                <>
+                  <S.ProductList>
+                    {
+                      products.map((product) => (
+                        <ProductCard
+                          key={product.slug}
+                          product={product}
+                        />
+                      ))
+                    }
+                  </S.ProductList>
+                  <S.PageSelectorWrapper>
+                    <S.BackButton
+                      disabled={!pageInfo.hasPreviousPage}
+                      onClick={navigateToPrevPage}
+                    />
+                    <S.CurrentPage>{(currentPage + 1)}</S.CurrentPage>
+                    <S.FowardButton
+                      disabled={!pageInfo.hasNextPage}
+                      onClick={navigateToNextPage}
+                    />
+                  </S.PageSelectorWrapper>
+                </>
               )
         }
       </S.Container>
