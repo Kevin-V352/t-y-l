@@ -1,26 +1,26 @@
 import type { NextPage, GetServerSideProps } from 'next';
 
 import { dbProducts } from '@/database';
-import { ISearchPageProps } from '@/interfaces';
+import { IPaginatedProducts } from '@/interfaces';
 import { Search } from '@/pages';
 
-const SearchPage: NextPage<ISearchPageProps> = ({ products }) => {
+const SearchPage: NextPage<IPaginatedProducts> = (props) => {
 
   return (
-    <Search products={products} />
+    <Search {...props} />
   );
 
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
-  const [products] = await dbProducts.searchProducts(query as any);
+  const [pageData] = await dbProducts.searchProducts(query as any);
 
-  if (!products) return { redirect: { destination: '/', permanent: false } };
+  if (!pageData) return { redirect: { destination: '/', permanent: false } };
 
   return {
     props: {
-      products
+      ...pageData
     }
   };
 

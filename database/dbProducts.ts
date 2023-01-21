@@ -1,5 +1,5 @@
 import { hygraphAPI } from '@/apis';
-import { ICardProduct, IProductDetails } from '@/interfaces';
+import { IPaginatedProducts, IPaginatedProductsResponse, IProductDetails } from '@/interfaces';
 import {
   GET_FILTERED_PRODUCTS,
   GET_ALL_SLUGS,
@@ -14,7 +14,7 @@ interface IQueries {
 };
 
 type TSearchProductsResponse =
-  | [ICardProduct[], null]
+  | [IPaginatedProducts, null]
   | [null, any]
 
 type TGetAllSlugsResponse =
@@ -30,24 +30,26 @@ export const searchProducts = async (queries: IQueries): Promise<TSearchProducts
   const {
     query = '',
     category = 'product',
-    sort = 'publishedAt_DESC'
-    /* page = '' */
+    sort = 'publishedAt_DESC',
+    page = 0
   } = queries;
 
   const searchTerm = (query === '0') ? '' : query;
 
   try {
 
-    const { products }: { products: ICardProduct[] } = await hygraphAPI.request({
+    const { productsConnection: { pageInfo, edges } }: { productsConnection: IPaginatedProductsResponse } = await hygraphAPI.request({
       document:  GET_FILTERED_PRODUCTS,
-      variables: { category: [category], sort, searchTerm }
+      variables: { category: [category], sort, searchTerm, skip: (page * 10) }
     });
 
-    return [products, null];
+    const products = edges.map(({ node }) => node);
+
+    return [{ pageInfo, products }, null];
 
   } catch (error: any) {
 
-    console.log(error);
+    console.error(error);
     return [null, error];
 
   };
