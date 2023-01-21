@@ -59,6 +59,22 @@ const FilterContent: FC<IFilterContentProps> = ({ onOptionIsSelected }) => {
         {
           text: t('filters.categories.appetizers'),
           cb:   () => onClick('appetizers')
+        },
+        {
+          text: t('filters.categories.gins'),
+          cb:   () => onClick('gins')
+        },
+        {
+          text: t('filters.categories.foamers'),
+          cb:   () => onClick('foamers')
+        },
+        {
+          text: t('filters.categories.vodkas'),
+          cb:   () => onClick('vodkas')
+        },
+        {
+          text: t('filters.categories.whiskies'),
+          cb:   () => onClick('whiskies')
         }
       ]
     },
