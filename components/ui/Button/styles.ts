@@ -6,6 +6,10 @@ const boxShadow = css`
   box-shadow: ${({ theme }) => `${theme.border.transparent_black} 0px 2px 15px 2px`};
 `;
 
+const commonDisabledStyles = css`
+  cursor: default;
+`;
+
 const selectVariant = (variant: 'primary' | 'outlined'): FlattenInterpolation<ThemeProps<DefaultTheme>> => {
 
   switch (variant) {
@@ -26,7 +30,8 @@ const selectVariant = (variant: 'primary' | 'outlined'): FlattenInterpolation<Th
           text-shadow: none;
           background: ${({ theme }) => theme.button.oslo_grey};
           background: ${({ theme }) => `linear-gradient(180deg, ${theme.button.oslo_grey} 50%, ${theme.button.transparent_white} 100%)`};
-          border-color: ${({ theme }) => theme.button.oslo_grey}
+          border-color: ${({ theme }) => theme.button.oslo_grey};
+          ${commonDisabledStyles};
         }
       `;
 
@@ -34,6 +39,12 @@ const selectVariant = (variant: 'primary' | 'outlined'): FlattenInterpolation<Th
       return css`
         background: transparent;
         border: ${({ theme }) => theme.border.light_grey} solid 2px;
+
+        :disabled {
+          color: ${({ theme }) => theme.text.oslo_grey};
+          border-color: ${({ theme }) => theme.button.oslo_grey};
+          ${commonDisabledStyles}
+        }
       `;
 
   };
