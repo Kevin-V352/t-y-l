@@ -1,8 +1,4 @@
-import { ICardProduct, IHomeContentResponse, IOrderMin, IProductDetails } from '@/interfaces';
-
-export interface ISearchPageProps {
-  products: ICardProduct[];
-};
+import { IHomeContentResponse, IOrderMin, IProductDetails } from '@/interfaces';
 
 export interface IProductDetailsPageProps {
   product: IProductDetails;

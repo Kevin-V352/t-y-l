@@ -44,3 +44,22 @@ export interface IProductPriceAndStockResponse {
   price: number;
   stock: number;
 };
+
+export interface IPaginatedProducts {
+  pageInfo: IPageInfo;
+  products: ICardProduct[];
+};
+
+export interface IPaginatedProductsResponse {
+  pageInfo: IPageInfo;
+  edges: Edge[];
+};
+
+interface IPageInfo {
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+};
+
+interface Edge {
+  node: ICardProduct;
+};
