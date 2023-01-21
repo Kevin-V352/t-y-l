@@ -1,14 +1,18 @@
+/* eslint-disable import/no-unresolved */
 import { FC } from 'react';
 
-import { Pagination } from 'swiper';
+import { Pagination, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 import { CategoryTag, ProductCard } from '@/ui';
 
 import * as S from './styles';
-import { Props } from './types';
+import { IProductSliderProps } from './types';
 
-const ProductSlider: FC<Props> = ({ title, generalId, customStyles }) => {
+const ProductSlider: FC<IProductSliderProps> = ({ title, generalId, products, swiperProps, customStyles }) => {
 
   const tagId = generalId ? `${generalId}_tag` : undefined;
 
@@ -20,11 +24,11 @@ const ProductSlider: FC<Props> = ({ title, generalId, customStyles }) => {
       />
       <S.SwiperWrapper>
         <Swiper
-          modules={[Pagination]}
+          {...swiperProps}
+          modules={[Pagination, Autoplay]}
           slidesPerView={1}
           navigation
           pagination={{ clickable: true }}
-          onSwiper={(swiper) => console.log(swiper)}
           spaceBetween={20}
           breakpoints={{
             768: {
@@ -39,15 +43,10 @@ const ProductSlider: FC<Props> = ({ title, generalId, customStyles }) => {
           }}
         >
           {
-            [1, 2, 3, 4, 5].map((el, i) => (
-              <SwiperSlide key={i}>
+            products.map((product) => (
+              <SwiperSlide key={product.slug}>
                 <ProductCard
-                  product={{
-                    img:   [{ url: '/assets/seed/product_1_example.jpg' }],
-                    title: 'Jack Daniels',
-                    price: 15,
-                    slug:  'whisky-jack-daniels-honey'
-                  }}
+                  product={product}
                 />
               </SwiperSlide>
             ))

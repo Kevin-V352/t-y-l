@@ -1,3 +1,5 @@
+import { ICardProduct } from '@/interfaces';
+
 export interface ICategoryItem {
   category: string;
   img: {
@@ -12,6 +14,8 @@ export interface IHomeContentResponse {
   image2: {
     url: string;
   };
-  categories1: ICategoryItem[];
-  categories2: ICategoryItem[];
+  categories1:      ICategoryItem[];
+  categories2:      ICategoryItem[];
+  lastProducts:     ICardProduct[];
+  popularProducts:  ICardProduct[];
 };

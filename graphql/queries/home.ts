@@ -22,5 +22,21 @@ export const GET_HOME_CONTENT = gql`
         }
       }
     }
+    lastProducts: products(last: 10) {
+      img(first: 1) {
+        url
+      }
+      title
+      price
+      slug
+    }
+    popularProducts: products(where: { categories_contains_some: popular }) {
+      img(first: 1) {
+        url
+      }
+      title
+      price
+      slug
+    }
   }
 `;

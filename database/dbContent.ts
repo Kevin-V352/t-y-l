@@ -1,5 +1,5 @@
 import { hygraphAPI } from '@/apis';
-import { IHomeContentResponse } from '@/interfaces';
+import { ICardProduct, IHomeContentResponse } from '@/interfaces';
 import { GET_HOME_CONTENT } from 'graphql/queries/home';
 
 type TGetHomeContentResponse =
@@ -10,13 +10,17 @@ export const getHomeContent = async (): Promise<TGetHomeContentResponse> => {
 
   try {
 
-    const { homeContent }: { homeContent: IHomeContentResponse | null } = await hygraphAPI.request({
+    const { homeContent, lastProducts, popularProducts }: {
+      homeContent: IHomeContentResponse | null;
+      lastProducts: ICardProduct[] | null;
+      popularProducts: ICardProduct[] | null;
+    } = await hygraphAPI.request({
       document: GET_HOME_CONTENT
     });
 
-    if (!homeContent) return [null, new Error('ERROR: There is no content for the home page')];
+    if (!homeContent || !lastProducts || !popularProducts) return [null, new Error('ERROR: There is no content for the home page')];
 
-    return [homeContent, null];
+    return [{ ...homeContent, lastProducts, popularProducts }, null];
 
   } catch (error) {
 
