@@ -1,6 +1,7 @@
 import path from 'path';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+import getT from 'next-translate/getT';
 import PDFDocument from 'pdfkit';
 
 import { hygraphAPI } from '@/apis';
@@ -13,20 +14,32 @@ interface Data {
   message: string;
 };
 
-// TODO: Move function createMenuFile
+interface ExtendedNextApiRequest extends NextApiRequest {
+  query: {
+    lang?: 'es';
+  };
+};
 
-const generatePDFList = async (res: NextApiResponse<Data>): Promise<void> => {
+// TODO: Move function createMenuFile
+const generatePDFList = async (req: ExtendedNextApiRequest, res: NextApiResponse<Data>): Promise<void> => {
+
+  const { lang = 'es' } = req.query;
 
   const maxNumberOfPages = 22;
-  const mainCategories = ['drinks_without_alcohol', 'alcoholic_drinks', 'snacks', 'others', 'product']; // ? (2)
+  const mainCategories = ['drinks_without_alcohol', 'alcoholic_drinks', 'snacks', 'others', 'product', 'popular']; // ? (2)
   const objResp: { [key: string]: IPDFProduct[] } = {};
 
   try {
 
+    //* We try to get the selected language
+    const t = await getT(lang, 'common');
+
+    //* We try to get the products
     const { products }: { products: IPDFProductFromDB[] } = await hygraphAPI.request({
       document: GET_ALL_PRODUCTS_FOR_THE_MENU
     });
 
+    //* We process the data for rendering
     products.forEach(({ title, price, categories }) => {
 
       const subCategories = categories.filter((category) => !mainCategories.includes(category));
@@ -105,7 +118,7 @@ const generatePDFList = async (res: NextApiResponse<Data>): Promise<void> => {
 
       //* Product category
       doc
-        .text(categoryName, 60, 250, {
+        .text(t(`filters.categories.${categoryName}`), 60, 250, {
           underline: true
         });
 
@@ -131,7 +144,7 @@ const generatePDFList = async (res: NextApiResponse<Data>): Promise<void> => {
   } catch (error) {
 
     console.error(error);
-    res.status(400).json({ message: 'An error has occurred during document creation' });
+    res.status(500).json({ message: 'An error has occurred during document creation' });
 
   };
 
@@ -142,7 +155,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse<Data>):
   switch (req.method) {
 
     case 'GET':
-      return await generatePDFList(res);
+      return await generatePDFList(req, res);
 
     default:
       res.status(400).json({ message: 'Bad request' });

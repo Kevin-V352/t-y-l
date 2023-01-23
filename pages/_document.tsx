@@ -40,7 +40,7 @@ export default class MyDocument extends Document {
   render (): JSX.Element {
 
     return (
-      <Html lang="en" style={{ scrollBehavior: 'smooth' }}>
+      <Html style={{ scrollBehavior: 'smooth' }}>
         <Head>
           <meta charSet="utf-8" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
