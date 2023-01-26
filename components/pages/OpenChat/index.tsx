@@ -30,8 +30,8 @@ const OpenChat: FC<IOpenChatPageProps> = ({ order: { id, paid } }) => {
   }, []);
 
   const currentUrl = (value === 0)
-    ? 'https://www.youtube.com/watch?v=wB8cdC0VV3Q'
-    : 'https://www.youtube.com/watch?v=YOQd-mp_Vk4';
+    ? 'https://www.youtube.com/watch?v=Ze7beFkMdYs'
+    : 'https://www.youtube.com/watch?v=Ze7beFkMdYs';
 
   const isDesktop = currentResolution ? (currentResolution >= 1024) : false;
 
