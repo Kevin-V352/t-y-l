@@ -49,7 +49,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
 
   useUpdateCart();
 
-  const { currentStock, currentPrice, isLoading: currentPriceIsLoading } = useCurrentPrice(id);
+  const { currentStock, currentPrice, isLoading: currentPriceAndStockAreLoading } = useCurrentPrice(id);
 
   const loadingQuantity = (!cookiesLoaded || !updatedProducts);
 
@@ -111,7 +111,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
         <S.Content>
           <S.Title>{title}</S.Title>
           {
-            currentPriceIsLoading
+            currentPriceAndStockAreLoading
               ? (
                   <Skeleton
                     variant="rounded"
@@ -127,7 +127,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
           <QuantitySelector
             initialValue={getCurrentQuantity(id) ?? 1}
             maxQuantity={(currentStock ?? 0)}
-            $loading={loadingQuantity}
+            $loading={(currentPriceAndStockAreLoading || loadingQuantity)}
             // eslint-disable-next-line padded-blocks
             onChange={(quantity) => { currentQuantity.current = quantity; }}
           />
@@ -136,7 +136,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
             text={t('btn_1')}
             variant='primary'
             onClick={addToCart}
-            disabled={(currentPriceIsLoading || loadingQuantity)}
+            disabled={(currentPriceAndStockAreLoading || loadingQuantity)}
           />
           {
             isDesktop && <S.Description>{description}</S.Description>
