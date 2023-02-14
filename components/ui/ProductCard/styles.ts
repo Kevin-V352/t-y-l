@@ -25,6 +25,12 @@ export const Title = styled.h4`
   text-transform: uppercase;
   margin: 25px 0 0 0;
   font-weight: 600;
+  text-align: center;
+  width: calc(100% - 30px);
+  margin: 25px 15px 0 15px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font-size: var(--secondary-font-size);
   color: ${({ theme }) => theme.text.oslo_grey};
 `;
