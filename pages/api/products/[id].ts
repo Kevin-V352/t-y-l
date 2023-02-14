@@ -1,35 +1,74 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { hygraphAPI } from '@/apis';
-import { GET_CURRENT_PRICE_AND_STOCK_BY_ID } from 'graphql/queries/product';
-
-import { IProductPriceAndStockResponse } from '../../../interfaces/product';
+import { ICardProduct, ICardProductByCategoryResponse, IProductExtraDataResponse } from '@/interfaces';
+import { GET_EXTRA_DATA_BY_ID, GET_PRODUCTS_BY_CATEGORY } from 'graphql/queries/product';
 
 type Data =
   | { message: string }
-  | IProductPriceAndStockResponse
+  | { productDetails: IProductExtraDataResponse; relatedProducts: ICardProduct[] };
+
+// TODO: Pass this to .env
+const invalidCategories = [
+  'popular',
+  'drinks_without_alcohol',
+  'soft_driks',
+  'non_carbonated_drinks',
+  'alcoholic_drinks',
+  'others',
+  'product'
+];
 
 const getCurrentPriceAndStock = async (req: NextApiRequest, res: NextApiResponse<Data>): Promise<void> => {
 
   const { id } = req.query;
+  let productDetails: IProductExtraDataResponse | null = null;
+  let relatedProducts: ICardProduct[] = [];
 
   try {
 
-    const { product }: { product: IProductPriceAndStockResponse | null } = await hygraphAPI.request({
-      document:  GET_CURRENT_PRICE_AND_STOCK_BY_ID,
+    const { product }: { product: IProductExtraDataResponse | null } = await hygraphAPI.request({
+      document:  GET_EXTRA_DATA_BY_ID,
       variables: { id }
     });
 
     if (!product) return res.status(400).json({ message: 'ERROR: There is no product with this id' });
 
-    res.status(200).json(product);
+    productDetails = product;
 
   } catch (error) {
 
-    console.log(error);
-    res.status(500).json({ message: 'ERROR: Error when trying to get data from DB' });
+    console.error(error);
+    return res.status(500).json({ message: 'ERROR: Error when trying to get data from DB' });
 
   };
+
+  const mainCategory = productDetails.categories.filter((productCategory) => !invalidCategories.includes(productCategory))[0];
+
+  if (mainCategory) {
+
+    try {
+
+      const { products }: { products: ICardProductByCategoryResponse[] | null } = await hygraphAPI.request({
+        document:  GET_PRODUCTS_BY_CATEGORY,
+        variables: { category: [mainCategory] }
+      });
+
+      relatedProducts = products
+        ? products
+          .filter(({ id: productId }) => (productId !== id))
+          .map(({ img, title, price, slug }) => ({ img, title, price, slug }))
+        : [];
+
+    } catch (error) {
+
+      console.error(error);
+
+    };
+
+  };
+
+  res.status(200).json({ productDetails, relatedProducts });
 
 };
 

@@ -16,6 +16,10 @@ export interface IProductDetails extends ICardProduct {
   stock:          number;
 };
 
+export interface ICardProductByCategoryResponse extends ICardProduct {
+  id: string;
+};
+
 export interface ICartProduct {
   id:       string;
   img:      IProductImage[];
@@ -40,9 +44,15 @@ export interface IProductStockResponse {
   stock: number;
 };
 
-export interface IProductPriceAndStockResponse {
-  price: number;
-  stock: number;
+export interface IProductExtraDataResponse {
+  price:      number;
+  stock:      number;
+  categories: string[];
+};
+
+export interface IProductExtraDataResponseForClient {
+  productDetails: IProductExtraDataResponse;
+  relatedProducts: ICardProduct[];
 };
 
 export interface IPaginatedProducts {

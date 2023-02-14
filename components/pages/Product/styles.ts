@@ -20,8 +20,9 @@ export const Container = styled.div`
     grid-auto-rows: min-content;
     grid-template-columns: 55% 1fr;
     grid-template-areas: 
-      'img  content'
-      'desc desc'
+      'img             content'
+      'desc            desc'
+      'relatedProducts relatedProducts'
     ;
   };
 
@@ -31,7 +32,8 @@ export const Container = styled.div`
     grid-row-gap: 30px;
     grid-template-columns: 45% 1fr;
     grid-template-areas: 
-      'img  content'
+      'img             content'
+      'relatedProducts relatedProducts'
     ;
   };
 `;
@@ -50,7 +52,7 @@ export const Content = styled.div`
   };
 `;
 
-export const SwiperWrapper = styled.div`
+export const SwiperImageWrapper = styled.div`
   aspect-ratio: 1/1;
   grid-area: img;
 
@@ -60,6 +62,36 @@ export const SwiperWrapper = styled.div`
     height: 100%;
   };
 
+`;
+
+export const SwiperProductsWrapper = styled.div`
+  width: 100%;
+`;
+
+export const RelatedProductsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 30px;
+  grid-area: relatedProducts;
+
+  .swiper-slide {
+    box-sizing: border-box;
+    padding: 10px;
+  };
+
+  .swiper-button-prev, .swiper-button-next {
+    display: none;
+
+    @media screen and (min-width: 1024px) {
+      display: flex;
+      color: ${({ theme }) => theme.icon.light_orange};
+    };
+  };
+
+  .swiper-button-disabled {
+    display: none;
+  };
 `;
 
 export const ImgWrapper = styled.div`

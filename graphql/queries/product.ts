@@ -83,6 +83,20 @@ export const GET_PRODUCTS_BY_IDS = gql`
   }
 `;
 
+export const GET_PRODUCTS_BY_CATEGORY = gql`
+  query getProductsByIds($category: [Categories!]) {
+    products(where: { categories_contains_some: $category }, first: 10) { 
+      id
+      title
+      price
+      slug
+      img(first: 1) {
+        url
+      }
+    }
+  }
+`;
+
 export const GET_PRODUCT_PRICES_AND_STOCK_BY_IDS = gql`
   query getProductsByIds($ids: [ID]) {
     products(where: { id_in: $ids }) {
@@ -93,11 +107,12 @@ export const GET_PRODUCT_PRICES_AND_STOCK_BY_IDS = gql`
   }
 `;
 
-export const GET_CURRENT_PRICE_AND_STOCK_BY_ID = gql`
+export const GET_EXTRA_DATA_BY_ID = gql`
   query getCurrentPriceOfProduct($id: ID) {
     product(where: { id: $id }) {
       price
       stock
+      categories
     }
   }
 `;

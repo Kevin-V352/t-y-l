@@ -3,20 +3,21 @@ import { FC, useContext, useState, useRef } from 'react';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 import { Modal } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Pagination } from 'swiper';
+import { Pagination, Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { CartContext } from '@/contexts';
-import { useCurrentPrice, useUpdateCart } from '@/hooks';
+import { useGetExtraProductData, useUpdateCart } from '@/hooks';
 import { ICartProduct, IProductDetailsPageProps } from '@/interfaces';
 import { MainLayout } from '@/layouts';
-import { Skeleton, Button, QuantitySelector, Checkbox } from '@/ui';
+import { Skeleton, Button, QuantitySelector, Checkbox, ProductCard } from '@/ui';
 import { formatters } from '@/utils';
 
 import * as S from './styles';
@@ -49,7 +50,12 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
 
   useUpdateCart();
 
-  const { currentStock, currentPrice, isLoading: currentPriceAndStockAreLoading } = useCurrentPrice(id);
+  const {
+    currentStock,
+    currentPrice,
+    relatedProducts,
+    isLoading: currentPriceAndStockAreLoading
+  } = useGetExtraProductData(id);
 
   const loadingQuantity = (!cookiesLoaded || !updatedProducts);
 
@@ -88,7 +94,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
       desc=''
     >
       <S.Container>
-        <S.SwiperWrapper>
+        <S.SwiperImageWrapper>
           <Swiper
             modules={[Pagination]}
             slidesPerView={1}
@@ -107,7 +113,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
               ))
             }
           </Swiper>
-        </S.SwiperWrapper>
+        </S.SwiperImageWrapper>
         <S.Content>
           <S.Title>{title}</S.Title>
           {
@@ -144,6 +150,34 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
         </S.Content>
         {
           !isDesktop && <S.Description>{description}</S.Description>
+        }
+        {
+          (relatedProducts && relatedProducts.length > 0) && (
+            <S.RelatedProductsWrapper>
+              <S.Title>Productos relacionados</S.Title>
+              <S.SwiperProductsWrapper>
+                <Swiper
+                  modules={[Navigation]}
+                  slidesPerView={1.2}
+                  spaceBetween={20}
+                  navigation
+                  breakpoints={{
+                    768:  { slidesPerView: 2.2 },
+                    1024: { slidesPerView: 3.2, allowTouchMove: false },
+                    1400: { slidesPerView: 4.2 }
+                  }}
+                >
+                  {
+                    relatedProducts.map((product) => (
+                      <SwiperSlide key={product.slug}>
+                        <ProductCard product={product} />
+                      </SwiperSlide>
+                    ))
+                  }
+                </Swiper>
+              </S.SwiperProductsWrapper>
+            </S.RelatedProductsWrapper>
+          )
         }
       </S.Container>
       <Modal
