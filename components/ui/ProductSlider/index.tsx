@@ -27,19 +27,12 @@ const ProductSlider: FC<IProductSliderProps> = ({ title, generalId, products, sw
           {...swiperProps}
           modules={[Pagination, Autoplay]}
           slidesPerView={1}
-          navigation
           pagination={{ clickable: true }}
           spaceBetween={20}
           breakpoints={{
-            768: {
-              slidesPerView: 2
-            },
-            1024: {
-              slidesPerView: 4
-            },
-            1920: {
-              slidesPerView: 5
-            }
+            768:  { slidesPerView: 2 },
+            1024: { slidesPerView: 4 },
+            1920: { slidesPerView: 5 }
           }}
         >
           {
