@@ -13,6 +13,10 @@ export interface IQuantitySelectorContentProps {
 
 export interface IQuantitySelectorProps extends IQuantitySelectorContainer, IQuantitySelectorContentProps {};
 
-export interface IButtonProps {
+export interface IIconProps {
   disabled: boolean;
+};
+
+export interface IWrapperButton {
+  gridArea: string;
 };

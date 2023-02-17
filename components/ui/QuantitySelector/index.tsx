@@ -21,15 +21,25 @@ const Content: FC<IQuantitySelectorContentProps> = ({ maxQuantity, initialValue,
   return (
     <>
       <S.TotalQuantity>{(maxQuantity > 1) ? `${maxQuantity} disponibles` : '¡Último disponible!'}</S.TotalQuantity>
-      <S.AddButton
-        onClick={addItem}
-        disabled={disableAdd}
-      />
-      <S.Quantity>{quantity}</S.Quantity>
-      <S.RemoveButton
-        onClick={removeItem}
+      <S.WrapperButton
+        gridArea="removeButton"
         disabled={disableRemove}
-      />
+      >
+        <S.RemoveIcon
+          onClick={removeItem}
+          disabled={disableRemove}
+        />
+      </S.WrapperButton>
+      <S.Quantity>{quantity}</S.Quantity>
+      <S.WrapperButton
+        gridArea="addButton"
+        disabled={disableRemove}
+      >
+        <S.AddIcon
+          onClick={addItem}
+          disabled={disableAdd}
+        />
+      </S.WrapperButton>
     </>
   );
 
@@ -55,19 +65,19 @@ const QuantitySelector: FC<IQuantitySelectorProps> = (props) => {
       {
         $loading
           ? (
-              <Skeleton
-                variant="rounded"
-                animation="wave"
-                width={bigScreen ? 140 : 115}
-                height={bigScreen ? 90 : 78}
-              />
+            <Skeleton
+              variant="rounded"
+              animation="wave"
+              width={bigScreen ? 140 : 115}
+              height={bigScreen ? 90 : 78}
+            />
             )
           : (
-              <Content
-                maxQuantity={maxQuantity}
-                initialValue={initialValue}
-                onChange={onChange}
-              />
+            <Content
+              maxQuantity={maxQuantity}
+              initialValue={initialValue}
+              onChange={onChange}
+            />
             )
       }
     </S.Container>
