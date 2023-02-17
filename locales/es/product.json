@@ -1,3 +1,4 @@
 {
-  "btn_1": "AGREGAR AL CARRITO"
+  "btn_1": "AGREGAR AL CARRITO",
+  "error_notification_get_extra_data": "Ha ocurrido un error al intentar obtener los datos del producto. Por favor, intente nuevamente más tarde."
 }
