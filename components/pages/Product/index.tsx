@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-import { FC, useContext, useState, useRef } from 'react';
+import { FC, useContext, useState, useRef, useEffect } from 'react';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -10,6 +10,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 import { Pagination, Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -17,7 +18,14 @@ import { CartContext } from '@/contexts';
 import { useGetExtraProductData, useUpdateCart } from '@/hooks';
 import { ICartProduct, IProductDetailsPageProps } from '@/interfaces';
 import { MainLayout } from '@/layouts';
-import { Skeleton, Button, QuantitySelector, Checkbox, ProductCard } from '@/ui';
+import {
+  Skeleton,
+  Button,
+  QuantitySelector,
+  Checkbox,
+  ProductCard,
+  Notification
+} from '@/ui';
 import { formatters } from '@/utils';
 
 import * as S from './styles';
@@ -54,7 +62,8 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
     currentStock,
     currentPrice,
     relatedProducts,
-    isLoading: currentPriceAndStockAreLoading
+    isLoading: extraProductDataAreLoading,
+    isError
   } = useGetExtraProductData(id);
 
   const loadingQuantity = (!cookiesLoaded || !updatedProducts);
@@ -62,6 +71,9 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
   // TODO: REPLACE THIS
   const isDesktop = useMediaQuery('(min-width:1024px)');
   const bigScreen = useMediaQuery('(min-width:1920px)');
+
+  //* Condition to maintain the loading animation even when the request fails
+  const loadingExtraData = (extraProductDataAreLoading || isError);
 
   const addToCart = (): void => {
 
@@ -87,6 +99,19 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
     if (hideConfirmationMessage.current) hideMessageInProducts();
 
   };
+
+  useEffect(() => {
+
+    if (isError) {
+
+      toast.error(
+        t('error_notification_get_extra_data').toString(),
+        { autoClose: false }
+      );
+
+    };
+
+  }, [isError]);
 
   return (
     <MainLayout
@@ -117,7 +142,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
         <S.Content>
           <S.Title>{title}</S.Title>
           {
-            currentPriceAndStockAreLoading
+            loadingExtraData
               ? (
                   <Skeleton
                     variant="rounded"
@@ -133,7 +158,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
           <QuantitySelector
             initialValue={getCurrentQuantity(id) ?? 1}
             maxQuantity={(currentStock ?? 0)}
-            $loading={(currentPriceAndStockAreLoading || loadingQuantity)}
+            $loading={(loadingExtraData || loadingQuantity)}
             // eslint-disable-next-line padded-blocks
             onChange={(quantity) => { currentQuantity.current = quantity; }}
           />
@@ -142,7 +167,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
             text={t('btn_1')}
             variant='primary'
             onClick={addToCart}
-            disabled={(currentPriceAndStockAreLoading || loadingQuantity)}
+            disabled={(loadingExtraData || loadingQuantity)}
           />
           {
             isDesktop && <S.Description>{description}</S.Description>
@@ -209,6 +234,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
           />
         </S.ConfirmModalWrapper>
       </Modal>
+      <Notification />
     </MainLayout>
   );
 

@@ -23,14 +23,14 @@ export const Image = styled.img`
 
 export const Title = styled.h4`
   text-transform: uppercase;
-  margin: 25px 0 0 0;
+  width: 100%;
   font-weight: 600;
   text-align: center;
-  width: calc(100% - 30px);
-  margin: 25px 15px 0 15px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  width: calc(100% - 30px);
+  margin: 25px auto 0 auto;
   font-size: var(--secondary-font-size);
   color: ${({ theme }) => theme.text.oslo_grey};
 `;

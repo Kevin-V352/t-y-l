@@ -21,7 +21,7 @@ const useGetExtraProductData = (id: string): IHookResponse => {
     currentPrice:    data?.productDetails.price ?? null,
     currentStock:    data?.productDetails.stock ?? null,
     relatedProducts: data?.relatedProducts ?? null,
-    isLoading:       (!error && !data),
+    isLoading:       (!data && !error),
     isError:         error
   };
 

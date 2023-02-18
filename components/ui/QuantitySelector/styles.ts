@@ -1,10 +1,9 @@
 import { CgAdd, CgRemove } from 'react-icons/cg';
 import styled, { css } from 'styled-components';
 
-import { IButtonProps, IQuantitySelectorContainer } from './types';
+import { IIconProps, IWrapperButton, IQuantitySelectorContainer } from './types';
 
-const commonButtonStyles = css<IButtonProps>`
-  cursor: pointer;
+const iconCommonStyles = css<IIconProps>`
   font-size: var(--primary-font-size);
   color: ${({ theme, disabled }) => disabled ? theme.text.oslo_grey : theme.text.white};
 `;
@@ -40,12 +39,17 @@ export const Quantity = styled.span`
   user-select: none;
 `;
 
-export const RemoveButton = styled(CgRemove)`
-  ${commonButtonStyles}
-  grid-area: removeButton;
+export const RemoveIcon = styled(CgRemove)`
+  ${iconCommonStyles}
 `;
 
-export const AddButton = styled(CgAdd)<IButtonProps>`
-  ${commonButtonStyles}
-  grid-area: addButton;
+export const AddIcon = styled(CgAdd)`
+  ${iconCommonStyles}
+`;
+
+export const WrapperButton = styled.button<IWrapperButton>`
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  grid-area: ${({ gridArea }) => gridArea};
 `;

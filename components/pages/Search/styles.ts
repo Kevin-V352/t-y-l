@@ -22,11 +22,11 @@ export const Container = styled.div`
   flex-direction: column;
   padding: 35px;
   flex: 1;
-  gap: 35px;
+  gap: 30px;
 
   @media screen and (min-width: 1024px) {
     display: grid;
-    grid-template-columns: 20vw 1fr;
+    grid-template-columns: 17vw 1fr;
     grid-template-rows: min-content 1fr;
     gap: 30px;
     grid-template-areas: 
@@ -59,7 +59,7 @@ export const ProductList = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 35px;
+  gap: 30px;
   grid-area: products;
   height: min-content;
 
@@ -70,11 +70,11 @@ export const ProductList = styled.div`
 
   @media screen and (min-width: 1024px) {
     margin-top: 0;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, calc((100% - 60px) / 3));
   };
 
   @media screen and (min-width: 1920px) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, calc((100% - 90px) / 4));
   };
 `;
 
