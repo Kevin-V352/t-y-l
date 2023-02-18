@@ -179,7 +179,7 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
         {
           (relatedProducts && relatedProducts.length > 0) && (
             <S.RelatedProductsWrapper>
-              <S.Title>Productos relacionados</S.Title>
+              <S.Title>{t('related_products_title')}</S.Title>
               <S.SwiperProductsWrapper>
                 <Swiper
                   modules={[Navigation]}
@@ -212,9 +212,9 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
         aria-describedby="confirm-modal-description"
       >
         <S.ConfirmModalWrapper>
-          <S.Title id="confirm-modal-title">El producto se añadio al carrito</S.Title>
+          <S.Title id="confirm-modal-title">{t('confirmationModal.title')}</S.Title>
           <Button
-            text="Seguir comprando"
+            text={t('confirmationModal.btn_1')}
             variant="primary"
             onClick={handleClose}
           />
@@ -223,12 +223,12 @@ const Product: FC<IProductDetailsPageProps> = ({ product }) => {
             prefetch={false}
           >
             <Button
-              text="Ir al carrito"
+              text={t('confirmationModal.btn_2')}
               variant="primary"
             />
           </Link>
           <Checkbox
-            label="No quiero volver a ver esto"
+            label={t('confirmationModal.checkbox')}
             // eslint-disable-next-line padded-blocks
             onChange={(_, checked) => { hideConfirmationMessage.current = checked; }}
           />
