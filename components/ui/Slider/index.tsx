@@ -20,11 +20,8 @@ const Slider: FC<ISliderProps> = ({ sliderItems }) => {
       <Swiper
         modules={[Pagination]}
         slidesPerView={1}
-        navigation
         pagination={{ clickable: true }}
         scrollbar={{ draggable: true }}
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log('slide change')}
       >
         {
           sliderItems.map(({ category, img }) => (
