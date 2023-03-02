@@ -4,7 +4,7 @@ export const Container = styled.div`
   min-height: 100vh;
   width: 100%;
   background: url('/assets/backgrounds/home.webp') no-repeat fixed;
-  background-size: cover;
+  background-size: 100% 105vh;
   padding: 10px;
   box-sizing: border-box;
   display: flex;
@@ -16,6 +16,7 @@ export const Container = styled.div`
 
   @media screen and (min-width: 1024px) {
     padding: 20px 40px;
+    background-size: cover;
   };
 `;
 

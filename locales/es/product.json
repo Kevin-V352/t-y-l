@@ -1,4 +1,11 @@
 {
   "btn_1": "AGREGAR AL CARRITO",
-  "error_notification_get_extra_data": "Ha ocurrido un error al intentar obtener los datos del producto. Por favor, intente nuevamente más tarde."
+  "error_notification_get_extra_data": "Ha ocurrido un error al intentar obtener los datos del producto. Por favor, intente nuevamente más tarde.",
+  "related_products_title": "Productos relacionados",
+  "confirmationModal": {
+    "title": "El producto se añadio al carrito",
+    "btn_1": "SEGUIR COMPRANDO",
+    "btn_2": "IR AL CARRITO",
+    "checkbox": "No quiero volver a ver esto"
+  }
 }
