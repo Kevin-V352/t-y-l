@@ -43,7 +43,8 @@ const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
       cb:   async () => await getters.saveMenuDocument(saveFileOptions, onClose),
       icon: <S.DownloadIcon />
     },
-    {
+    // TODO: Reserved for next update
+    /* {
       text: t('main_sidebar.offers'),
       icon: <S.OfferIcon />,
       cb:   () => {
@@ -51,7 +52,7 @@ const MainSidebar: FC<IMainSidebarProps> = ({ open, onClose }) => {
         onClose();
 
       }
-    },
+    }, */
     {
       text: t('main_sidebar.categories'),
       icon: <S.CategoryIcon />,

@@ -50,12 +50,13 @@ const NavBar: FC = () => {
       icon: <S.DownloadIcon />,
       type: 'button'
     },
-    {
+    // TODO: Reserved for next update
+    /* {
       text: t('main_sidebar.offers'),
       cb:   () => { },
       icon: <S.OfferIcon />,
       type: 'button'
-    },
+    }, */
     {
       text: t('main_sidebar.categories'),
       cb:   (event: React.MouseEvent<HTMLButtonElement>): void => setAnchorEl(event.currentTarget),
