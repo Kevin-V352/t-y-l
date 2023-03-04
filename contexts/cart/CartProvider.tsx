@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { FC, useEffect, useReducer } from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
 
 import { tylAPI } from '@/apis';
@@ -14,7 +16,8 @@ const CART_INITIAL_STATE: CartState = {
   totalPrice:      0,
   cookiesLoaded:   false,
   updatedProducts: false,
-  hideMessage1:    false
+  hideMessage1:    false,
+  error:           null
 };
 
 export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element => {
@@ -100,10 +103,9 @@ export const CartProvider: FC<CartProviderProps> = ({ children }): JSX.Element =
       const { data } = await tylAPI.post<ICartProduct[]>('/cart', { cartItems: state.cart });
       dispatch({ type: 'UPDATE_CART', payload: data });
 
-    } catch (error) {
+    } catch (error: AxiosError | any) {
 
-      console.log(error);
-      // TODO: Implement error handler
+      dispatch({ type: 'ERROR_UPDATE_CART', payload: error });
 
     };
 

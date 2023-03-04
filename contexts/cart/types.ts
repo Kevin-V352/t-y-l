@@ -1,14 +1,17 @@
 import { ReactNode } from 'react';
 
+import { AxiosError } from 'axios';
+
 import { ClientFormData, ICartProduct } from '@/interfaces';
 
 export interface CartState {
-  cart: ICartProduct[];
-  userData: ClientFormData | null;
-  totalPrice: number;
-  cookiesLoaded: boolean;
-  updatedProducts: boolean;
-  hideMessage1: boolean;
+  cart:             ICartProduct[];
+  userData:         ClientFormData | null;
+  totalPrice:       number;
+  cookiesLoaded:    boolean;
+  updatedProducts:  boolean;
+  hideMessage1:     boolean;
+  error:            AxiosError | any | null;
 };
 
 export interface CartContextProps extends CartState {
