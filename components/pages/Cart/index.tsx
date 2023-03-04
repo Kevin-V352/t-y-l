@@ -66,10 +66,12 @@ const Cart: FC = () => {
           <S.LoaderWrapper>
             <S.Title>{t('empty_title')}</S.Title>
             <S.HighlightedText>{t('empty_description')}</S.HighlightedText>
-            <Button
-              text={t('btn_2')}
-              variant='primary'
-            />
+            <Link href="/">
+              <Button
+                text={t('btn_2')}
+                variant='primary'
+              />
+            </Link>
           </S.LoaderWrapper>
         );
 
