@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react';
 
 import { useResponsive } from '@/hooks';
+import { screenTools } from 'utils';
 
 import * as S from './styles';
 import { ISidebarProps } from './types';
@@ -8,6 +9,12 @@ import { ISidebarProps } from './types';
 const Sidebar: FC<ISidebarProps> = ({ open, onClose, children }) => {
 
   const currentResolution = useResponsive();
+
+  useEffect(() => {
+
+    screenTools.lockBodyScroll(open);
+
+  }, [open]);
 
   useEffect(() => {
 

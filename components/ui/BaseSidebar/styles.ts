@@ -14,8 +14,8 @@ export const BaseSidebar = styled.div<SideBarContainerProps>`
   top: 0;
   box-sizing: border-box;
   padding: 20px 20px 0 20px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: min-content 1fr;
   overflow-y: scroll;
   z-index: 10;
   right: ${({ open }) => open ? '0' : '-100vw'};

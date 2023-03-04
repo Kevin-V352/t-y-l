@@ -6,5 +6,6 @@
   "empty_title": "Tu carrito está vacío",
   "empty_description": "¿No sabés qué comprar? ¡Varios de productos te esperan!",
   "btn_1": "CONTINUAR COMPRA",
-  "btn_2": "DESCUBRIR PRODUCTOS"
+  "btn_2": "DESCUBRIR PRODUCTOS",
+  "error_notification_update_cart": "Ha ocurrido un error al intentar obtener los productos del carrito actualizados. Por favor, intente nuevamente más tarde."
 }

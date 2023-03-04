@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios';
+
 import { ClientFormData, ICartProduct } from '@/interfaces';
 
 import { CartState } from './';
@@ -11,7 +13,8 @@ type CartActionType =
   | { type: 'UNSUBSCRIBE_CART' }
   | { type: 'LOAD_USER_DATA'; payload: ClientFormData }
   | { type: 'CLEAR_CART' }
-  | { type: 'HIDE_MESSAGE_1' };
+  | { type: 'HIDE_MESSAGE_1' }
+  | { type: 'ERROR_UPDATE_CART'; payload: AxiosError | any };
 
 export const CartReducer = (state: CartState, action: CartActionType): CartState => {
 
@@ -48,6 +51,13 @@ export const CartReducer = (state: CartState, action: CartActionType): CartState
         ...state,
         updatedProducts: true,
         cart:            action.payload
+      };
+
+    case 'ERROR_UPDATE_CART':
+      return {
+        ...state,
+        updatedProducts: false,
+        error:           action.payload
       };
 
     case 'UNSUBSCRIBE_CART':

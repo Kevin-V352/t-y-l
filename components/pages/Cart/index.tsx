@@ -1,19 +1,26 @@
-import { FC, useContext } from 'react';
+import { FC, useContext, useEffect } from 'react';
 
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 
 import { CartContext } from '@/contexts';
 import { useUpdateCart } from '@/hooks';
 import { MainLayout } from '@/layouts';
-import { Button, CartItem } from '@/ui';
+import { Button, CartItem, Notification } from '@/ui';
 import { formatters } from '@/utils';
 
 import * as S from './styles';
 
 const Cart: FC = () => {
 
-  const { cart, cookiesLoaded, updatedProducts, totalPrice } = useContext(CartContext);
+  const {
+    cart,
+    cookiesLoaded,
+    updatedProducts,
+    totalPrice,
+    error
+  } = useContext(CartContext);
 
   const { t } = useTranslation('cart');
 
@@ -66,16 +73,31 @@ const Cart: FC = () => {
           <S.LoaderWrapper>
             <S.Title>{t('empty_title')}</S.Title>
             <S.HighlightedText>{t('empty_description')}</S.HighlightedText>
-            <Button
-              text={t('btn_2')}
-              variant='primary'
-            />
+            <Link href="/">
+              <Button
+                text={t('btn_2')}
+                variant='primary'
+              />
+            </Link>
           </S.LoaderWrapper>
         );
 
     };
 
   };
+
+  useEffect(() => {
+
+    if (error) {
+
+      toast.error(
+        t('error_notification_update_cart').toString(),
+        { autoClose: false }
+      );
+
+    }
+
+  }, [error]);
 
   return (
     <MainLayout
@@ -86,6 +108,7 @@ const Cart: FC = () => {
         <S.Title>{t('page.title')}</S.Title>
         {conditionalRender(contentType)}
       </S.Container>
+      <Notification />
     </MainLayout>
   );
 
